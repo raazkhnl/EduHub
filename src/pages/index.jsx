@@ -9,7 +9,7 @@ export default function Home() {
   const { siteConfig } = useDocusaurusContext();
 
   return (
-    <Layout title="Notes for Nepali engineering curricula" description={siteConfig.tagline}>
+    <Layout title="Smart study, simplified." description={siteConfig.tagline}>
       <Hero />
       <main className="container">
         <Curricula />

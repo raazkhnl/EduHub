@@ -17,6 +17,20 @@ permissions:
 
 env:
   NODE_VERSION: '20'
+  # ─── Deployment target ──────────────────────────────────────────────────────
+  # Set to `ghpages` while the site is served at the GitHub Pages preview URL
+  # (https://raazkhnl.github.io/EduHub/) — Docusaurus builds with the right
+  # baseUrl and omits the CNAME file so GH Pages doesn't redirect.
+  #
+  # Once the custom domain (eduhub.khanalrajesh.com.np) is live and verified in
+  # Settings → Pages, change the value below to an empty string ('') or delete
+  # the line entirely. The build will then default to baseUrl `/` and ship the
+  # CNAME file again, locking the deploy onto the custom domain.
+  #
+  # To override per-run (e.g. testing a branch), define a repo *variable* of
+  # the same name at Settings → Secrets and variables → Actions → Variables
+  # and adjust the env-block below to read from `${{ vars.DEPLOY_TARGET }}`.
+  DEPLOY_TARGET: 'ghpages'
 
 jobs:
   build:
@@ -38,6 +52,7 @@ jobs:
         run: npm ci --no-audit --no-fund
 
       - name: Build site
+        # DEPLOY_TARGET is inherited from the workflow-level env block above.
         env:
           ALGOLIA_APP_ID:   ${{ secrets.ALGOLIA_APP_ID }}
           ALGOLIA_API_KEY:  ${{ secrets.ALGOLIA_API_KEY }}
