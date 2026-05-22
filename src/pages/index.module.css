@@ -2,8 +2,15 @@
   padding: 4.5rem 0 3rem;
   border-bottom: 1px solid var(--ah-rule);
   background:
-    radial-gradient(900px 360px at 20% 0%, var(--ah-accent-faint) 0%, transparent 60%),
+    radial-gradient(900px 360px at 18% -10%, var(--ah-accent-faint) 0%, transparent 60%),
+    radial-gradient(700px 280px at 92% 110%, var(--ah-pink-soft) 0%, transparent 60%),
     var(--ah-paper);
+}
+:global([data-theme='dark']) .hero {
+  background:
+    radial-gradient(900px 360px at 18% -10%, rgba(54, 249, 179, 0.1) 0%, transparent 60%),
+    radial-gradient(700px 280px at 92% 110%, rgba(255, 61, 139, 0.08) 0%, transparent 60%),
+    transparent;
 }
 .eyebrow {
   font-family: var(--ah-font-mono);
@@ -23,6 +30,16 @@
   margin: 0 0 1rem;
   border: 0;
   padding: 0;
+}
+/* In dark mode the headline picks up a quiet mint→electric→pink gradient,
+   the same flow the portfolio uses for its hero text. In light mode we
+   keep solid ink because gradients on serif look thin on paper. */
+:global([data-theme='dark']) .headline {
+  background: linear-gradient(135deg, #ffffff 0%, #d1fae5 35%, #fbcfe8 75%, #ffffff 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
 }
 .lede {
   font-family: var(--ah-font-sans);

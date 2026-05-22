@@ -1,0 +1,121 @@
+/* EduHub PwaReloadPopup — a small glass toast that floats in the bottom-right
+   corner when a new service-worker build is ready. Mirrors the chip/glass
+   language of the rest of the site. */
+.popup {
+  position: fixed;
+  right: 1.25rem;
+  bottom: 1.25rem;
+  z-index: 9000;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7rem;
+  padding: 0.6rem 0.9rem 0.6rem 0.85rem;
+  background: var(--ah-paper-elev);
+  border: 1px solid var(--ah-rule);
+  border-radius: 999px;
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.04) inset,
+    0 24px 50px -28px rgba(15, 20, 25, 0.18);
+  font-family: var(--ah-font-sans);
+  font-size: 13.5px;
+  color: var(--ah-ink-soft);
+  backdrop-filter: saturate(140%) blur(10px);
+  -webkit-backdrop-filter: saturate(140%) blur(10px);
+  animation: eh-pwa-pop 0.32s cubic-bezier(0.16, 1, 0.3, 1);
+}
+:global([data-theme='dark']) .popup {
+  background: rgba(11, 13, 18, 0.92);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.04) inset,
+    0 30px 60px -30px rgba(0, 0, 0, 0.7);
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: var(--ah-accent);
+  box-shadow: 0 0 0 0 var(--ah-accent-glow);
+  flex-shrink: 0;
+  animation: eh-pwa-pulse 2.2s ease-in-out infinite;
+}
+
+.text {
+  margin: 0;
+  white-space: nowrap;
+  color: var(--ah-ink);
+  font-weight: 500;
+}
+
+.actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.refresh {
+  font: inherit;
+  font-weight: 600;
+  color: var(--ah-accent);
+  background: transparent;
+  border: 0;
+  padding: 0.35em 0.8em;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+.refresh:hover {
+  background: var(--ah-accent-soft);
+}
+
+.close {
+  font: inherit;
+  font-size: 18px;
+  line-height: 1;
+  color: var(--ah-ink-mute);
+  background: transparent;
+  border: 0;
+  width: 26px;
+  height: 26px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition:
+    color 0.15s ease,
+    background-color 0.15s ease;
+}
+.close:hover {
+  color: var(--ah-ink);
+  background: var(--ah-rule);
+}
+
+@keyframes eh-pwa-pop {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+@keyframes eh-pwa-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 var(--ah-accent-glow);
+  }
+  50% {
+    box-shadow: 0 0 0 6px transparent;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .popup,
+  .dot {
+    animation: none;
+  }
+}
+
+@media print {
+  .popup {
+    display: none !important;
+  }
+}
