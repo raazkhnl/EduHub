@@ -180,13 +180,15 @@ const config = {
     // the GitHub Pages preview URL we *must* not ship it (its presence forces
     // a 301 to the custom domain, which is what we're trying to bypass).
     USING_GH_PREVIEW &&
+      /** @returns {import('@docusaurus/types').Plugin} */
       function stripCnamePlugin() {
         return {
           name: 'eduhub-strip-cname',
-          async postBuild({ outDir }) {
+          /** @param {{ outDir: string }} props */
+          async postBuild(props) {
             const fs = require('fs');
             const path = require('path');
-            const cname = path.join(outDir, 'CNAME');
+            const cname = path.join(props.outDir, 'CNAME');
             if (fs.existsSync(cname)) fs.unlinkSync(cname);
           },
         };

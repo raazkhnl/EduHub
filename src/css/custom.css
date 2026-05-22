@@ -244,22 +244,19 @@ body {
   color: var(--ah-ink);
   font-feature-settings: 'kern', 'liga', 'calt';
   -webkit-font-smoothing: antialiased;
-  position: relative;
 }
 
-/* Dark-mode backdrop — quiet mint/pink/electric haloes pinned behind content.
-   Inspired by the raazkhnl portfolio. Only visible in dark mode where the
-   near-black canvas needs visual texture; in light mode the paper is enough. */
-[data-theme='dark'] body::before {
-  content: '';
-  position: fixed;
-  inset: 0;
-  z-index: -1;
-  pointer-events: none;
+/* Dark-mode subtle accent — a single mint halo at the top of the page only,
+   gives the near-black canvas a quiet brand cue without affecting layout.
+   Confined to the hero area (height-capped) so it can't bleed below the fold
+   or interact with any fixed/positioned element. */
+[data-theme='dark'] body {
   background:
-    radial-gradient(60% 40% at 50% 0%, rgba(54, 249, 179, 0.07), transparent 70%),
-    radial-gradient(45% 35% at 100% 100%, rgba(255, 61, 139, 0.06), transparent 70%),
-    radial-gradient(45% 35% at 0% 80%, rgba(56, 189, 248, 0.05), transparent 70%);
+    radial-gradient(900px 320px at 18% -160px, rgba(54, 249, 179, 0.08) 0%, transparent 65%),
+    radial-gradient(700px 260px at 92% -120px, rgba(255, 61, 139, 0.05) 0%, transparent 65%),
+    var(--ah-paper);
+  background-attachment: fixed, fixed, scroll;
+  background-repeat: no-repeat, no-repeat, no-repeat;
 }
 
 /* Selection */
@@ -323,18 +320,21 @@ h4 {
 }
 
 /* Links — calm underline-on-hover */
+/* Markdown links — calm, symmetric hover. A subtle underline that fades in
+   (opacity, not width) so it never appears to grow from one side, which
+   reads as "jittery" when moving between adjacent links. */
 .markdown a {
   color: var(--ah-accent);
-  background-image: linear-gradient(currentColor, currentColor);
-  background-size: 0 1px;
-  background-repeat: no-repeat;
-  background-position: 0 100%;
+  text-decoration: underline;
+  text-decoration-color: transparent;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.18em;
   transition:
-    background-size var(--ah-dur) var(--ah-ease),
+    text-decoration-color var(--ah-dur-fast),
     color var(--ah-dur-fast);
 }
 .markdown a:hover {
-  background-size: 100% 1px;
+  text-decoration-color: currentColor;
 }
 
 /* Blockquotes — sidebar rule, italic ink-soft */
@@ -431,13 +431,17 @@ pre {
   bottom: 6px;
   height: 1px;
   background: var(--ah-accent);
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: transform var(--ah-dur) var(--ah-ease);
+  opacity: 0;
+  transform: scaleX(0.4);
+  transform-origin: center;
+  transition:
+    transform var(--ah-dur) var(--ah-ease),
+    opacity var(--ah-dur-fast);
 }
 .navbar__link:hover::after,
 .navbar__link--active::after {
   transform: scaleX(1);
+  opacity: 1;
 }
 
 /* GitHub icon */

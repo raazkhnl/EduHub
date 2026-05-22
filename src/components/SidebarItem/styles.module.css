@@ -35,6 +35,7 @@
 }
 
 .item {
+  position: relative;
   display: flex;
   align-items: center;
   gap: 1rem;
@@ -46,6 +47,25 @@
     background-color var(--ah-dur-fast),
     color var(--ah-dur-fast);
 }
+/* Premium hover affordance — a thin mint indicator bar slides in from the
+   left edge of the row. Pure opacity transition (no width / x animation) so
+   it never reads as jittery when moving between adjacent rows. */
+.item::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: var(--ah-accent);
+  opacity: 0;
+  transition: opacity var(--ah-dur-fast);
+  pointer-events: none;
+}
+.item:hover::before,
+.item.active::before {
+  opacity: 1;
+}
 .item:last-child {
   border-bottom: 0;
 }
@@ -53,7 +73,6 @@
   background: var(--ah-accent-faint);
 }
 .item:hover .chev {
-  transform: translateX(3px);
   color: var(--ah-accent);
 }
 .item.active {
