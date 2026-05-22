@@ -1,0 +1,508 @@
+---
+title: "Chapter 6 — Emerging Trends and Challenges in Networking"
+sidebar_label: "Ch 06 — Emerging Trends and Challenges in Networking"
+sidebar_position: 6
+description: "Chapter 6 of Next Generation Network Technologies (ENCTNS501)."
+slug: /ioe/msncs/year-1-part-1/next-gen-networks/notes/ch06
+tags: [msncs, year-1-part-1, enctns501, chapter, notes]
+last_update:
+  date: 2026-05-21
+  author: Rajesh Khanal
+---
+
+
+The earlier chapters covered specific technologies in depth — IPv6, SDN, NFV, 5G, IoT. This final chapter steps back and asks two questions. First: what does the operator who has to deploy these technologies actually face — the migration problem, the security problem, the operational problem? Second: what is coming after these technologies — Named Data Networking, Intent-Based Networking, Quantum Networking, and the spreading use of AI and ML inside the network itself? Some of the topics here are mature enough to deploy; some are still research; the line between the two is one of the things the chapter charts.
+
+## 6.1 IPv6, SDN, and 5G — migration approaches and challenges
+
+Each of the three technologies the syllabus has spent chapters on involves a migration from a deployed predecessor. The migration problem is, in many ways, harder than the technology itself.
+
+### IPv6 migration
+
+The IPv4-to-IPv6 transition has been formally in progress since 1995 and is still incomplete in 2026. Three transition mechanisms cover the practical patterns.
+
+**Dual stack.** *Dual stack is the transition strategy in which a host or router runs both IPv4 and IPv6 simultaneously, listening on both, and choosing which to use for each outgoing connection based on the destination's available addresses and Happy Eyeballs heuristics.* Every operating system since Windows Vista (2007) and every reasonable network device supports dual stack. This is the default approach. The downside is operational complexity — every firewall rule, every routing policy, every monitoring system has to know about both protocols. Address-space economics also work against pure dual stack at the access layer because IPv4 addresses are scarce.
+
+**Tunnelling.** Where dual stack is not possible because intermediate networks support only IPv4, IPv6 packets are encapsulated inside IPv4 packets and tunnelled across. Mechanisms include:
+
+- **6to4 (RFC 3056)** — automatic tunnelling of IPv6 over IPv4 using a special anycast address. Deprecated in modern deployments.
+- **Teredo (RFC 4380)** — Microsoft's mechanism for IPv6 over UDP over IPv4, designed for hosts behind NAT. Also largely deprecated.
+- **ISATAP, 6in4** — older variants, mostly obsolete.
+- **6rd (IPv6 Rapid Deployment, RFC 5969)** — an ISP-controlled variant of 6to4 used by some operators to launch IPv6 quickly over an IPv4 access network. France's Free.fr is the canonical example.
+
+**Translation.** Translate between IPv4 and IPv6 at a gateway. Used when one end is IPv4-only and the other is IPv6-only.
+
+- **NAT64 / DNS64 (RFC 6146, RFC 6147)** — the gateway translates an IPv6 client's connection to an IPv4 server. The DNS64 component synthesises an AAAA record from an A record by adding a well-known prefix; NAT64 then translates packets. The mainstream mechanism for IPv6-only mobile networks reaching IPv4 destinations.
+- **464XLAT (RFC 6877)** — adds a customer-side translator to NAT64, so that IPv4-only applications on an IPv6-only network still work. Used in T-Mobile USA, Reliance Jio, and many other mobile operators.
+- **CLAT, PLAT** — components of 464XLAT (Customer-side translator, Provider-side translator).
+
+### IPv6 migration challenges
+
+The big operational challenges:
+
+- **Firewall and security policy.** Every IPv4 firewall rule needs an IPv6 equivalent. Easy to forget; common source of accidental exposure.
+- **Application bugs.** Software written assuming 32-bit addresses, or assuming a single IP per host, breaks subtly. Logging systems that assume an IPv4 address in a fixed-width field break.
+- **DNS readiness.** AAAA records need to be published; sometimes they exist but point to misconfigured servers, causing "broken IPv6" — slower than IPv4 because of fallback timeouts. Happy Eyeballs (RFC 8305) mitigates this by trying both in parallel.
+- **Performance monitoring.** Operators discover that IPv4 paths perform differently from IPv6 paths to the same destination. Asymmetric peering, different transit providers, different routing optimisations.
+- **Training and tooling.** Network engineers who have spent two decades on IPv4 must learn IPv6's addressing model, the new routing protocol variants, the new NDP/SLAAC behaviours. Operations runbooks need updating.
+- **End-user equipment.** Home routers, CPEs, set-top boxes — many older devices have buggy or absent IPv6 implementations. Phasing them out takes years.
+
+Nepal's case illustrates the curve. APNIC's measurement of Nepal's IPv6 capability was about 3% in early 2020 and crossed 50% in early 2025. The lift came from WorldLink, Ncell, and several smaller ISPs pushing IPv6 to new customers by default rather than treating it as an opt-in. NTC remains behind because of legacy CPE on its long-installed FTTH base. The npNOG community ran training programmes in 2024–25 to widen the engineering knowledge base.
+
+### SDN migration
+
+A traditional network is not replaced by SDN overnight. Several migration patterns exist:
+
+**Greenfield deployment.** A new network — a new data centre, a new branch, a new fabric — is built SDN-native from the start. The easiest case, because there is no legacy.
+
+**Brownfield with overlay.** An SDN overlay (VXLAN, NVGRE) runs on top of the existing IP underlay. The underlay continues to use traditional routing; the overlay is controlled by an SDN controller. VMware NSX and Cisco ACI are the canonical examples. This is the most common large-enterprise approach.
+
+**Hybrid switch programmability.** Existing switches that support both their native control plane and OpenFlow run both — most traffic uses the native plane, and the SDN controller installs specific flows for exceptional traffic. Compromise approach, often a transitional state.
+
+**Full rip-and-replace.** Tear out the old, install the new. Possible only when the business case justifies it (very large operators, or where the old hardware is failing).
+
+### SDN migration challenges
+
+- **Skills.** Network engineers know CLI and BGP; SDN needs Python, REST APIs, and Kubernetes knowledge. The talent pool that combines both is small.
+- **Operational practices.** Change management, troubleshooting, on-call rotations all change with a centralised controller. A controller bug can affect everything; a CLI mistake on a single device affects one device.
+- **Hardware ecosystem.** Bare-metal switches and the operating systems for them (SONiC, Stratum, OpenSwitch) are mature, but the qualification path for production deployment is longer than buying a Cisco box and turning it on.
+- **Vendor and integration risk.** Multi-vendor SDN deployments are still difficult. Integration testing is harder than vendors admit.
+- **Survivability.** The controller is a critical asset. Designing for high availability, disaster recovery, and graceful degradation when the controller is unavailable is operationally hard.
+
+### 5G migration
+
+The 5G migration has its own pattern:
+
+**NSA first.** Most operators globally launched NSA — 5G radio bolted onto the existing 4G core. Faster to deploy, immediate marketing message ("we have 5G"), no need for a new core.
+
+**SA later.** The migration to SA gives the operator the full 5G feature set — URLLC, network slicing, edge computing integration. SA requires a 5G Core network build, which is a major capital project.
+
+**Spectrum management.** Most operators do not have one clean band for 5G. They re-farm existing spectrum (use the same physical frequencies for both 4G and 5G, with the radio dynamically dividing capacity). This is Dynamic Spectrum Sharing (DSS), and it adds complexity.
+
+**Site densification.** Higher frequencies need more sites. Mid-band 5G needs 1.5–2× the sites of 4G for comparable coverage; mmWave needs 5–10×. Acquiring site permissions, especially in dense urban areas, is the limiting factor.
+
+**Backhaul upgrade.** 5G radio rates exceed what 4G backhaul carried. Major fibre or microwave upgrades to every site.
+
+**Voice handling.** 5G's native voice (VoNR) is still maturing. Most operators fall back to 4G VoLTE for voice and use 5G only for data — meaning the 4G network must continue to operate.
+
+### 5G migration challenges in Nepal
+
+Nepal's 5G migration is just beginning. As of mid-2026 neither NTC nor Ncell has commercially launched. The specific Nepali constraints:
+
+- Spectrum auctions have lagged. NTA needs to clear and auction the 3.5 GHz band (or the 2.6 GHz band NTC wants). The political and regulatory process has been slower than the industry hoped.
+- Backhaul. Many sites still run on microwave links sized for 4G; upgrading to fibre is a multi-year programme, particularly in hill and mountain regions.
+- Capex. Both operators need licence-extension certainty before committing the USD 200+ million each that a national 5G rollout costs.
+- Energy. 5G base stations consume more power than 4G. In remote areas served by diesel or solar, this constrains deployment.
+- Device penetration. 5G-capable handsets are now mainstream, but the median Nepali subscriber still uses a 4G or older device. The first 5G launch will serve a thin layer of premium users.
+
+## 6.2 Security challenges over the latest networking environment
+
+Every architectural shift covered in the previous chapters expanded the attack surface. The latest networking environment is harder to defend than the network of 2010 was, and the defenders' tooling has had to evolve in response.
+
+### Expanded attack surface
+
+The list of new exposures:
+
+- **More endpoints.** IoT devices push the endpoint count from "human users plus a few servers" to "tens of billions of constrained devices." Each device is a potential entry point.
+- **Software-defined infrastructure.** SDN and NFV mean the network's control plane runs as software on general-purpose servers. Software has bugs; servers have OSes; OSes have vulnerabilities.
+- **APIs everywhere.** The 5G core's Service-Based Architecture exposes every network function as an HTTP/2 API. SDN controllers expose REST APIs to applications. MANO platforms expose orchestration APIs. Every API is a potential attack vector if exposed to untrusted networks or misconfigured.
+- **Cloud and shared infrastructure.** Network functions run on multi-tenant cloud or hyperscale platforms. A flaw in the cloud's isolation can expose tenant data.
+- **Encryption everywhere.** Almost all traffic is encrypted by 2026. Defenders can no longer inspect packet contents at the network layer; defence has to move to endpoints or to encrypted-traffic analysis based on metadata.
+- **Supply chain.** Network equipment, NFV software, cloud services, and integration partners — every supplier is a potential vector. The 2020 SolarWinds compromise and the 2021 Kaseya VSA ransomware are global examples; the 2024–25 supply-chain incidents affecting open-source maintainers and CI/CD pipelines continue the pattern.
+
+### New attack categories
+
+**5G-specific attack categories.**
+
+- **Slice isolation breaches.** A vulnerability that lets traffic cross between slices.
+- **Network function vulnerabilities.** A 5G core function (AMF, SMF, UPF) running with a flaw allowing it to be compromised — and through it, the operator's subscriber base.
+- **Signalling attacks.** 5G's HTTP/2-based signalling is more complex than 4G's GTP-C; new classes of signalling-flood and signalling-injection attacks have appeared.
+- **API abuse.** External applications using the operator's exposed APIs (via the NEF) to manipulate subscriber state or to harvest information.
+
+**SDN-specific attack categories.**
+
+- **Controller compromise.** Compromising the controller compromises the whole network.
+- **Southbound channel attacks.** Spoofing OpenFlow messages, injecting flow modifications.
+- **Northbound API abuse.** An application running on the controller exceeding its authority.
+- **Topology poisoning.** Feeding the controller false topology information through compromised switches.
+
+**IoT-specific attack categories.**
+
+- **Botnets.** Mirai (2016) and its descendants showed that millions of compromised IoT devices can launch terabit-scale DDoS attacks.
+- **Lateral movement.** A compromised IoT device on a network is often the first step in attacking the rest of the network.
+- **Physical safety.** A successful attack on an IoT-enabled industrial or medical device can cause physical harm.
+
+### Architectural defences
+
+The defensive architecture has shifted to match.
+
+**Zero trust.** Assume no part of the network is trustworthy. Every connection authenticates and authorises. Every flow is mutually TLS'd or IPsec'd. NIST SP 800-207 (2020) is the canonical framework.
+
+**Microsegmentation.** Divide the network into many small zones with policy enforcement between them. A compromise of one zone does not spread to others.
+
+**Defence in depth.** Multiple layers of defence — network controls, host controls, application controls, identity controls. No single layer is trusted to be the last line.
+
+**Continuous verification.** Instead of authenticating once and trusting forever, continuously check that the user, the device, and the session are still valid. A compromise that develops mid-session should be caught.
+
+**Software supply-chain security.** SBOMs (Software Bill of Materials), signed artefacts, reproducible builds, provenance tracking through the build pipeline. The US Executive Order 14028 (2021) and the EU's Cyber Resilience Act formalise the requirements.
+
+### Operational practices
+
+- **Threat intelligence sharing.** ISACs (Information Sharing and Analysis Centres) for sector-specific threat data. National CERTs sharing IOCs (Indicators of Compromise). Nepal's npCERT participates in regional sharing through APCERT.
+- **Incident response.** Mature operators have an Incident Response Plan, drill it regularly, and have legal and PR support pre-positioned.
+- **Red teaming.** Internal security teams continuously attack their own infrastructure, finding weaknesses before adversaries do.
+- **Compliance and audit.** ISO 27001, SOC 2, PCI-DSS (for payment systems), and industry-specific frameworks (HIPAA in US healthcare, similar elsewhere) impose audited security baselines.
+
+### Nepal's evolving security posture
+
+Recent incidents in Nepal — the 2024 DDoS that hit 400+ government portals via the Government Integrated Data Centre, the July 2025 Ministry of Education portal compromise, the late-2025 Nepal Police website breach that reportedly exposed 2 million-plus records — have raised political attention. npCERT has expanded its remit; the National Cybersecurity Centre announced in 2024 has begun staffing; the Cyber Bureau under Nepal Police investigates criminal cases. The IT Bill 2025 (still in legislative process at time of writing) would formalise cybercrime offences, mandatory breach notification, and CSIRT coordination. The pattern is the standard one: the legal and institutional response trails the threat by a few years.
+
+## 6.3 Threats and vulnerabilities in latest networking
+
+This section catalogues the specific threats. The earlier sections of Chapter 3 covered legacy-era threats; the threats here are specific to the latest networking environment.
+
+### DDoS at scale
+
+DDoS attacks have grown larger and more sophisticated. Notable recent levels:
+
+- The 2024 Cloudflare-mitigated attacks against banking and gaming customers exceeded 5 Tbps in volumetric peak.
+- Application-layer attacks (Layer 7) targeting authentication endpoints, payment APIs, and signalling planes have become the more dangerous category — smaller in volume but more disruptive per byte.
+- **Reflection and amplification.** Attackers spoof the victim's IP as source on requests to misconfigured services (DNS, NTP, Memcached, SNMP, CharGen), which then reply with much larger responses to the victim. Memcached amplification (2018) reached over 1.3 Tbps from a single attack.
+- **HTTP/2 Rapid Reset attack (CVE-2023-44487).** Discovered in 2023 by Cloudflare, Google, and AWS. Exploits HTTP/2's stream cancellation feature to consume server resources with very low traffic per attacker.
+
+Defences: anycast distribution, scrubbing services (Cloudflare, Akamai, Imperva, Radware), traffic-engineering capacity, application-layer filtering, rate limiting at the edge.
+
+### Ransomware
+
+Ransomware has moved from individual victims to large enterprises, healthcare providers, government agencies, and critical infrastructure. The pattern:
+
+1. Initial access — phishing, exposed RDP, unpatched VPN, compromised supplier.
+2. Persistence and lateral movement — credential theft, internal reconnaissance.
+3. Data exfiltration — copy the most sensitive data before encrypting.
+4. Encryption — encrypt every reachable file.
+5. Extortion — pay or we publish the data.
+
+Defences: backups with offline copies, network segmentation to limit blast radius, endpoint detection and response (EDR), strong identity controls, regular patching, user training.
+
+### Supply-chain attacks
+
+Compromising a supplier to reach customers. Notable cases:
+
+- **SolarWinds Orion (2020).** Russian state-affiliated actors planted malicious code in SolarWinds' build pipeline. ~18,000 customers received the compromised update; a smaller number were exploited further.
+- **Kaseya VSA (2021).** REvil ransomware delivered through a managed-service-provider tool.
+- **3CX (2023).** Compromise of the VoIP software vendor delivered malicious code to thousands of customers.
+- **XZ Utils backdoor (March 2024).** A multi-year social-engineering effort to plant a backdoor in a widely used open-source compression library, caught only by chance before reaching production Linux distributions.
+
+Defences: SBOM, signed and verified updates, reproducible builds, vendor risk management, anomaly detection on supplier-delivered software behaviour.
+
+### API and cloud misconfiguration
+
+A large share of cloud breaches come from misconfigured services — S3 buckets exposed publicly, Kubernetes APIs without authentication, exposed admin interfaces. The vendor's defaults have shifted to safer settings, but the operator's responsibility remains. Tooling categories: CSPM (Cloud Security Posture Management), CIEM (Cloud Infrastructure Entitlement Management), CWPP (Cloud Workload Protection Platforms).
+
+### Cryptocurrency-driven attacks
+
+Cryptocurrency made attack monetisation trivial. Categories include:
+
+- **Cryptojacking.** Compromising a server to mine cryptocurrency on the victim's CPU/GPU.
+- **Crypto exchange compromises.** Targeting cryptocurrency exchanges, wallets, and DeFi protocols. North Korea's Lazarus Group is the most prolific attacker in this space — the 2022 Ronin Bridge theft of USD 625 million and the 2024 DMM Bitcoin breach of USD 308 million are attributed to them.
+- **Wallet drainer scams.** Phishing pages that, when "connected," empty the victim's crypto wallet.
+
+### Social engineering and identity attacks
+
+The human-facing attacks remain effective at scale.
+
+- **Phishing** — increasingly polished, often using LLMs to generate convincing emails.
+- **Business Email Compromise (BEC)** — impersonating an executive to redirect a wire transfer. The largest single category of dollar losses globally according to the FBI's IC3 reports.
+- **MFA fatigue / MFA bombing** — sending repeated MFA push prompts until the victim accepts one. Defeated MFA-protected accounts at Uber (2022), Cisco (2022), and several others.
+- **Account takeover** — credential stuffing, password spraying, SIM swapping.
+
+### Mobile and SIM-based attacks
+
+- **SIM swapping.** Convincing the operator to port the victim's number to an attacker-controlled SIM. Bypasses SMS-based MFA. Multiple reported Nepali incidents in 2024–25.
+- **SS7 attacks.** Exploiting weaknesses in the legacy signalling protocol still used for cellular roaming to intercept SMS or to track locations.
+- **Malicious apps.** Banking trojans disguised as legitimate apps. Banking-trojan campaigns targeting Khalti, eSewa, and bank-app users in Nepal through Facebook Messenger and Telegram channels were reported through 2025.
+
+### State-sponsored threat actors
+
+Persistent, well-resourced attackers operating on national-strategic objectives. The major groupings, by attribution shorthand:
+
+- **Russia (APT28, APT29, Sandworm, Turla).** Espionage, election interference, infrastructure attacks (Ukraine grid, NotPetya).
+- **China (APT1, APT10, APT41).** Espionage, IP theft, supply-chain reconnaissance.
+- **North Korea (Lazarus, Kimsuky).** Financial theft (banks, crypto), espionage.
+- **Iran (APT34, MuddyWater).** Regional espionage, periodic destructive operations.
+- **Others.** Israel, US, UK, France, India, Pakistan all have offensive cyber capability; some attributed activity has appeared publicly.
+
+For an operator in Nepal, the practical concern is being collateral damage in any of these — a compromised network device used as a relay, a state-actor's reconnaissance scan, a destructive worm that spreads beyond its intended target.
+
+### Emerging threats
+
+- **Adversarial machine learning.** Attacks on ML models — poisoning training data, evading detection, extracting training data through inference attacks. As more network defences use ML, more attacks will target the ML.
+- **Quantum-relevant cryptography migration.** Once large quantum computers exist, current public-key cryptography breaks. The post-quantum transition (Section 6.7) is the response.
+- **Deepfake-enhanced social engineering.** AI-generated voice and video used in BEC, fraudulent video calls, voice phishing. Already seen in significant incidents (a 2024 fraud transferred USD 25 million from a Hong Kong company based on a deepfake video call of the CFO).
+- **AI-augmented attacks.** Attackers using LLMs to generate phishing content, to write polymorphic malware, to summarise stolen data for ransom decisions.
+
+## 6.4 Named Data Networking (NDN)
+
+*Named Data Networking is a proposed future Internet architecture in which packets are addressed not by the IP address of a destination host but by the name of the content being requested, with the network routing requests by name and delivering responses along the reverse path, treating content rather than location as the fundamental identifier.*
+
+### The motivation
+
+The IP-based architecture answers the question "how do I reach a host?" but most users actually want content, not a particular host. A YouTube viewer does not care which Google data centre delivers a video; they care that the video arrives. Today's solution is layered hacks on top of IP — DNS, CDNs, anycast, application-layer load balancing — that work but multiply complexity.
+
+NDN proposes a clean redesign: name the content directly, let the network find and deliver it. The work began at PARC in the early 2000s under Van Jacobson as Content-Centric Networking (CCN), and the NDN variant has been led by a multi-university US research consortium since 2010.
+
+### How NDN works
+
+Two packet types replace IP packets:
+
+**Interest packet.** A consumer sends an Interest carrying the name of what it wants — for example `/com/youtube/video/abc/segment/42`. Names are hierarchical, like a URL but without a host part.
+
+**Data packet.** A producer or cache returns a Data packet matching the requested name, carrying the content, a cryptographic signature by the producer, and a freshness lifetime.
+
+Every NDN router (or "forwarder") has three tables:
+
+- **CS (Content Store)** — a cache of recently seen Data packets. If an incoming Interest matches a name in the CS, the router serves the cached Data immediately and does not forward the Interest.
+- **PIT (Pending Interest Table)** — Interests forwarded but not yet satisfied, with the incoming face for each. Used to forward the returning Data back to the right consumer.
+- **FIB (Forwarding Information Base)** — like an IP FIB but indexed by name prefix. Tells the router which outgoing face to use for a given name prefix.
+
+When an Interest arrives:
+
+1. The router checks the CS. If matched, return the cached Data.
+2. Otherwise, check the PIT. If the name is already pending, add this incoming face to the existing entry (aggregating multiple consumers of the same content).
+3. Otherwise, look up the FIB by longest prefix match on the name. Forward the Interest out the chosen face. Create a PIT entry.
+
+When a Data packet returns, the router consults the PIT, forwards the Data on every face that requested it, caches it in the CS, and removes the PIT entry.
+
+### Why NDN matters
+
+Several properties fall out of this design:
+
+- **In-network caching.** Any router can cache content. A popular YouTube video served to a million viewers in Kathmandu need only cross the international link once; all subsequent viewers get it from caches at WorldLink, Vianet, or Subisu. (CDNs do this today, but as overlays; NDN does it natively.)
+- **Mobility for consumers.** A consumer's location does not matter — Interests carry the name, the network finds the content.
+- **Security tied to content, not location.** Every Data packet is signed by its producer. A consumer verifies the signature and knows the content is authentic regardless of where it came from. No need to trust the path or the cache.
+- **Multi-path and multi-source naturally.** The forwarder can send Interests out multiple faces in parallel, taking the first Data that arrives. Resilience comes for free.
+
+### NDN limitations and current status
+
+NDN has been a research project for fifteen years. It has not been deployed at scale, for several reasons:
+
+- **No clear migration path.** A new addressing model requires updating every router and every application. The economic incentive for an operator to deploy NDN unilaterally is weak.
+- **Naming and trust at scale.** Who controls which names? How are name prefixes delegated? PKI for content signatures at Internet scale needs an ecosystem that does not yet exist.
+- **Cache management.** Real routers have limited memory. Caching every Data packet is impractical; deciding what to cache is its own problem.
+- **State per Interest.** The PIT scales with the number of in-flight Interests, which at Internet scale would be very large.
+- **Privacy.** Every Interest reveals what content is being requested, in cleartext, to every router on the path. Encrypted CCN variants exist but reduce caching effectiveness.
+
+NDN runs in research testbeds (the global NDN testbed includes nodes at about 30 universities). Practical applications have been demonstrated in IoT (where the content-naming model fits sensor data well), in video conferencing, and in vehicular networks. Commercial deployment remains future.
+
+## 6.5 Intent-Based Networking (IBN)
+
+*Intent-Based Networking is the approach in which the network operator expresses *what* the network should achieve — the business intent — and the network's controller automatically translates this intent into device configurations, continuously verifies that the realised network matches the intent, and corrects deviations.*
+
+### The motivation
+
+Configuring a large network today still happens at the level of individual device commands. The operator's actual intent — "all branch offices must reach the cloud-hosted CRM with under 80 ms latency and TLS-encrypted, and accounting department traffic must not mix with engineering" — must be manually translated into hundreds of device commands across dozens of devices, then debugged when it does not work.
+
+IBN automates this translation. The operator declares the intent; the system produces the configurations.
+
+### What IBN provides
+
+A mature IBN system has four loops:
+
+1. **Translation.** The operator's high-level intent is translated into low-level device configuration. The system understands the network's topology, the available devices, and the policy implications.
+2. **Activation.** The configuration is deployed to the devices, ideally atomically (either everything succeeds or nothing changes).
+3. **Verification.** Continuous monitoring confirms that the realised network actually matches the intent. Telemetry feeds are compared to the expected state.
+4. **Optimisation/Remediation.** When the realised state drifts from intent (a device fails, traffic patterns change, a configuration is mistakenly changed), the system either auto-remediates or surfaces the deviation.
+
+### Examples of commercial IBN
+
+- **Cisco DNA Center** for enterprise campus.
+- **Cisco ACI** for data centre.
+- **Juniper Apstra** for data centre fabric.
+- **VMware NSX with vRealize** for software-defined data centre.
+- **HPE Aruba CX with intent-based policy** for campus.
+
+Each of these allows an operator to express policies like "all production servers must be reachable only from the application VLANs and the management VLAN" and have the controller realise and enforce it across the fabric.
+
+### Research direction
+
+The research community is pushing further:
+
+- **Natural-language intent specification.** Letting the operator type or speak intent in plain English. LLMs are obvious candidates for the translation step.
+- **Formal verification of intent.** Mathematical proof that the realised configuration satisfies the intent, including for all corner cases.
+- **Closed-loop with AI/ML.** The verification loop driven by ML-based anomaly detection on telemetry.
+- **Cross-domain intent.** Intent that spans multiple administrative domains — between an enterprise and its ISP, between operators in different countries.
+
+IBN is closely related to SDN and depends on it. SDN provides the programmable substrate; IBN provides the higher-level policy abstraction on top.
+
+## 6.6 Quantum Networking (QNet)
+
+*A Quantum Network is a network that transmits and stores quantum information — typically encoded in quantum bits (qubits) carried by single photons — to support tasks such as Quantum Key Distribution, distributed quantum computing, and quantum-enhanced sensing, in addition to or independent of classical data communication.*
+
+### Why quantum networking
+
+Two long-term goals drive the field.
+
+**Quantum Key Distribution (QKD).** Using quantum mechanics to distribute cryptographic keys with security that does not depend on computational hardness. The standard BB84 protocol (Bennett-Brassard 1984) exchanges polarised photons in a way that any eavesdropper attempting to measure them disturbs the state in a detectable way. The result: two parties can share a secret key, and if any third party tried to intercept, the parties know and discard those bits.
+
+**Distributed quantum computing.** A future quantum computer larger than any single machine could be built from smaller quantum processors connected by a quantum network. The processors share quantum entanglement, enabling them to act as one larger system. This depends on quantum repeaters, which do not yet exist at the needed quality and scale.
+
+### Building blocks
+
+A quantum network needs:
+
+- **Quantum sources.** Devices that produce qubits — usually polarised single photons, or pairs of entangled photons.
+- **Quantum channels.** Fibre or free-space links that carry photons with minimal loss. Standard telecom fibre can carry single photons but with significant loss over distance.
+- **Quantum memories.** Devices that store qubits coherently for some duration. Still experimental.
+- **Quantum repeaters.** Devices that extend quantum links across long distances without classical regeneration. The hard problem. Still in research.
+- **Detectors.** Single-photon detectors with high efficiency and low noise.
+
+### What is deployed today
+
+**Point-to-point QKD.** Commercially available. Vendors like ID Quantique, Toshiba, MagiQ sell QKD systems. Deployed in financial centres, government communications, and as proof-of-concept in several countries' infrastructure. Distance limit without trusted nodes: about 100–200 km in optical fibre, longer with low-loss fibre or free-space.
+
+**Metropolitan QKD networks.** Several cities have linked QKD installations into networks using trusted-node architectures — the Tokyo QKD Network (Japan), the SwissQuantum Network (Geneva), the Beijing-Shanghai QKD trunk in China. The trusted-node approach is a compromise — each intermediate node decrypts and re-encrypts the key, requiring physical security at each node.
+
+**Satellite QKD.** China's Micius satellite (launched 2016) demonstrated QKD between ground stations thousands of kilometres apart. Operates in low Earth orbit; the satellite acts as a trusted relay.
+
+**National and continental projects.** The European Quantum Communication Infrastructure (EuroQCI), the US Quantum Internet blueprint from the Department of Energy (2020), the Quantum Internet Alliance, and similar Asian programmes are working towards larger-scale quantum networks.
+
+### Where the research is
+
+The frontier:
+
+- **Quantum repeaters with quantum memory.** Required for distances beyond the trusted-node limit. Pieces have been demonstrated in labs (matter-light entanglement, quantum memory in atomic ensembles) but not yet integrated into a working repeater that beats trusted nodes.
+- **Higher-rate QKD.** Current QKD systems run at kbps to a few Mbps of key material. Faster systems are needed for high-throughput protected traffic.
+- **Integration with classical networks.** SDN-style orchestration that treats quantum links as a special resource alongside classical links.
+- **Post-quantum cryptography (PQC).** Classical algorithms believed secure against quantum attack. NIST's PQC standardisation finalised three first-generation standards in August 2024 — ML-KEM (FIPS 203, based on Kyber for key encapsulation), ML-DSA (FIPS 204, based on Dilithium for signatures), and SLH-DSA (FIPS 205, based on SPHINCS+ for stateless hash-based signatures). A fourth, HQC, was selected as a backup KEM in 2025. Deployment in TLS, IPsec, SSH, and other protocols is in active integration; some major operators (Google, Cloudflare, AWS) have enabled hybrid PQC in production.
+
+### Quantum networking in context
+
+The honest position in 2026: QKD has commercial niches but is far from mainstream because PQC is solving the same problem with much lower cost, less infrastructure, and global compatibility. The interesting question is what quantum networking will do *beyond* key distribution — distributed quantum computing and quantum sensing. These are the long-game justifications.
+
+For Nepal, quantum networking is a research-only topic. There is no QKD deployment in Nepal, no quantum-network testbed, no commercial driver. The academic interest is at IOE Pulchowk and a small number of researchers; that is the realistic scope for the next decade.
+
+## 6.7 Research trends in latest networking
+
+This section consolidates the active research themes across the technologies covered. The Acceptable-quality research conference venues — SIGCOMM, NSDI, NDSS, USENIX Security, INFOCOM, IMC, plus the IEEE TNSM and ACM ToN journals — give the best survey of what is current.
+
+### Programmable networks beyond P4
+
+P4 opened the data plane to programmability. The next steps:
+
+- **In-network computation.** Doing more in the data plane than forwarding. Aggregation of telemetry, caching frequent lookups, machine-learning inference on packet headers, even consensus protocols implemented at line rate. Papers like NetCache, SHARP, and Pegasus pushed this direction.
+- **Workload-specific data planes.** Customising switch behaviour for a specific application — RDMA for high-performance computing, video streaming, financial trading.
+- **Smarter NICs.** Programmable network interface cards (SmartNICs, DPUs) doing TCP termination, encryption, virtual switching off the host CPU. NVIDIA BlueField, AMD Pensando, Intel IPU are the deployed products.
+
+### Network verification and synthesis
+
+Formal methods applied to networks:
+
+- **Static configuration analysis.** Tools like Batfish that parse configurations from real devices and answer questions like "can host A reach host B?" without sending packets.
+- **Data-plane verification.** Veriflow, NetPlumber, and HSA verify that flow tables actually implement specified policies.
+- **Synthesis.** Generating correct-by-construction configurations from a high-level specification. NetComplete and Snowcap are research examples.
+
+### Encrypted traffic analysis
+
+With TLS and QUIC encrypting almost all traffic, classical packet inspection no longer works. New techniques:
+
+- **Metadata-based classification.** Using packet sizes, timing, and SNI to identify the application.
+- **Machine learning on flow features.** Training classifiers to distinguish video conferencing from video streaming from file transfer.
+- **Privacy implications.** The same techniques used by ISPs for traffic management can be used by surveillance. The research community is actively studying defences (padding, traffic shaping, encrypted DNS).
+
+### Network telemetry
+
+Moving from polled SNMP counters to streaming telemetry at sub-second granularity. Standards:
+
+- **gNMI for streaming configuration and state.**
+- **OpenConfig for vendor-neutral data models.**
+- **INT (In-band Network Telemetry)** — switches add per-hop measurement data to packets in transit.
+- **IPFIX/NetFlow for flow records.**
+- **eBPF in Linux for endpoint and host-network observability.**
+
+### Network digital twins
+
+Building a software model of the production network — same topology, same configurations, same expected behaviour — used to test changes, predict the effect of failures, train ML models. Several vendors (Cisco, Forward Networks, Veriflow) and research projects have demonstrated production-grade twins.
+
+### Sustainable networking
+
+Reducing the energy footprint of networks. Techniques:
+
+- **Sleep modes** in base stations during low-load hours.
+- **Optical bypass** of higher-layer processing where possible.
+- **Workload consolidation** across fewer servers during off-peak times.
+- **Renewable-powered data centres.**
+
+This is increasingly a research priority as climate concerns drive sector-specific carbon accounting.
+
+### Post-quantum cryptography in protocols
+
+Integrating the NIST PQC algorithms into deployed protocols:
+
+- **TLS** — hybrid X25519 + ML-KEM in production at Google, Cloudflare, AWS as of 2024–25.
+- **IPsec/IKEv2** — RFC 8784 (mixing pre-shared keys), with further hybrid modes in standardisation.
+- **SSH** — OpenSSH 9.x added hybrid ML-KEM support.
+- **DNSSEC** — moving from RSA and ECDSA to PQC algorithms is on the long-term roadmap.
+
+### Distributed and federated learning at the network edge
+
+Training ML models across many distributed nodes without centralising the raw data. Applications:
+
+- Mobile-keyboard prediction (Google's Gboard federated learning).
+- Medical-imaging models trained across hospitals.
+- Industrial anomaly-detection across factory sites.
+
+Networking research focuses on the communication patterns these workloads create and how the network can optimise for them.
+
+### Multi-access and convergence
+
+Combining cellular, Wi-Fi, satellite (Starlink, OneWeb), and fixed broadband into a unified service. 3GPP ATSSS (Access Traffic Steering, Switching, and Splitting) is the standard. Operators are deploying it for resilience and capacity.
+
+## 6.8 AI and ML applications in networking
+
+The use of AI and ML inside networks has gone from niche to mainstream over the last five years. The category covers everything from anomaly detection in flow data to reinforcement-learning agents that operate the network in production.
+
+### Where ML is being applied
+
+**Traffic classification.** Identifying the application generating an encrypted flow, distinguishing voice from video from file transfer. Used by operators for QoS, by enterprises for security, by regulators for compliance.
+
+**Anomaly detection.** Spotting unusual patterns in flow data, in device telemetry, in user behaviour. Used in DDoS detection, fraud detection, insider-threat detection. Commercial products include Darktrace, Cisco Stealthwatch, Vectra AI.
+
+**Failure prediction.** Predicting that a router, link, or optical transceiver will fail before it does, based on telemetry trends. Industry papers from large operators (Google, Facebook/Meta, Microsoft) have shown 30–50% reduction in user-visible incidents from this approach.
+
+**Routing and traffic engineering.** Reinforcement learning agents that select routes or allocate bandwidth based on observed conditions. Google's research with the SWAN-successor uses RL for inter-datacentre traffic engineering. Academic papers (MARL for routing, MAPRL for path computation) have demonstrated promising results.
+
+**Resource allocation in radio access.** ML-based scheduling in the gNB, choosing which user gets which time/frequency resource. 3GPP Rel-18 and Rel-19 standardise specific roles for ML in the air interface.
+
+**Network configuration generation.** Using LLMs to generate device configurations from natural-language descriptions, or to translate from one vendor's CLI to another. Cisco, Juniper, and several startups are productising this.
+
+**Customer support automation.** Diagnosing customer issues from network telemetry, automating tier-1 troubleshooting, generating outage explanations.
+
+### Where ML still struggles
+
+- **Generalisation.** Models trained on one network often do not transfer well to another. Each operator's network has its own quirks.
+- **Trust.** Operators are reluctant to let an ML system make consequential decisions (route changes, capacity adjustments, security actions) without human review. The "explainability" gap matters.
+- **Adversarial robustness.** Attackers can craft traffic to evade or fool ML-based defences. The ML model becomes part of the attack surface.
+- **Training data.** Good training data is rare. Most operators have data, but sharing across operators (the natural way to build large generalised models) faces privacy and competitive concerns.
+- **Compute cost.** Modern ML models cost real money to train and infer. Spending that cost only makes sense when the operational saving is clear.
+
+### Generative AI in networking
+
+The 2023–2026 wave of generative AI has touched networking in specific ways:
+
+- **Configuration generation.** As above.
+- **Documentation and runbook automation.** LLMs summarising change logs, generating documentation, writing post-incident reports.
+- **Network operations chatbots.** Customer-facing and operator-facing assistants that answer questions about network state, recent changes, and current alerts.
+- **Synthetic data generation.** Producing realistic-looking network traffic for testing.
+- **Threat hunting.** LLMs reading security logs and surfacing patterns a human analyst would miss.
+- **Adversarial use.** LLMs generating phishing content, social-engineering scripts, polymorphic malware. The arms-race side of generative AI.
+
+### The next direction
+
+Looking forward five to ten years, the integration of ML into networking is likely to deepen along several lines:
+
+- **AI-native 6G.** 3GPP's 6G study items make AI/ML a core architectural component, not an add-on. The radio interface, the core, the orchestration layer all assume AI is present.
+- **Autonomous networks.** Reducing human operations to oversight, with the network's own AI handling routine optimisation, scaling, and failure recovery. The "L4 autonomous network" framework from TM Forum is the industry's roadmap.
+- **Closed-loop assurance.** Continuous verification that the network is delivering its intended service, with AI-driven remediation when it is not. Closely linked to IBN (Section 6.5).
+- **Domain-specific foundation models for networking.** Large models trained specifically on networking data — configurations, telemetry, traffic patterns — providing a general-purpose substrate for many specific network applications.
+
+The unifying theme of this final chapter is that the network is becoming a software platform, configured by intent, optimised by AI, secured by zero-trust principles, and ultimately replaceable in parts by quite different architectures (NDN) or extended into quite different physical regimes (quantum). For an engineer entering the profession now, the technologies of 2026 will be the foundation; the technologies of 2036 will not be the same.

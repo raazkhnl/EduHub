@@ -1,0 +1,12 @@
+node_modules
+build
+.docusaurus
+package-lock.json
+static/_bundle
+static/img/icons/icon-*.png
+static/img/icons/maskable-*.png
+static/img/icons/apple-touch-icon.png
+static/img/social-card.png
+files (1)
+files (2)
+incoming

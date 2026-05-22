@@ -1,0 +1,19 @@
+.bar {
+  position: fixed;
+  top: var(--ifm-navbar-height, 60px);
+  left: 0; right: 0;
+  height: 2px;
+  background: transparent;
+  z-index: 40;
+  pointer-events: none;
+}
+.fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--ah-accent), var(--ah-secondary));
+  transform-origin: 0 50%;
+  transform: scaleX(0);
+  transition: transform 80ms linear;
+  border-radius: 0 1px 1px 0;
+}
+@media print { .bar { display: none !important; } }
+html.focus-mode .bar { display: none !important; }

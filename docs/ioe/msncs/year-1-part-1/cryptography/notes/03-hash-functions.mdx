@@ -1,0 +1,417 @@
+---
+title: "Chapter 3 — Cryptographic Hash Functions"
+sidebar_label: "Ch 03 — Cryptographic Hash Functions"
+sidebar_position: 3
+description: "Chapter 3 of Cryptography and Data Security (ENCTNS502)."
+slug: /ioe/msncs/year-1-part-1/cryptography/notes/ch03
+tags: [msncs, year-1-part-1, enctns502, chapter, notes]
+last_update:
+  date: 2026-05-21
+  author: Rajesh Khanal
+---
+
+
+A cryptographic hash function is the third great primitive of modern cryptography, alongside symmetric and asymmetric ciphers. Where ciphers protect data in motion, hash functions provide the fingerprints that authenticate the data — they let two parties verify they are looking at the same content, let a bank verify a password without storing it, let a blockchain link block to block in an unforgeable chain, and let a digital signature scheme compress an arbitrary-length document into a fixed-size input for the asymmetric operation. This chapter defines what a cryptographic hash function is, lists the deployed ones and their properties, surveys the attack classes that have broken successive hash designs, and walks through the major application areas.
+
+## 3.1 Definition and properties of cryptographic hash functions
+
+*A cryptographic hash function is a mathematical function that takes an input (a "message") of arbitrary length and produces a fixed-length output (a "hash," "digest," or "fingerprint") such that the function is easy to compute in the forward direction and computationally infeasible to invert or to find two inputs producing the same output.*
+
+The fixed output length is the defining feature. SHA-256 always produces 256 bits regardless of whether the input is one byte or one terabyte. The forward computation is deterministic: the same input always produces the same output.
+
+### The three required security properties
+
+A function is called *cryptographically secure* only if it satisfies three properties. Each property corresponds to a class of attack the function must resist.
+
+**Pre-image resistance.** *Given a hash value $h$, it is computationally infeasible to find any message $m$ such that $H(m) = h$.*
+
+This is the one-way property. The hash function should be impossible to invert. For an $n$-bit hash, the best generic attack is brute force — try random inputs until one matches — which takes $2^n$ work.
+
+**Second pre-image resistance.** *Given a message $m_1$, it is computationally infeasible to find a different message $m_2 \neq m_1$ such that $H(m_1) = H(m_2)$.*
+
+The "weak collision resistance" property. Given one input, finding a second input that produces the same output should be infeasible. Generic difficulty: $2^n$.
+
+**Collision resistance.** *It is computationally infeasible to find any two distinct messages $m_1 \neq m_2$ such that $H(m_1) = H(m_2)$.*
+
+The "strong collision resistance" property. Finding *any* two inputs that collide should be infeasible. This is the strongest of the three. By the birthday paradox, the generic attack is faster than for the other two — about $2^{n/2}$ work for an $n$-bit hash. For a 256-bit hash, this is $2^{128}$, still safely infeasible. For a 128-bit hash (MD5, half of SHA-1), it is $2^{64}$, reachable with significant effort. For SHA-1's 160 bits, it is $2^{80}$ — and a real collision was found in 2017.
+
+### The birthday paradox
+
+The reason collision resistance is weaker than pre-image resistance is the **birthday paradox**: in a room of 23 people, the probability that two share a birthday is over 50%, even though each person individually has only a $1/365$ chance of matching any given other person.
+
+For a hash function, this means: trying $2^{n/2}$ random inputs gives roughly even odds of finding a collision among them, even though no specific output value has been targeted. This is the basis of the **birthday attack**, which sets the practical collision-resistance limit at half the output bit length.
+
+Consequence: a hash function intended for $k$ bits of security against collisions must output at least $2k$ bits. SHA-256 provides 128-bit collision resistance; SHA-384 provides 192-bit; SHA-512 provides 256-bit.
+
+### Additional desirable properties
+
+Beyond the three required properties, several others matter in practice.
+
+**Avalanche effect.** A change in a single input bit should change about half the output bits, on average, in an unpredictable pattern. This ensures that small changes to a message do not produce predictably-related hashes. All modern hash functions satisfy this strongly.
+
+**Determinism.** The same input always produces the same output. No randomness, no state from previous calls. (Modern keyed hash variants like HMAC and the SHA-3 family's "tree mode" introduce keys or contexts, but the underlying hash remains deterministic.)
+
+**Efficient computation.** Hashing should be fast — gigabytes per second per CPU core. This is essential because hashes are computed in latency-sensitive contexts (TLS handshakes, file integrity checks, blockchain mining).
+
+**Uniform distribution.** The output bits should be uniformly distributed across the output space. Without this, the practical security falls below the nominal output length.
+
+### Properties hash functions do not provide
+
+What a hash function alone does *not* give:
+
+**Confidentiality.** A hash leaks no information about the input that an attacker who can guess the input could not check directly. But it provides no encryption — anyone can compute $H(m)$ for any $m$.
+
+**Authentication.** Anyone can hash anything. A hash alone proves nothing about who created the message. To authenticate, you need a MAC (HMAC) or a digital signature.
+
+**Integrity in the presence of an attacker who can also modify the hash.** If the attacker modifies both the message and the hash to a new valid pair, the recipient cannot tell. Integrity requires either a MAC (with a shared secret) or a signature (with a public key).
+
+These are the gaps that MACs and signatures fill. A hash is a building block — the rest of the construction matters.
+
+### The avalanche effect in practice
+
+The avalanche effect can be illustrated with SHA-256 on two near-identical inputs:
+
+```
+Input:  "The quick brown fox jumps over the lazy dog"
+SHA-256: d7a8fbb307d7809469ca9abcb0082e4f8d5651e46d3cdb762d02d0bf37c9e592
+
+Input:  "The quick brown fox jumps over the lazy dog."   (period added)
+SHA-256: ef537f25c895bfa782526529a9b63d97aa631564d5d789c2b765448c8635fb6c
+```
+
+The two inputs differ by a single character. The two outputs are completely different — no observable relationship between them. This is what makes hash functions useful: every change to the input produces an unrelated-looking change to the output.
+
+### The Merkle-Damgård construction
+
+Most pre-2010 hash functions (MD5, SHA-1, SHA-2) use the **Merkle-Damgård** construction. The input message is padded to a multiple of the block size, then processed block-by-block. Each block is combined with the current internal state (the "chaining value") through a compression function:
+
+$$
+H_0 = IV
+$$
+$$
+H_i = f(H_{i-1}, m_i)
+$$
+$$
+\text{output} = H_n
+$$
+
+where $f$ is the compression function and $IV$ is a fixed initial value.
+
+The Merkle-Damgård construction has a useful security property — if the compression function is collision-resistant, the whole hash is collision-resistant. But it also has weaknesses, including the **length extension** vulnerability discussed in Section 3.3.
+
+The newer SHA-3 family uses a different construction (the **sponge construction**) that does not have the length-extension flaw.
+
+## 3.2 Common cryptographic hash functions and comparison
+
+### MD5 (Message Digest 5)
+
+*MD5 is the cryptographic hash function designed by Ronald Rivest in 1991, producing a 128-bit output from an arbitrary-length input via a Merkle-Damgård construction, which has been considered cryptographically broken since 2004 due to practical collision attacks.*
+
+MD5 was the dominant general-purpose hash function through the 1990s. It is fast (gigabytes per second on modern hardware), produces a compact 128-bit output, and is still used in non-cryptographic settings.
+
+**Status:** broken. In 2004, Wang Xiaoyun's team published a practical collision attack on MD5, finding pairs of distinct messages with the same MD5 hash in hours of computation. By 2008, the **Flame malware** used a chosen-prefix MD5 collision to forge a Microsoft code-signing certificate — the first known weaponisation of an MD5 collision in the wild. By 2012, collisions could be produced in minutes on commodity hardware.
+
+MD5 is still used for:
+- Non-cryptographic checksums (file-integrity verification where the attacker cannot choose the input).
+- Hash-table indexing and other database applications.
+- Legacy protocols (CRAM-MD5 authentication, some HMAC-MD5 uses, though even HMAC-MD5 is now discouraged).
+
+MD5 must not be used for any new cryptographic purpose. Microsoft, NIST, and every standards body deprecated it years ago.
+
+### SHA-1 (Secure Hash Algorithm 1)
+
+*SHA-1 is the cryptographic hash function published by NIST as FIPS PUB 180-1 in 1995, producing a 160-bit output, designed as a successor to SHA-0 and similar in structure to MD5 with extra security margin, formally broken in 2017 by Google's SHAttered collision attack.*
+
+SHA-1 was the dominant hash function from the mid-1990s to the mid-2010s. It was used in TLS certificate signatures, Git's commit identifiers, PGP signatures, and almost every protocol that needed a hash.
+
+**Status:** broken. Theoretical attacks reducing the work below brute force were published as early as 2005 (Wang et al., $2^{69}$ work versus $2^{80}$ brute force). In February 2017, Google researchers published **SHAttered** — the first public SHA-1 collision, two different PDF files with the same SHA-1 hash. The attack cost about $110,000 in cloud compute. By 2020 the **chosen-prefix collision** (Leurent and Peyrin) brought the cost down to about $45,000.
+
+SHA-1 is deprecated:
+- **TLS certificates:** browsers refused to validate SHA-1 certificates from 2016 onwards. NIST formally disallowed SHA-1 in federal use from 2030, with practical removal much earlier.
+- **Git:** has begun migrating to SHA-256 (since Git 2.29 in 2020). Existing repositories use SHA-1; new repositories may use SHA-256.
+- **Signatures:** any new signature using SHA-1 is unsafe.
+
+Like MD5, SHA-1 survives in legacy systems and in non-cryptographic uses. It must not be used for new cryptographic purposes.
+
+### SHA-2 family (SHA-224, SHA-256, SHA-384, SHA-512)
+
+*The SHA-2 family is the set of cryptographic hash functions published by NIST as FIPS PUB 180-2 in 2001 (and revised through FIPS PUB 180-4 in 2015), built on the same Merkle-Damgård structure as SHA-1 but with larger internal state, larger output sizes, and different mixing functions — comprising SHA-224, SHA-256, SHA-384, and SHA-512 as the main variants.*
+
+SHA-2 is the current default. SHA-256 is the most widely deployed member.
+
+| Variant | Output size | Block size | Internal state | Rounds |
+|---|---|---|---|---|
+| SHA-224 | 224 bits | 512 bits | 256 bits | 64 |
+| SHA-256 | 256 bits | 512 bits | 256 bits | 64 |
+| SHA-384 | 384 bits | 1024 bits | 512 bits | 80 |
+| SHA-512 | 512 bits | 1024 bits | 512 bits | 80 |
+
+SHA-224 and SHA-384 are truncated outputs of SHA-256 and SHA-512 respectively (with different initial values).
+
+**Security status.** SHA-2 has been heavily studied for over two decades with no significant cryptographic weaknesses found. Best known attacks reduce the work only marginally below brute force. SHA-2 is expected to remain secure for the foreseeable future, modulo quantum attacks (Grover's algorithm provides a quadratic speed-up against pre-image attacks, so SHA-256 gives 128-bit post-quantum pre-image security — still adequate).
+
+**Use cases.** SHA-2 (specifically SHA-256 and SHA-384) is used in:
+- TLS certificates (signature algorithms like SHA256withRSA, SHA384withECDSA).
+- Code signing.
+- TLS handshake transcript hashing.
+- Bitcoin (SHA-256 twice, in proof-of-work and in transaction hashing).
+- Ethereum (Keccak-256, which is SHA-3's underlying primitive with different parameters).
+- HMAC constructions (HMAC-SHA-256 is the standard MAC in most modern protocols).
+- Password hashing (combined with a key-derivation function like PBKDF2-SHA-256).
+
+### SHA-3 family
+
+*SHA-3 is the cryptographic hash function family published by NIST as FIPS PUB 202 in 2015, based on the Keccak design selected through a public competition (2008–2012), built on the sponge construction rather than Merkle-Damgård, providing variants with 224, 256, 384, and 512-bit outputs plus the extendable-output functions SHAKE128 and SHAKE256.*
+
+SHA-3 came from a five-year NIST competition prompted by concerns that the structurally-similar MD5 and SHA-1 failures might foreshadow an attack on SHA-2. Keccak won partly because its sponge construction is structurally different from SHA-2 — providing diversity in deployed hash functions in case one family is broken.
+
+The sponge construction has two phases: **absorbing** (XOR message blocks into the state, apply the permutation between blocks) and **squeezing** (output state bits, apply the permutation between blocks for more output). The state is large (1600 bits in Keccak-f); the rate (number of bits absorbed/squeezed per permutation) trades off speed and security.
+
+| Variant | Output size | Notes |
+|---|---|---|
+| SHA3-224 | 224 bits | |
+| SHA3-256 | 256 bits | |
+| SHA3-384 | 384 bits | |
+| SHA3-512 | 512 bits | |
+| SHAKE128 | Any length | Extendable-output function |
+| SHAKE256 | Any length | Extendable-output function |
+
+**Status.** Secure. Deployed but less widely than SHA-2 because SHA-2 has not been broken — most operators continue using SHA-2 unless they specifically need SHA-3's properties (notably immunity to length extension, or extendable output for SHAKE).
+
+**Where SHA-3 is used.**
+- Ethereum and some other cryptocurrencies use Keccak-256 (similar to but not identical to SHA3-256).
+- Some IETF protocols specify SHA-3 as an alternative.
+- Many post-quantum cryptographic schemes (including some NIST PQC candidates) use SHAKE128 or SHAKE256 internally.
+
+### BLAKE2 and BLAKE3
+
+*BLAKE2 is a cryptographic hash function designed by Aumasson, Neves, Wilcox-O'Hearn, and Winnerlein in 2012 as a faster alternative to SHA-2 and SHA-3, with BLAKE2b providing up to 512-bit output and BLAKE2s providing up to 256-bit output, used widely in performance-sensitive contexts where SHA-2 hardware acceleration is missing.*
+
+BLAKE2 is faster than SHA-2 in software on CPUs without SHA hardware instructions. It is used in:
+- The Argon2 password-hashing function.
+- The libsodium cryptography library.
+- WireGuard VPN.
+- Many cryptocurrency systems.
+
+**BLAKE3 (2020)** is an even faster, tree-structured variant supporting parallelism. Used in some content-addressed storage systems and in modern cryptographic applications.
+
+### Comparison summary
+
+| Hash | Output | Year | Speed (CPU) | Speed (with HW) | Security status |
+|---|---|---|---|---|---|
+| MD5 | 128 | 1991 | Very fast | Very fast | Broken |
+| SHA-1 | 160 | 1995 | Fast | Very fast | Broken (since 2017) |
+| SHA-256 | 256 | 2001 | Fast | Very fast (SHA-NI) | Secure |
+| SHA-384 / SHA-512 | 384/512 | 2001 | Fast (faster on 64-bit) | Very fast | Secure |
+| SHA3-256 | 256 | 2015 | Moderate | Faster on dedicated HW | Secure |
+| BLAKE2b | up to 512 | 2012 | Fastest in pure software | (no HW acceleration) | Secure |
+| BLAKE3 | up to 256/extendable | 2020 | Very fast, parallel | (no HW acceleration) | Secure |
+
+**Selection guidance for 2026.**
+
+- **For general hashing (TLS, signatures, integrity checks):** SHA-256.
+- **For long-term security or larger output:** SHA-384 or SHA-512.
+- **Where SHA-2 hardware support is missing:** BLAKE2 or BLAKE3.
+- **For algorithmic diversity (in case SHA-2 is ever broken):** SHA-3.
+- **For password hashing:** never use bare SHA-2 — use Argon2, scrypt, bcrypt, or PBKDF2 (Section 3.4).
+- **For HMAC:** HMAC-SHA-256 is the standard; HMAC-SHA-384 for higher security margins.
+- **Avoid:** MD5 and SHA-1 for any new cryptographic use.
+
+## 3.3 Cryptanalysis of hash functions
+
+The three required hash properties — pre-image, second pre-image, and collision resistance — each have corresponding attack categories. Beyond these, several attacks exploit structural weaknesses of specific hash constructions.
+
+### Generic attacks
+
+These work against any hash function with no special structure. The generic bounds set the *minimum* work an attacker needs.
+
+**Brute-force pre-image attack.** For an $n$-bit hash, finding $m$ with $H(m) = h$ takes $2^n$ work on average.
+
+**Brute-force second-pre-image attack.** Same work: $2^n$.
+
+**Birthday attack for collisions.** $2^{n/2}$ work to find any pair $(m_1, m_2)$ with $H(m_1) = H(m_2)$.
+
+For a 256-bit hash like SHA-256: pre-image $2^{256}$, collision $2^{128}$. Both are well beyond practical attack.
+
+For a 128-bit hash like MD5: pre-image $2^{128}$, collision $2^{64}$. The $2^{64}$ collision work is reachable with serious effort even by generic attacks.
+
+For a 160-bit hash like SHA-1: pre-image $2^{160}$, collision $2^{80}$. The $2^{80}$ generic collision attack is at the edge of what nation-states could do. In practice, structure-aware attacks brought SHA-1 collisions down to $2^{61}$ work (SHAttered).
+
+### Collision attacks
+
+The most successful cryptanalytic attacks against the broken hash functions have all been collision attacks exploiting structure in the round functions.
+
+**Differential cryptanalysis of hash functions.** The same technique used against block ciphers, adapted to hash functions. Find a pair of messages whose difference, after processing through the rounds, gives output collisions with non-negligible probability.
+
+**Wang's attack on MD5 (2004).** Wang Xiaoyun, Yiqun Lisa Yin, and Hongbo Yu published a differential attack on MD5 finding collisions in about $2^{39}$ work — a feasible amount of computation. Subsequent improvements brought this down further. By 2007 the **chosen-prefix collision attack** (Stevens et al.) let attackers find collisions for two messages with arbitrary chosen prefixes, the dangerous form for forging certificates.
+
+**Stevens-Karpman-Peyrin attack on SHA-1.** Marc Stevens and collaborators developed practical SHA-1 collision attacks over a decade. The 2017 SHAttered result was the first public demonstration of an actual SHA-1 collision (two PDF files differing in their visible content but with identical SHA-1). The work cost about 6,500 CPU-years and 110 GPU-years — large but well within nation-state and corporate capability. The 2020 Leurent-Peyrin chosen-prefix attack reduced the cost to about $45,000 — solidly in reach of organised criminals.
+
+**Implications.** Any signature, certificate, or commit hash that relies on MD5 or SHA-1 for integrity is no longer trustworthy. The Flame malware case (2012) — where a chosen-prefix MD5 collision was used to forge a Microsoft Update certificate — showed how a successful collision can be weaponised.
+
+### Length-extension attacks
+
+The Merkle-Damgård construction (used by MD5, SHA-1, SHA-2) has a structural weakness: if you know $H(m)$ and the length of $m$, you can compute $H(m \| \text{padding} \| m')$ for any extension $m'$ without knowing $m$ itself.
+
+The reason: $H(m)$ is the internal chaining state after processing $m$ plus its padding. The hash function does not "stop" at $m$ — it just outputs the current state. An attacker can resume from that state, feed in additional blocks, and arrive at a valid hash of the longer message.
+
+**Example.** A naive MAC construction: $\text{MAC}(K, m) = H(K \| m)$. An attacker who sees $\text{MAC}(K, m)$ and knows $m$ can compute $\text{MAC}(K, m \| \text{pad} \| m')$ for any extension $m'$ — without knowing $K$. This was the actual flaw exploited in the 2009 attack on Flickr's API authentication.
+
+**Defences.**
+
+- **Use HMAC instead of $H(K \| m)$.** HMAC's structure $H((K \oplus opad) \| H((K \oplus ipad) \| m))$ is provably resistant to length-extension and provides the right security properties.
+- **Use a hash function not based on Merkle-Damgård.** SHA-3 and BLAKE2 are immune to length-extension.
+- **Use a truncated hash.** SHA-512/256 (SHA-512 truncated to 256 bits) and SHA-384 are not vulnerable to length-extension because the extension would need to know the full 512-bit internal state, which the truncated output does not reveal.
+
+### Time-memory trade-off attacks
+
+The pre-image attack on a hash function can be sped up by precomputation, trading memory for time. The classical instance is **rainbow tables** for password cracking.
+
+**Hellman's time-memory trade-off (1980).** For an $n$-bit hash, precompute and store about $2^{2n/3}$ values, and you can then invert the hash with about $2^{2n/3}$ work per query. This is faster than the naive brute force ($2^n$), but it requires the precomputation effort up front.
+
+**Rainbow tables (Oechslin, 2003).** A refinement of Hellman's idea, using "reduction functions" that map hashes back to candidate inputs. A rainbow table covering all 8-character lowercase passwords might be a few gigabytes, and looking up any hash in it takes seconds.
+
+In the early 2000s, rainbow tables made unsalted password databases trivially crackable. The standard countermeasure is **salt** — a unique random value combined with each password before hashing.
+
+$$
+H(\text{password} \| \text{salt})
+$$
+
+Each user gets a fresh salt. The rainbow table for one user does not work for another. Precomputation becomes impractical because the attacker would need a separate table for every possible salt.
+
+**Modern password hashing.** Beyond salt, modern schemes (Argon2, scrypt, bcrypt) add **work factor** (iteration count, memory requirement) to slow each attempt. Even with an unhashed-but-salted password file, brute-forcing each password is intentionally expensive. Section 3.4 covers this in detail.
+
+### Multi-collision attacks
+
+**Joux's multi-collision attack (2004).** Antoine Joux showed that for any Merkle-Damgård hash, finding $k$ messages all with the same hash takes only $\log_2(k) \cdot 2^{n/2}$ work — not much more than finding a single collision. This means concatenating two hash functions $H_1$ and $H_2$ does not give double security: finding messages that simultaneously collide under both takes about $2^{n/2}$ work, not $2^n$.
+
+**Implication.** Combining two cryptographic hash functions by concatenating their outputs does not provide additional security against collision attacks. The right way to combine hashes for diversity is to use them independently (one for storage, one for verification) rather than to concatenate.
+
+### Side-channel attacks on hash functions
+
+Hash function computations can leak through side channels just like cipher computations. Timing attacks against table-lookup-based hash implementations have been demonstrated. The countermeasures are the same as for ciphers — constant-time implementations, hardware acceleration where available, and care with how the hashing context is shared.
+
+### What hash function attacks mean for deployment
+
+The lesson of two broken hash families (MD5 in 2004, SHA-1 in 2017) is that hash function security ages. SHA-2 is secure today, but it will not be secure forever. The way to deploy hash functions safely is:
+
+- **Use the current standard** (SHA-2 or SHA-3) and follow standards-body deprecation timelines.
+- **Algorithm agility.** Build systems that can swap hash functions without redesign. Certificate formats include the hash algorithm; signatures include the algorithm identifier; protocols negotiate.
+- **Diversity.** Where one critical system uses SHA-256, an entirely separate critical system might use SHA-3 or BLAKE2. A break in one does not bring everything down.
+- **Monitoring.** Keep current with academic cryptanalytic progress. By the time a hash function is "broken" in the literature, the practical break is often years away — providing planning time if you are paying attention.
+
+## 3.4 Applications of cryptographic hash functions
+
+Hash functions appear everywhere a fixed-length fingerprint of variable-length data is needed. This section covers the four major application areas.
+
+### Password hashing
+
+The naive approach to storing passwords is to store them in cleartext. A database leak then exposes every password — and because users reuse passwords across sites, exposes credentials for many other services those users access. Every credible password-storage scheme stores the hash of the password rather than the password itself.
+
+The naive hash approach — `H(password)` — is also broken. Rainbow tables turn it into trivial lookup. Modern password hashing has three components.
+
+**Salt.** A unique, sufficiently long, unpredictable random value per user, stored alongside the hash. The salted hash is `H(password || salt)`. The salt itself is not secret; it is stored in cleartext. Its purpose is to make precomputation infeasible — every user requires a separate precomputation.
+
+**Slow function (work factor).** A function deliberately made slow, so each guess costs significant CPU, memory, or time. The point is not to slow legitimate authentication (one hash per login is fine even at hundreds of milliseconds) but to make brute-force attacks against the stolen database prohibitively expensive.
+
+**Memory-hardness.** A property of the hash function such that the work cannot be parallelised efficiently in custom hardware. This defeats the GPU/ASIC advantage attackers have against simple iterated hashes.
+
+**Modern password-hashing functions.**
+
+- **PBKDF2 (RFC 8018).** The oldest of the modern designs. Iterates HMAC many times (typically 100,000 to 600,000 iterations of HMAC-SHA-256). Not memory-hard — vulnerable to GPU acceleration. Still common in legacy systems and FIPS-validated contexts.
+- **bcrypt.** Designed by Niels Provos and David Mazières in 1999. Based on a modified Blowfish key schedule. Resists GPU attacks somewhat better than PBKDF2 but is not memory-hard.
+- **scrypt.** Designed by Colin Percival in 2009. The first widely deployed memory-hard password hash. Memory cost is a tunable parameter; attackers cannot trade memory for time below a certain bound.
+- **Argon2.** Winner of the Password Hashing Competition (2015). Three variants: Argon2d (data-dependent memory access, fastest, but vulnerable to side-channel attacks), Argon2i (data-independent memory access, side-channel resistant, slightly slower), Argon2id (hybrid, current recommended). The 2025 OWASP Password Storage Cheat Sheet recommends Argon2id as the first choice for new applications.
+
+**Recommended parameters (as of 2026):**
+
+- **Argon2id:** 19 MiB memory, 2 iterations, 1 thread (OWASP baseline). Higher is better.
+- **bcrypt:** cost factor 12 or higher.
+- **PBKDF2-HMAC-SHA-256:** 600,000 iterations or higher.
+
+**Real Nepal-context password hashing.** Major Nepali banks and fintechs (NIC Asia, Nabil, eSewa, Khalti) use bcrypt or Argon2 in their authentication services. Smaller sites and government portals have historically lagged — several of the 2024–25 breach disclosures (the Ministry of Education portal, the reported Nepal Police database leak) raised concerns about whether passwords were properly hashed. Where unsalted MD5 or SHA-1 is still in use, the entire password database becomes searchable in days after the breach.
+
+### Digital signatures
+
+A digital signature scheme uses asymmetric cryptography to produce a value that anyone with the signer's public key can verify, but only the holder of the private key could have produced. As discussed in Chapter 2, the asymmetric operation is slow and limited in input size. Signing operates not on the message itself but on a cryptographic hash of the message.
+
+The standard signing flow:
+
+1. Compute $h = H(M)$.
+2. Apply the private-key signing operation to $h$ to produce $\sigma$.
+3. Publish $(M, \sigma)$.
+
+Verification:
+
+1. Compute $h = H(M)$.
+2. Apply the public-key verification operation to $\sigma$ and check it equals $h$.
+
+The hash function in this construction must be collision-resistant. If two distinct messages $M_1$ and $M_2$ produce the same hash, then a single signature is valid for both — the attacker has a forgery. This is precisely why MD5 and SHA-1 became unacceptable for signatures: practical collisions translate directly into forgery attacks against signed certificates, signed software, signed documents.
+
+The 2008 **MD5 collision attack on RapidSSL certificates** (Sotirov et al.) demonstrated this. The researchers obtained a legitimate RapidSSL certificate, then used MD5 collisions to create a forged certificate authority certificate trusted by all browsers. The proof of concept was withdrawn and RapidSSL fixed their issuance practices, but the lesson stood: a broken hash function used in signatures means trustable forgeries.
+
+**Standard signature schemes and their hashes.**
+
+- **RSA-PKCS1v1.5-SHA-256** — legacy, common in certificates.
+- **RSA-PSS-SHA-256** — modern RSA signature scheme.
+- **ECDSA-SHA-256 on P-256** — common in modern certificates and code signing.
+- **Ed25519** — uses SHA-512 internally; standard in newer systems.
+- **ML-DSA (Dilithium)** — post-quantum, uses SHAKE internally.
+
+For very long messages (or for messages of unknown bound at sign time), a **streaming hash** is used — process the message in chunks, hash incrementally, sign the final hash. Bitcoin and Ethereum blocks, large files in code-signing systems, multi-gigabyte software releases all use this pattern.
+
+### Message integrity and authentication codes
+
+Hashes provide unauthenticated integrity. The recipient can verify that the message matches the hash, but only if the hash itself arrives through a trusted channel. If an attacker can modify both the message and the hash, the recipient cannot detect tampering.
+
+**HMAC (Keyed-Hash Message Authentication Code, RFC 2104).** Combines a hash function with a shared secret key in a specific construction:
+
+$$
+\text{HMAC}(K, m) = H((K \oplus opad) \| H((K \oplus ipad) \| m))
+$$
+
+where $opad$ and $ipad$ are fixed constants and $K$ is the shared key. HMAC inherits the hash function's security properties and is robust against length-extension. HMAC-SHA-256 is the standard MAC in TLS, IPsec, SSH, and most modern protocols.
+
+**KMAC (Keccak MAC).** A native MAC construction using SHA-3 / Keccak. Cleaner design than HMAC because the sponge construction naturally accepts a key. Standardised in NIST SP 800-185.
+
+**Poly1305.** A one-time MAC used in ChaCha20-Poly1305 and AES-GCM-Poly1305. Provides similar guarantees in a streaming-friendly construction.
+
+In a typical exchange, Alice and Bob share a secret key $K$. Alice sends $(M, \text{HMAC}(K, M))$. Bob computes $\text{HMAC}(K, M)$ and verifies it matches the received tag. Mallory cannot forge a valid tag for a modified message without knowing $K$.
+
+### Blockchain and cryptocurrency
+
+Hash functions are the fundamental primitive of every blockchain. They are used in four distinct roles.
+
+**Block linking — the "chain" in blockchain.** Each block in a blockchain contains the hash of the previous block in its header. Changing any earlier block changes its hash, which invalidates the next block's header pointer, which invalidates the next block's pointer, and so on. To rewrite history, an attacker must rewrite every subsequent block, which requires either redoing all the proof-of-work for those blocks (in proof-of-work systems) or producing alternative valid signatures (in proof-of-stake systems).
+
+Bitcoin uses SHA-256 (doubled — SHA-256(SHA-256(...))). Ethereum uses Keccak-256.
+
+**Merkle trees for transaction inclusion.** A block contains many transactions. The block header includes the root of a Merkle tree built over the transactions. A light client wanting to verify that a specific transaction is included in a block can be given a short "Merkle proof" — the sibling hashes along the path from the transaction's leaf to the root — and verify inclusion by recomputing the root. This makes light clients possible (an SPV — Simplified Payment Verification — wallet in Bitcoin).
+
+The Merkle tree was invented by Ralph Merkle in 1979 as part of his work on digital signatures; its use in blockchain has been one of cryptography's most successful re-uses of an older construction.
+
+**Proof of work — the consensus mechanism.** Bitcoin's proof of work requires miners to find a nonce such that the SHA-256 hash of the block header is below a target value (begins with a sufficient number of zero bits). The target adjusts so that, on average, a block is found every 10 minutes. The hash function's avalanche property ensures that no shortcut exists — miners must brute-force nonces, consuming computation (and electricity) proportional to the network's total hash rate.
+
+Bitcoin's network hash rate as of mid-2026 is in the hundreds of exahashes per second ($10^{20}$ hashes per second). The network performs more SHA-256 computations per second than the entire rest of human computing combined.
+
+**Address derivation.** Cryptocurrency addresses are typically hashes of public keys, possibly truncated and re-encoded. Bitcoin addresses (legacy P2PKH) use RIPEMD-160(SHA-256(public_key)). Ethereum addresses use the last 20 bytes of Keccak-256(public_key). The hash function compresses the longer public key into a shorter, more user-friendly address while preserving the binding to the key holder.
+
+**Hash time-locked contracts (HTLCs).** Used in Bitcoin Lightning Network and cross-chain swaps. Alice locks funds with the hash of a secret; Bob can claim the funds by revealing the pre-image of the hash within a time window. This depends on the hash being one-way — Bob cannot claim funds without learning the secret from Alice — and on the time component being enforced by the blockchain's consensus.
+
+### Other applications
+
+A few more places where hash functions are critical:
+
+**Commit-reveal schemes.** Alice publishes $H(s)$ now and reveals $s$ later. Anyone can verify she committed to $s$ without learning $s$ during the commit phase. Used in fair lotteries, online auctions, voting schemes, and randomness protocols.
+
+**File integrity.** Linux distributions publish hashes of their ISO images. Users compute the hash of their downloaded file and compare. The hash protects against transmission errors and against tampering by anyone short of the distribution's signing-key holder. (For protection against tampering by the distribution, signatures are needed.)
+
+**Content-addressable storage.** Git, IPFS, and many content-distribution systems use the hash of a file as its identifier. Two copies of the same file have the same identifier regardless of where they came from. Git's transition from SHA-1 to SHA-256 is the largest such system's response to SHA-1's collision break.
+
+**Bloom filters and probabilistic data structures.** Use hash functions (often non-cryptographic) to test set membership quickly with controlled false-positive rates. Used in network routers, databases, distributed-cache systems.
+
+**Pseudorandom function constructions.** Many cryptographic protocols use HMAC as a pseudorandom function — a function indistinguishable from a random one to anyone without the key. TLS's HKDF (HMAC-based Key Derivation Function, RFC 5869) is a standard example, used to derive multiple session keys from a shared secret.
+
+**Deduplication.** Cloud storage systems often use file hashes to avoid storing the same content twice. This has privacy implications — if a service can match a user's file hash against a known database, it can detect what content the user has stored without seeing the content itself.
+
+The unifying theme: hash functions transform variable-length, potentially-untrustworthy data into fixed-length values that can be compared, signed, used to derive keys, or used as identifiers, while preserving the integrity binding to the original content. Almost every cryptographic protocol uses at least one hash. The choice of hash function — its size, its resistance to known attacks, its match to the protocol's threat model — is one of the more consequential decisions a system designer makes.

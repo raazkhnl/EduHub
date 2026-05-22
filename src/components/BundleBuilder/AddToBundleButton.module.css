@@ -1,0 +1,24 @@
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4em;
+  font-family: var(--ah-font-sans);
+  font-size: 12.5px;
+  font-weight: 500;
+  padding: 0.32em 0.72em;
+  color: var(--ah-ink-soft);
+  background: var(--ah-paper-elev);
+  border: 1px solid var(--ah-rule);
+  border-radius: 999px;
+  cursor: pointer;
+  transition: color var(--ah-dur-fast), border-color var(--ah-dur-fast),
+              background-color var(--ah-dur-fast), transform var(--ah-dur-fast);
+}
+.btn:hover { color: var(--ah-accent); border-color: var(--ah-accent); transform: translateY(-1px); }
+.btnActive {
+  background: var(--ah-accent);
+  color: #fff;
+  border-color: var(--ah-accent);
+}
+.btnActive:hover { background: var(--ah-accent-hover); color: #fff; }
+.label { letter-spacing: 0.01em; }

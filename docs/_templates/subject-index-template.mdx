@@ -1,0 +1,51 @@
+---
+# Copy when introducing a new subject.
+title: "<Subject Title> (<CODE>)"
+sidebar_label: Overview
+sidebar_position: 0
+slug: /<institution>/<program>/<level>/<subject>
+description: "One-sentence summary of what the subject covers."
+---
+
+import ProgressTracker from '@site/src/components/ProgressTracker';
+import ResourceCard from '@site/src/components/ResourceCard';
+
+# <Subject Title>
+
+> **Code:** `<CODE>`  ·  **Credits:** N  ·  **Program:** `<Program>`  ·  **Year/Part:** `I / I`
+
+One short paragraph: what the subject is, where it sits in the program, what a
+student should expect to walk out knowing.
+
+## Chapter notes
+
+import DocCardList from '@theme/DocCardList';
+
+<DocCardList />
+
+## Syllabus checklist
+
+<ProgressTracker
+  storageKey="<program>/<level>/<code>/syllabus"
+  title="<CODE> — chapter checklist"
+  items={[
+    { id: 'ch1', label: 'Ch 1 — …', hours: 6 },
+    { id: 'ch2', label: 'Ch 2 — …', hours: 10 },
+  ]}
+/>
+
+## Companion resources
+
+<ResourceCard
+  title="Official syllabus — <CODE>"
+  description="The institute's published syllabus document."
+  file="/files/<institution>/<program>/<level>/<code>-syllabus.pdf"
+  type="pdf"
+  tags={['SYLLABUS']}
+  inlineView
+/>
+
+## References
+
+1. *Author, Title*, Publisher, Year.
+2. *Author, Title*, Publisher, Year.

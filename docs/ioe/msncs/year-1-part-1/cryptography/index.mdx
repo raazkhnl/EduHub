@@ -1,0 +1,59 @@
+---
+title: "Cryptography & Data Security (ENCTNS502)"
+sidebar_label: Overview
+sidebar_position: 0
+slug: /ioe/msncs/year-1-part-1/cryptography
+description: "MSNCS Sem I core — symmetric/asymmetric crypto, hash functions, PKI, data security, privacy, post-quantum."
+---
+
+import ProgressTracker from '@site/src/components/ProgressTracker';
+import ResourceCard from '@site/src/components/ResourceCard';
+
+# Cryptography & Data Security
+
+> **Code:** ENCTNS502  ·  **Credits:** 4  ·  **Program:** M.Sc. Network & Cybersecurity  ·  **Year/Part:** I / I
+
+The cryptography side of the MSNCS first semester. The notes walk from classical
+ciphers and Kerckhoff's principle to modern symmetric / asymmetric primitives
+(DES → AES, RSA, ECC), hash functions, PKI, data security at rest and in
+transit, and ends with privacy law, behaviour analytics, and where the field is
+heading (post-quantum, homomorphic encryption, federated learning security).
+
+## Chapter notes
+
+import DocCardList from '@theme/DocCardList';
+
+<DocCardList />
+
+## Syllabus checklist
+
+<ProgressTracker
+  storageKey="msncs/i-i/enctns502/syllabus"
+  title="ENCTNS502 — chapter checklist"
+  items={[
+    { id: 'ch1', label: 'Ch 1 — Introduction to Cryptography', hours: 6 },
+    { id: 'ch2', label: 'Ch 2 — Symmetric & Asymmetric Key Cryptography', hours: 12 },
+    { id: 'ch3', label: 'Ch 3 — Cryptographic Hash Functions', hours: 8 },
+    { id: 'ch4', label: 'Ch 4 — Key Management & PKI', hours: 8 },
+    { id: 'ch5', label: 'Ch 5 — Data Security', hours: 10 },
+    { id: 'ch6', label: 'Ch 6 — Cyber Security & Data Privacy', hours: 12 },
+    { id: 'ch7', label: 'Ch 7 — Emerging Trends in Cryptography & Security', hours: 6 },
+  ]}
+/>
+
+## Companion resources
+
+<ResourceCard
+  title="Official syllabus — ENCTNS502"
+  description="The institute's published syllabus document."
+  file="/files/ioe/msncs/i-i/enctns502-syllabus.pdf"
+  type="pdf"
+  tags={['SYLLABUS', '2024']}
+  inlineView
+/>
+
+## References
+
+1. *Cryptography and Network Security: Principles and Practice* — William Stallings.
+2. *Introduction to Modern Cryptography* — Jonathan Katz, Yehuda Lindell.
+3. *Computer Security: Art and Science* — Matt Bishop.

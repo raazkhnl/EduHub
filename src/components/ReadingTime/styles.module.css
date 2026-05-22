@@ -1,0 +1,8 @@
+.tag, .skeleton {
+  display: inline-flex; align-items: baseline; gap: 0.3rem;
+  font-family: var(--ah-font-mono);
+  font-size: 12px;
+  color: var(--ah-ink-mute);
+  margin-left: 0.3rem;
+}
+.skeleton { opacity: 0.5; }

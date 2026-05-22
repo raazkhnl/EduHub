@@ -1,0 +1,34 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  lint-build:
+    name: Lint + Build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # Full history so the "last updated" git stamp resolves in CI.
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+
+      - run: npm ci --no-audit --no-fund
+
+      # Lint first — fail fast on real bugs (parsing errors, no-empty, etc.).
+      # Warnings (no-unused-vars in non-JSX) don't fail the build.
+      - name: ESLint
+        run: npm run lint
+
+      # Catches broken Docusaurus config, broken links, MDX parse errors, etc.
+      - name: Build
+        run: npm run build

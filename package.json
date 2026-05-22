@@ -1,0 +1,66 @@
+{
+  "name": "eduhub",
+  "version": "0.1.0",
+  "private": true,
+  "description": "EduHub — Smart study, simplified. A scholarly-minimalist portal for Nepali engineering curricula (CTEVT, IOE BE, IOE M.Sc, TU).",
+  "homepage": "https://eduhub.khanalrajesh.com.np",
+  "author": {
+    "name": "Rajesh Khanal",
+    "email": "raju@astha.ai",
+    "url": "https://khanalrajesh.com.np"
+  },
+  "license": "CC-BY-4.0",
+  "scripts": {
+    "docusaurus": "docusaurus",
+    "start": "docusaurus start",
+    "prebuild": "node scripts/generate-pwa-icons.mjs",
+    "build": "docusaurus build",
+    "icons": "node scripts/generate-pwa-icons.mjs",
+    "swizzle": "docusaurus swizzle",
+    "deploy": "docusaurus deploy",
+    "clear": "docusaurus clear",
+    "serve": "docusaurus serve",
+    "write-translations": "docusaurus write-translations",
+    "write-heading-ids": "docusaurus write-heading-ids",
+    "lint": "eslint \"src/**/*.{js,jsx}\" \"plugins/**/*.js\" \"scripts/**/*.{js,mjs}\" docusaurus.config.js sidebars.js",
+    "lint:fix": "npm run lint -- --fix",
+    "format": "prettier --write \"**/*.{js,jsx,ts,tsx,md,mdx,css,json}\"",
+    "format:check": "prettier --check \"**/*.{js,jsx,ts,tsx,md,mdx,css,json}\""
+  },
+  "dependencies": {
+    "@docusaurus/core": "^3.10.1",
+    "@docusaurus/preset-classic": "^3.10.1",
+    "@docusaurus/plugin-pwa": "^3.10.1",
+    "@docusaurus/plugin-ideal-image": "^3.10.1",
+    "@docusaurus/theme-mermaid": "^3.10.1",
+    "@easyops-cn/docusaurus-search-local": "^0.46.1",
+    "@mdx-js/react": "^3.0.0",
+    "clsx": "^2.1.1",
+    "jszip": "^3.10.1",
+    "prism-react-renderer": "^2.4.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "rehype-katex": "^7.0.1",
+    "remark-math": "^6.0.0",
+    "katex": "^0.16.11"
+  },
+  "devDependencies": {
+    "@docusaurus/module-type-aliases": "^3.10.1",
+    "@docusaurus/types": "^3.10.1",
+    "@docusaurus/tsconfig": "^3.10.1",
+    "eslint": "^9.14.0",
+    "prettier": "^3.3.3",
+    "typescript": "~5.6.3"
+  },
+  "browserslist": {
+    "production": [">0.5%", "not dead", "not op_mini all"],
+    "development": ["last 3 chrome version", "last 3 firefox version", "last 3 safari version"]
+  },
+  "engines": {
+    "node": ">=18.19"
+  },
+  "//overrides": "Forces patched serialize-javascript (CVE GHSA-5c6j-r48x-rmvq, GHSA-qj8w-gfj5-8c6v) into Docusaurus's webpack chain. These are build-time-only CVEs that do not affect deployed site visitors, but pinning makes `npm audit` quiet.",
+  "overrides": {
+    "serialize-javascript": "^6.0.2"
+  }
+}

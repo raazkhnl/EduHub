@@ -1,0 +1,65 @@
+---
+title: Contribute to EduHub
+description: How to add notes, fix errors, request a missing resource, or join as a maintainer.
+---
+
+# Contribute
+
+There are three useful things you can do here — pick the one that matches the time you have.
+
+## 1. Fix a typo or a wrong fact (5 minutes)
+
+Every page has an **Edit this page** link at the bottom-left of the article. Click it.
+GitHub opens the source `.md` / `.mdx` file in its web editor. Make the edit, write a
+one-line commit message, click **Propose changes**. A maintainer reviews and merges.
+Your name appears in the page's "last updated by" stamp on the next build.
+
+You do *not* need to clone the repository for small edits.
+
+## 2. Add a new subject or chapter (a few hours)
+
+Read [`CONTRIBUTING.md`](https://github.com/raazkhnl/eduhub/blob/main/CONTRIBUTING.md)
+in the repository — it has the full taxonomy reference, file naming rules, and
+MDX component cheatsheet.
+
+The 90-second version:
+
+```
+docs/{institution}/{program}/{level}/{subject}/{material-type}/{file}.mdx
+```
+
+For example, `docs/ioe/msncs/year-1-part-1/cryptography/notes/ch3-hash-functions.mdx`.
+
+- One H1 per file (`# Title`). All subsections are H2 / H3.
+- Math uses `$inline$` and `$$display$$` — KaTeX renders them.
+- File downloads use the `<ResourceCard>` MDX component (see the cheatsheet).
+
+Open a PR — CI runs a build to catch broken links before review.
+
+## 3. Request a missing resource (60 seconds) {#request}
+
+import RequestPortal from '@site/src/components/RequestPortal';
+
+<RequestPortal
+  formUrl={undefined /* set to your Tally / Google Form embed URL */}
+  fallbackEmail="raju@astha.ai"
+/>
+
+---
+
+## Style notes for note-writers
+
+A few opinions that keep the site coherent:
+
+1. **Prose over bullets.** Notes that explain *why* a thing is the way it is age
+   better than notes that list *what* it is. Bullets are for genuine enumerations
+   (steps in a procedure, options in a menu), not for skipping the verbs.
+2. **Equations explained, not displayed.** Every non-trivial equation should be
+   preceded by one sentence saying what it's for and followed by one sentence
+   saying what to take away. Math without context is decoration.
+3. **Cite the source.** If a paragraph comes from a textbook or paper, end the
+   paragraph with a footnote linking to it. Future readers (and future you) will
+   want to verify.
+4. **Nepali context where it adds value.** When a global topic has a meaningful
+   local angle — adoption stats, regulator stance, ISP-level reality — add a short
+   paragraph for it. Don't force it where it doesn't fit.
