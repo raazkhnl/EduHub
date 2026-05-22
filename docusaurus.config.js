@@ -6,30 +6,58 @@ const { themes } = require('prism-react-renderer');
 
 // remark-math and rehype-katex are ESM-only — when loaded via require() they
 // return a Module wrapper, not the function itself. Pull the default out.
-const remarkMath  = require('remark-math').default  || require('remark-math');
+const remarkMath = require('remark-math').default || require('remark-math');
 const rehypeKatex = require('rehype-katex').default || require('rehype-katex');
 
-const SITE_URL = 'https://eduhub.khanalrajesh.com.np';
-const GITHUB_ORG = 'raazkhnl';                // edit if forked
-const GITHUB_REPO = 'eduhub';
+const GITHUB_ORG = 'raazkhnl'; // edit if forked
+const GITHUB_REPO = 'EduHub'; // GitHub repo name (case-sensitive!)
 const EDIT_BRANCH = 'main';
 
+// ────────────────────────────────────────────────────────────────────────────
+// URL + baseUrl resolution
+// ────────────────────────────────────────────────────────────────────────────
+// We support two deployment targets from the same build pipeline:
+//
+//   1. Custom domain (default)        → eduhub.khanalrajesh.com.np
+//      url      = https://eduhub.khanalrajesh.com.np
+//      baseUrl  = /
+//
+//   2. GitHub Pages preview URL       → raazkhnl.github.io/EduHub/
+//      url      = https://raazkhnl.github.io
+//      baseUrl  = /EduHub/
+//
+// The Pages preview URL is what you see *before* the custom-domain CNAME +
+// DNS propagation finishes. Without these two values matching the served
+// origin, Docusaurus shows the classic "site did not load properly" error
+// because every asset path is off by one prefix.
+//
+// To build for the preview URL, set DEPLOY_TARGET=ghpages (or set BASE_URL
+// and SITE_URL explicitly). For local builds and the custom-domain deploy,
+// no env vars are needed.
+const DEPLOY_TARGET = process.env.DEPLOY_TARGET; // 'ghpages' | undefined
+const USING_GH_PREVIEW = DEPLOY_TARGET === 'ghpages';
+
+const SITE_URL =
+  process.env.SITE_URL ||
+  (USING_GH_PREVIEW ? `https://${GITHUB_ORG}.github.io` : 'https://eduhub.khanalrajesh.com.np');
+const BASE_URL = process.env.BASE_URL || (USING_GH_PREVIEW ? `/${GITHUB_REPO}/` : '/');
+
 // Algolia is optional. If env keys are not set we fall back to local search.
-const ALGOLIA_APP_ID    = process.env.ALGOLIA_APP_ID;
-const ALGOLIA_API_KEY   = process.env.ALGOLIA_API_KEY;
-const ALGOLIA_INDEX     = process.env.ALGOLIA_INDEX || 'eduhub';
+const ALGOLIA_APP_ID = process.env.ALGOLIA_APP_ID;
+const ALGOLIA_API_KEY = process.env.ALGOLIA_API_KEY;
+const ALGOLIA_INDEX = process.env.ALGOLIA_INDEX || 'eduhub';
 const HAS_ALGOLIA = Boolean(ALGOLIA_APP_ID && ALGOLIA_API_KEY);
 
 // Reader-facing feature flags. The same object is exposed via
 // `customFields.features` to runtime components, and read at build time by
 // the navbar/footer below so disabling a feature also removes its nav item.
 const FEATURES = {
-  bundleBuilder:   true,   // multi-chapter combine + download
-  focusMode:       true,   // Shift+F distraction-free reading
-  progressTracker: true,   // syllabus checklists
-  scrollProgress:  true,   // top-of-page scroll bar on doc pages
-  keyboardHelp:    true,   // `?` opens shortcut modal
-  readingTime:     true,   // auto-rendered estimate
+  bundleBuilder: true, // multi-chapter combine + download
+  focusMode: true, // Shift+F distraction-free reading
+  progressTracker: true, // syllabus checklists
+  scrollProgress: true, // top-of-page scroll bar on doc pages
+  keyboardHelp: true, // `?` opens shortcut modal
+  readingTime: true, // auto-rendered estimate
 };
 
 /** @type {import('@docusaurus/types').Config} */
@@ -39,7 +67,7 @@ const config = {
   favicon: 'img/favicon.svg',
 
   url: SITE_URL,
-  baseUrl: '/',
+  baseUrl: BASE_URL,
   trailingSlash: false,
 
   organizationName: GITHUB_ORG,
@@ -69,14 +97,14 @@ const config = {
       ({
         docs: {
           path: 'docs',
-          routeBasePath: '/',                 // docs at site root
+          routeBasePath: '/', // docs at site root
           sidebarPath: require.resolve('./sidebars.js'),
           // Git-based "last updated" is shown in CI (where we fetch full
           // history). Disabled locally so a fresh clone with no commits still
           // builds cleanly; frontmatter `last_update:` on each chapter is the
           // canonical source either way.
           showLastUpdateAuthor: !!process.env.CI,
-          showLastUpdateTime:   !!process.env.CI,
+          showLastUpdateTime: !!process.env.CI,
           editUrl: `https://github.com/${GITHUB_ORG}/${GITHUB_REPO}/edit/${EDIT_BRANCH}/`,
           breadcrumbs: true,
           remarkPlugins: [remarkMath],
@@ -84,7 +112,7 @@ const config = {
           sidebarCollapsible: true,
           sidebarCollapsed: true,
         },
-        blog: false,                          // disabled by default; add later if needed
+        blog: false, // disabled by default; add later if needed
         theme: { customCss: require.resolve('./src/css/custom.css') },
         sitemap: {
           changefreq: 'weekly',
@@ -121,8 +149,18 @@ const config = {
   // with HTML parsing.
   headTags: [
     { tagName: 'link', attributes: { rel: 'preconnect', href: 'https://fonts.googleapis.com' } },
-    { tagName: 'link', attributes: { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: 'anonymous' } },
-    { tagName: 'link', attributes: { rel: 'preconnect', href: 'https://cdn.jsdelivr.net', crossorigin: 'anonymous' } },
+    {
+      tagName: 'link',
+      attributes: {
+        rel: 'preconnect',
+        href: 'https://fonts.gstatic.com',
+        crossorigin: 'anonymous',
+      },
+    },
+    {
+      tagName: 'link',
+      attributes: { rel: 'preconnect', href: 'https://cdn.jsdelivr.net', crossorigin: 'anonymous' },
+    },
   ],
 
   themes: ['@docusaurus/theme-mermaid'],
@@ -132,11 +170,28 @@ const config = {
   customFields: {
     features: FEATURES,
     requestFormUrl: '', // Set to your Tally / Google Form embed URL; empty = mailto fallback
-    githubOrg:  GITHUB_ORG,
+    githubOrg: GITHUB_ORG,
     githubRepo: GITHUB_REPO,
   },
 
   plugins: [
+    // ── CNAME gate ───────────────────────────────────────────────────────────
+    // `static/CNAME` pins the custom domain on every deploy. When building for
+    // the GitHub Pages preview URL we *must* not ship it (its presence forces
+    // a 301 to the custom domain, which is what we're trying to bypass).
+    USING_GH_PREVIEW &&
+      function stripCnamePlugin() {
+        return {
+          name: 'eduhub-strip-cname',
+          async postBuild({ outDir }) {
+            const fs = require('fs');
+            const path = require('path');
+            const cname = path.join(outDir, 'CNAME');
+            if (fs.existsSync(cname)) fs.unlinkSync(cname);
+          },
+        };
+      },
+
     // ── Bundle manifest ──────────────────────────────────────────────────────
     require.resolve('./plugins/bundle-manifest'),
 
@@ -167,16 +222,31 @@ const config = {
         debug: false,
         offlineModeActivationStrategies: ['appInstalled', 'standalone', 'queryString'],
         pwaHead: [
-          { tagName: 'link', rel: 'icon',          href: '/img/favicon.svg', type: 'image/svg+xml' },
-          { tagName: 'link', rel: 'icon',          href: '/img/icons/icon-192.png', sizes: '192x192', type: 'image/png' },
-          { tagName: 'link', rel: 'manifest',      href: '/manifest.json' },
-          { tagName: 'link', rel: 'apple-touch-icon', href: '/img/icons/apple-touch-icon.png', sizes: '180x180' },
-          { tagName: 'link', rel: 'mask-icon',     href: '/img/favicon.svg', color: '#0F766E' },
-          { tagName: 'meta', name: 'theme-color',                            content: '#0F766E' },
-          { tagName: 'meta', name: 'apple-mobile-web-app-capable',           content: 'yes' },
-          { tagName: 'meta', name: 'apple-mobile-web-app-status-bar-style',  content: 'black-translucent' },
-          { tagName: 'meta', name: 'apple-mobile-web-app-title',             content: 'EduHub' },
-          { tagName: 'meta', name: 'msapplication-TileColor',                content: '#0F766E' },
+          { tagName: 'link', rel: 'icon', href: '/img/favicon.svg', type: 'image/svg+xml' },
+          {
+            tagName: 'link',
+            rel: 'icon',
+            href: '/img/icons/icon-192.png',
+            sizes: '192x192',
+            type: 'image/png',
+          },
+          { tagName: 'link', rel: 'manifest', href: '/manifest.json' },
+          {
+            tagName: 'link',
+            rel: 'apple-touch-icon',
+            href: '/img/icons/apple-touch-icon.png',
+            sizes: '180x180',
+          },
+          { tagName: 'link', rel: 'mask-icon', href: '/img/favicon.svg', color: '#0F766E' },
+          { tagName: 'meta', name: 'theme-color', content: '#0F766E' },
+          { tagName: 'meta', name: 'apple-mobile-web-app-capable', content: 'yes' },
+          {
+            tagName: 'meta',
+            name: 'apple-mobile-web-app-status-bar-style',
+            content: 'black-translucent',
+          },
+          { tagName: 'meta', name: 'apple-mobile-web-app-title', content: 'EduHub' },
+          { tagName: 'meta', name: 'msapplication-TileColor', content: '#0F766E' },
         ],
       },
     ],
@@ -187,7 +257,11 @@ const config = {
     ({
       image: 'img/social-card.png',
       metadata: [
-        { name: 'keywords', content: 'IOE, CTEVT, MSNCS, BCT, Tribhuvan University, Nepal engineering notes, Pulchowk, syllabus, past papers' },
+        {
+          name: 'keywords',
+          content:
+            'IOE, CTEVT, MSNCS, BCT, Tribhuvan University, Nepal engineering notes, Pulchowk, syllabus, past papers',
+        },
         { name: 'author', content: 'Rajesh Khanal' },
         { name: 'theme-color', content: '#0F766E' },
         { property: 'og:type', content: 'website' },
@@ -241,7 +315,7 @@ const config = {
             title: 'Curricula',
             items: [
               { label: 'IOE — Bachelor (BCT, BCE, BEX, BEL, BME)', to: '/ioe' },
-              { label: 'IOE — Master\'s (MSNCS, MSCSKE, MSCE)', to: '/ioe/msncs' },
+              { label: "IOE — Master's (MSNCS, MSCSKE, MSCE)", to: '/ioe/msncs' },
               { label: 'CTEVT — Diploma', to: '/ctevt' },
               { label: 'TU — Faculty of Science', to: '/tu' },
             ],
@@ -263,12 +337,27 @@ const config = {
             ],
           },
         ],
-        copyright: `© ${new Date().getFullYear()} Rajesh Khanal (<a href="https://github.com/raazkhnl" target="_blank" rel="noopener noreferrer">@raazkhnl</a>) · Content licensed CC BY 4.0 · Built with Docusaurus.`,
+        copyright: `
+          <div class="eh-copyline">© ${new Date().getFullYear()} Rajesh Khanal · Content licensed CC BY 4.0 · Built with Docusaurus.</div>
+          <div class="eh-credit">Made with <span class="eh-heart" aria-label="love" role="img">ꨄ︎</span> by <a class="eh-credit-link" href="https://khanalrajesh.com.np" target="_blank" rel="noopener noreferrer">@raazkhnl</a></div>
+        `,
       },
       prism: {
         theme: themes.github,
         darkTheme: themes.dracula,
-        additionalLanguages: ['bash', 'json', 'yaml', 'python', 'rust', 'go', 'java', 'cpp', 'sql', 'docker', 'nginx'],
+        additionalLanguages: [
+          'bash',
+          'json',
+          'yaml',
+          'python',
+          'rust',
+          'go',
+          'java',
+          'cpp',
+          'sql',
+          'docker',
+          'nginx',
+        ],
       },
       mermaid: {
         theme: { light: 'neutral', dark: 'dark' },
