@@ -7,7 +7,7 @@ slug: /ioe/msncs/year-1-part-1/next-gen-networks/notes/ch01
 tags: [msncs, ENCTNS501, notes]
 last_update:
   date: 2026-05-22
-  author: Rajesh Khanal
+  author: RaaZ Khanal
 ---
 
 Networking, as a discipline, is now in its second major reinvention. The first reinvention moved the world from circuit-switched telephone exchanges to packet-switched data networks between roughly 1970 and 2000. The second is moving the world from fixed-function, vendor-locked, hardware-defined networks to programmable, virtualised, software-defined networks that carry an order of magnitude more devices than there are humans. This chapter establishes the ground that the rest of the subject builds on — what changed, what is driving the change, the reference architectures still used to reason about networks, and the bodies that decide what gets standardised.

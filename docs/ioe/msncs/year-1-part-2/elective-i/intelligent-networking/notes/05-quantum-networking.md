@@ -7,7 +7,7 @@ slug: /ioe/msncs/year-1-part-2/elective-i/intelligent-networking/notes/ch05
 tags: [msncs, ENCTNS565, notes]
 last_update:
   date: 2026-05-22
-  author: Rajesh Khanal
+  author: RaaZ Khanal
 ---
 
 The networking technologies covered so far are extensions or refinements of classical packet networking. Quantum networking is something different — a new physical foundation for communication that exploits properties of quantum mechanics impossible in classical systems. The capabilities are correspondingly different: information-theoretically secure key distribution that is provably immune to eavesdropping (rather than just cryptographically hard); communication channels whose properties cannot exist in classical networks; the prospect of distributed quantum computing connecting quantum computers through quantum channels. This chapter covers the evolution from classical to quantum networking, the contrast between them, applications, the quantum primitives (qubits, superposition, entanglement) underlying everything, the QKD and teleportation protocols, layered quantum-network architecture, repeaters and entanglement distribution, security vulnerabilities, and the emerging quantum-AI intersection for traffic analysis.

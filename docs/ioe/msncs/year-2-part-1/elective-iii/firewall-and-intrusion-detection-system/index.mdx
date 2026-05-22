@@ -1,25 +1,50 @@
 ---
 title: 'Firewall and Intrusion Detection System'
-sidebar_label: 'Firewall and Intrusion Detection System'
+sidebar_class_name: sidebar-overview-hidden
 sidebar_position: 0
 slug: /ioe/msncs/year-2-part-1/elective-iii/firewall-and-intrusion-detection-system
-description: 'MSNCS elective option — Firewall and Intrusion Detection System.'
+description: 'Firewall and Intrusion Detection System — overview, syllabus topics, and onward references.'
+last_update:
+  date: 2026-05-22
+  author: RaaZ Khanal
 ---
 
 # Firewall and Intrusion Detection System
 
-> **Type:** Elective option · **Credits:** 4 · **Program:** M.Sc. Network & Cybersecurity
+> **Code:** TBD · **Credits:** 4 · **Hours:** 60 · **Type:** ELECTIVE
 
-This is one of the elective options offered under the parent elective slot.
-Students select one of the listed options per slot.
+Firewalls and IDS/IPS systems are still the two most common controls in any defensible network, and they have changed substantially in the last decade — application identification, TLS inspection, behaviour-based detection. This elective covers their architecture, tuning, evasion, and integration into a modern SOC.
 
-## Suggested topics
+## Key topics
 
-- Stateful firewalls, NGFW, application identification, decryption.
-- IDS/IPS taxonomy, signature vs anomaly engines, evasion.
-- SIEM integration, alert triage.
+- Stateful and next-generation firewalls (NGFW); application-layer identification.
+- TLS / SSL decryption, the certificate-pinning problem, and selective bypass.
+- IDS taxonomy: signature, anomaly, specification-based, behavioural ML.
+- Snort / Suricata rules and the threat-intelligence pipeline.
+- Evasion techniques: fragmentation, encoding, polymorphism, encrypted C2.
+- WAF, RASP, and protocol-aware proxies.
+- SOAR integration: alert triage, enrichment, response playbooks.
 
-## Chapter notes
+## Learning outcomes
 
-Notes for this elective option are not yet written. To start, follow the
-[contributing guide](/contribute).
+By the end of this subject, a student should be able to:
+
+- Design a defence-in-depth firewall + IDS deployment for a small Nepali bank.
+- Author and tune Snort / Suricata signatures from a packet capture.
+- Evaluate an IDS evasion case and propose detection enhancements.
+- Integrate alerts into a SIEM with correctly scoped enrichment.
+
+## Further reading
+
+- Stallings, _Network Security Essentials_, chapters on firewalls + IDS.
+- _The Practice of Network Security Monitoring_ — Richard Bejtlich.
+- Suricata / Snort / Zeek documentation.
+- MITRE ATT&CK detection-engineering resources.
+
+---
+
+:::info Chapter notes
+Detailed chapter-by-chapter notes for this subject are still being written.
+The topic outline above mirrors the published syllabus. If you'd like to help
+draft a chapter, see the [contributing guide](/contribute).
+:::

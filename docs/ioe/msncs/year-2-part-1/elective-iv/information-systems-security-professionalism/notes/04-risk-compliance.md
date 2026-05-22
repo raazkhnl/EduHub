@@ -7,7 +7,7 @@ slug: /ioe/msncs/year-2-part-1/elective-iv/information-systems-security-professi
 tags: [msncs, INFOSEC-PRO, notes]
 last_update:
   date: 2026-05-22
-  author: Rajesh Khanal
+  author: RaaZ Khanal
 ---
 
 Risk management is the disciplined practice at the heart of mature information security work. Where standards (Chapter 3) prescribe what to do, risk management explains why — providing the rational basis for prioritising one investment over another, accepting some risks while mitigating others, and demonstrating to stakeholders that the security programme is responsive to actual exposures rather than mere checklist execution. Compliance practices operationalise both standards and risk management through audit cycles, documentation, and reporting. This chapter examines the major risk frameworks (NIST RMF, ISO 27005, FAIR), the practical work of risk assessment and mitigation planning, the discipline of compliance audit planning, and the documentation and professional reporting that records and communicates the work.

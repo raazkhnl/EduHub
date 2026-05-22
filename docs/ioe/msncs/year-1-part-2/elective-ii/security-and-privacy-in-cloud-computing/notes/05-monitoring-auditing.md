@@ -7,7 +7,7 @@ slug: /ioe/msncs/year-1-part-2/elective-ii/security-and-privacy-in-cloud-computi
 tags: [msncs, ENCTNS571, notes]
 last_update:
   date: 2026-05-22
-  author: Rajesh Khanal
+  author: RaaZ Khanal
 ---
 
 A cloud environment that cannot be observed cannot be secured. A security incident that cannot be detected cannot be responded to. A control that cannot be verified provides no assurance. This chapter takes up the operational disciplines that make cloud security and privacy real in practice rather than only on paper — proactive monitoring of what is happening; incident response when something goes wrong; specific monitoring for unauthorised access, malicious traffic, privilege abuse, and intrusion; detection-event-and-alert auditing; tamper-proof audit logs; quality-of-service management; secure management of the environment; user and identity management; and the SIEM platforms that orchestrate everything.

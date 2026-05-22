@@ -7,7 +7,7 @@ slug: /ioe/msncs/year-2-part-1/elective-iv/information-systems-security-professi
 tags: [msncs, INFOSEC-PRO, notes]
 last_update:
   date: 2026-05-22
-  author: Rajesh Khanal
+  author: RaaZ Khanal
 ---
 
 Standards provide the structure through which the security profession applies its body of knowledge consistently. Governance frameworks organise how organisations direct, oversee, and demonstrate their information security activities. ISO 27001 is the dominant international standard for information security management systems; the NIST Cybersecurity Framework provides a complementary risk-based approach widely adopted globally. COBIT addresses broader IT governance with security as a substantial component, while CIS benchmarks provide technical-level configuration standards. Security governance models articulate the organisational structures and accountabilities that make security real. Compliance roles operationalise the standards; control objectives and performance evaluation close the loop. This chapter covers each, building on material from earlier subjects (particularly ENCTNS552 Information Systems Audit and ENCTNS571 Cloud Security) but with the professionalism focus on how the security professional engages with and uses these standards.

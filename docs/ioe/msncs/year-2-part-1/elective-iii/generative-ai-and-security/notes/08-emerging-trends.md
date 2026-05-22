@@ -7,7 +7,7 @@ slug: /ioe/msncs/year-2-part-1/elective-iii/generative-ai-and-security/notes/ch0
 tags: [msncs, ENCTNS615, notes]
 last_update:
   date: 2026-05-22
-  author: Rajesh Khanal
+  author: RaaZ Khanal
 ---
 
 The preceding chapters covered current capabilities — what generative AI can do today, the attack and defence patterns visible now, the operational disciplines emerging in mature organisations. This final chapter looks ahead. Autonomous AI-driven cyberattacks that operate with minimal human direction are no longer hypothetical; the question is timeline and capability ceiling. The ethical concerns of a powerful dual-use technology — who decides what gets built, who gets access, who is accountable when things go wrong — are unresolved and consequential. Legal and compliance frameworks are evolving rapidly but unevenly across jurisdictions. The quantum computing transition that has been a long-term horizon for cryptography is approaching practical relevance, and quantum AI may reshape both attack and defence. The MSc graduate beginning a security career in 2026 will operate through the unfolding of all of these. This chapter examines each.

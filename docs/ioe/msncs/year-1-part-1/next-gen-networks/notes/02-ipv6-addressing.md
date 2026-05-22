@@ -7,7 +7,7 @@ slug: /ioe/msncs/year-1-part-1/next-gen-networks/notes/ch02
 tags: [msncs, ENCTNS501, notes]
 last_update:
   date: 2026-05-22
-  author: Rajesh Khanal
+  author: RaaZ Khanal
 ---
 
 The Internet Protocol is what makes the network a *single* network. Every device that participates in the global Internet — whether a 5G handset on Ncell, an FTTH router at a Subisu customer's home, a server at the Government Integrated Data Centre, or a Raspberry Pi running an air-quality sensor in Pokhara — speaks the Internet Protocol. There are two deployed versions: IPv4 from 1981, and IPv6 from 1998 (RFC 2460) as currently defined by RFC 8200 (2017). This chapter establishes the addressing model of both, then concentrates on IPv6 in the depth a network engineer needs.

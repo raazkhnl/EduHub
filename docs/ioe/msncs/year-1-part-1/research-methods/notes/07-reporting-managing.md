@@ -7,7 +7,7 @@ slug: /ioe/msncs/year-1-part-1/research-methods/notes/ch07
 tags: [msncs, ENCTNS504, notes]
 last_update:
   date: 2026-05-22
-  author: Rajesh Khanal
+  author: RaaZ Khanal
 ---
 
 A research project that produces excellent findings but communicates them poorly produces no impact. The reporting phase is not a routine wrap-up; it is the act through which the research enters the shared body of knowledge that other researchers, practitioners, and policy-makers can use. This chapter covers the standards for reporting research, the mechanics of scientific publishing, the open-science movement reshaping the field, and the project-management tools — CPM, PERT, Gantt charts — that keep a research project on track. It closes with the seminar, a specific practice in IOE Pulchowk's MSc programme.

@@ -7,7 +7,7 @@ slug: /ioe/msncs/year-2-part-1/elective-iv/security-and-audit-practitioner/sylla
 tags: [msncs, ENCTNS625, notes]
 last_update:
   date: 2026-05-22
-  author: Rajesh Khanal
+  author: RaaZ Khanal
 ---
 
 Year II, Part I — MSNCS, IOE Pulchowk, Tribhuvan University. 4 credits.

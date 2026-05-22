@@ -7,7 +7,7 @@ slug: /ioe/msncs/year-1-part-2/elective-i/intelligent-networking/syllabus
 tags: [msncs, ENCTNS565, notes]
 last_update:
   date: 2026-05-22
-  author: Rajesh Khanal
+  author: RaaZ Khanal
 ---
 
 Year I, Part II — MSNCS, IOE Pulchowk, Tribhuvan University. 4 credits.

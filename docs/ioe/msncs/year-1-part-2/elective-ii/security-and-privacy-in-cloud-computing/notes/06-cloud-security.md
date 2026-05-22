@@ -7,7 +7,7 @@ slug: /ioe/msncs/year-1-part-2/elective-ii/security-and-privacy-in-cloud-computi
 tags: [msncs, ENCTNS571, notes]
 last_update:
   date: 2026-05-22
-  author: Rajesh Khanal
+  author: RaaZ Khanal
 ---
 
 The previous chapters built up the foundation, architecture, management disciplines, data privacy, and operational practices for cloud security and privacy. This final chapter brings everything together into the specific cloud-security disciplines as a coherent practice: the challenges and risks that characterise cloud, the security of SaaS applications, security monitoring, the design of security architecture, data security, application security, virtual-machine security, and identity management and access control. Many topics overlap with earlier chapters; this chapter brings them into focus as part of the unified cloud-security discipline.

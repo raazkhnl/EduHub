@@ -7,7 +7,7 @@ slug: /ioe/msncs/year-2-part-1/elective-iii/generative-ai-and-security/notes/ch0
 tags: [msncs, ENCTNS615, notes]
 last_update:
   date: 2026-05-22
-  author: Rajesh Khanal
+  author: RaaZ Khanal
 ---
 
 Generative artificial intelligence has, in the space of a few years, moved from a specialised research topic to a transformative technology touching most fields of human activity. For cybersecurity specifically, generative AI is a double-edged technology — strengthening defensive capabilities through automation, scale, and pattern recognition while simultaneously empowering attackers with new offensive techniques at unprecedented scale and quality. The MSc graduate in network and cybersecurity needs deep understanding of both sides. This chapter establishes the foundation: what generative AI is, where it came from, how it differs from earlier machine learning paradigms, the deep-learning and probabilistic underpinnings, the major model families (GANs, VAEs, Transformers, diffusion models, hybrids), and the cybersecurity implications that will fill the rest of the subject.

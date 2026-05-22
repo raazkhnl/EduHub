@@ -7,7 +7,7 @@ slug: /ioe/msncs/year-1-part-2/information-systems-audit/notes/ch05
 tags: [msncs, ENCTNS552, notes]
 last_update:
   date: 2026-05-22
-  author: Rajesh Khanal
+  author: RaaZ Khanal
 ---
 
 Every organisation faces disruption. Natural disasters, cyber attacks, power failures, equipment breakdowns, pandemics, civil disturbances, human error — the catalogue of things that can interrupt normal operations is long. For Nepali organisations, the 2015 Gorkha earthquake, the 2020 COVID-19 pandemic, recurring monsoon flooding, the 2024 Government Integrated Data Centre DDoS, and many smaller incidents have demonstrated that disruption is not hypothetical. Business continuity and disaster recovery are the disciplines that prepare an organisation to keep operating through disruption and to recover when operations are interrupted. This chapter covers the BC/DR process, business impact analysis, incident response, disaster recovery plans, emergency preparedness, business continuity strategies, and the audit checklists that confirm plans are in place and tested.

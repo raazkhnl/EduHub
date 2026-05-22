@@ -7,7 +7,7 @@ slug: /ioe/msncs/year-1-part-1/machine-learning-data-analytics/notes/ch06
 tags: [msncs, ENCTNS503, notes]
 last_update:
   date: 2026-05-22
-  author: Rajesh Khanal
+  author: RaaZ Khanal
 ---
 
 A machine-learning model is only as useful as the metric used to judge it. The wrong metric produces a model that scores well on paper and fails in deployment. The right metric reflects the real-world cost of mistakes — money lost to fraud, lives lost to missed diagnoses, customers lost to false alarms. This chapter covers the standard evaluation metrics for classification (accuracy, precision, recall, F1, ROC) and the standard statistical apparatus around them (confusion matrices, misclassification costs, confidence intervals, cross-validation). The goal is not just to compute the metrics but to know which to use when, what they hide, and how to report results honestly.

@@ -7,7 +7,7 @@ slug: /ioe/msncs/year-2-part-1/elective-iii/generative-ai-and-security/notes/ch0
 tags: [msncs, ENCTNS615, notes]
 last_update:
   date: 2026-05-22
-  author: Rajesh Khanal
+  author: RaaZ Khanal
 ---
 
 Threat intelligence is the discipline of understanding adversaries — who they are, what they want, how they operate — and turning that understanding into actionable defensive measures. Anomaly detection is the technical capability of identifying activity that deviates from expected patterns, providing a primary mechanism for detecting attacks. Generative AI transforms both disciplines: synthesising vast threat-intelligence sources into actionable insights, predicting adversarial behaviour, identifying patterns in network and system activity that escape rule-based detection, and countering AI-driven attacks with AI-driven defence. This chapter examines AI for threat intelligence gathering and analysis, generative models for adversary behaviour prediction, anomaly detection with machine learning, and real-time countermeasures against AI-based attacks.

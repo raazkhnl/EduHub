@@ -7,7 +7,7 @@ slug: /ioe/msncs/year-1-part-1/machine-learning-data-analytics/notes/ch05
 tags: [msncs, ENCTNS503, notes]
 last_update:
   date: 2026-05-22
-  author: Rajesh Khanal
+  author: RaaZ Khanal
 ---
 
 The previous chapters worked with labelled data — every training example came with a known target. This chapter turns to the unlabelled case. Given a dataset of inputs without any output labels, what can a learning algorithm say about the structure of the data? Two main families of answers exist: **clustering**, which groups similar examples together, and **dimensionality reduction**, which finds a compact representation that preserves the data's essential structure. Both are widely used — clustering for customer segmentation, anomaly detection, and exploratory analysis; dimensionality reduction for visualisation, denoising, and feeding into downstream supervised algorithms. The chapter also covers **Linear Discriminant Analysis (LDA)**, a supervised method for dimensionality reduction that uses class labels to find the most class-discriminating directions.

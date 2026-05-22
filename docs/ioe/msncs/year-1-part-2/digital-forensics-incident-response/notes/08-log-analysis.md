@@ -7,7 +7,7 @@ slug: /ioe/msncs/year-1-part-2/digital-forensics-incident-response/notes/ch08
 tags: [msncs, ENCTNS551, notes]
 last_update:
   date: 2026-05-22
-  author: Rajesh Khanal
+  author: RaaZ Khanal
 ---
 
 Logs are the most-mundane and the most-essential forensic source. Every modern system — operating systems, applications, network devices, security tools, cloud services — emits records of its activity. Authentication attempts, file accesses, configuration changes, network connections, errors, transactions. In a serious incident investigation, log analysis is rarely glamorous but almost always central. This chapter covers what logs are forensically valuable, how logs are correlated with each other and with other system information, how logs are stored and retrieved in a way that supports legal use, and the standard log formats, applications, and tools that make log analysis practical at scale.

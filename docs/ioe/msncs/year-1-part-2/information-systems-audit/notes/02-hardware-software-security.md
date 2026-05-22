@@ -7,7 +7,7 @@ slug: /ioe/msncs/year-1-part-2/information-systems-audit/notes/ch02
 tags: [msncs, ENCTNS552, notes]
 last_update:
   date: 2026-05-22
-  author: Rajesh Khanal
+  author: RaaZ Khanal
 ---
 
 Hardware and software form the operational layer that the audit ultimately tests. A bank's information-security policy is words; an information-security control is the firewall configuration, the laptop encryption setting, the patch level on the database server, the licence terms of the core banking application. The IS auditor must understand both — the words and the operational reality — and evaluate whether they match. This chapter walks through the hardware and software issues the auditor encounters: hardware security objectives, peripherals and storage media, authentication devices, hardware lifecycle (acquisition, maintenance, obsolescence, disposal), problem and change management, network and communication concerns, types of software and elements of software security, controls during installation and maintenance, and licensing and procurement.

@@ -7,7 +7,7 @@ slug: /ioe/msncs/year-1-part-1/machine-learning-data-analytics/notes/ch03
 tags: [msncs, ENCTNS503, notes]
 last_update:
   date: 2026-05-22
-  author: Rajesh Khanal
+  author: RaaZ Khanal
 ---
 
 Supervised learning is the most widely used branch of machine learning. Given a training set of input-output pairs, a supervised algorithm learns a function that predicts outputs for new inputs. The class of functions, the way the function is parameterised, and the procedure for finding the best parameters are what distinguish one algorithm from another. This chapter covers the foundational supervised-learning models — linear regression, the perceptron, neural networks, decision trees, and support vector machines — building the mathematical and conceptual tools that the rest of the subject relies on.

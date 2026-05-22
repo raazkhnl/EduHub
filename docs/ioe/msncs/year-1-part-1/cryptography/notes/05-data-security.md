@@ -7,7 +7,7 @@ slug: /ioe/msncs/year-1-part-1/cryptography/notes/ch05
 tags: [msncs, ENCTNS502, notes]
 last_update:
   date: 2026-05-22
-  author: Rajesh Khanal
+  author: RaaZ Khanal
 ---
 
 Cryptography protects data in motion through the network. But data spends most of its life *not* in motion — sitting on disks, in databases, in object stores, on backup tapes, in mobile devices, in cloud buckets. Securing data through its full lifecycle is the broader discipline of **data security**, and it draws on cryptography but extends well beyond it into classification, access control, monitoring, and operational practice. This chapter covers data security as an end-to-end concern: what the field is trying to protect, what threatens it, the standard techniques for protecting data at rest and in transit, how organisations classify and label their data, the supporting operations of obfuscation and tokenisation, the data-loss-prevention discipline, and the specific challenges of mobile and cloud environments.

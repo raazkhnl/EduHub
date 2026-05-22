@@ -7,7 +7,7 @@ slug: /ioe/msncs/year-1-part-2/elective-i/intelligent-networking/notes/ch02
 tags: [msncs, ENCTNS565, notes]
 last_update:
   date: 2026-05-22
-  author: Rajesh Khanal
+  author: RaaZ Khanal
 ---
 
 Software-Defined Networking provides the substrate on which most intelligent-networking research and deployment has been built. The architectural separation of control and data planes, the centralised controller with a complete view, the programmable interfaces — these are exactly the conditions ML-driven decision-making needs. This chapter is the longest in the subject because SDN+intelligence is where the field has accumulated the most depth. It covers the SDN architecture as foundation, the specific advantages of adding intelligence to SDN, adaptive QoS and QoE management, deep learning for traffic prediction and classification, intelligent NFV and VNF placement, the design of AI-powered SDN controllers, data-driven decision making, integration with cloud and edge architectures, AI-driven security in SDN, and anomaly detection and behavioural analysis in SDN environments.

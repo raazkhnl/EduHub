@@ -1,25 +1,50 @@
 ---
 title: 'Identity and Access Management'
-sidebar_label: 'Identity and Access Management'
+sidebar_class_name: sidebar-overview-hidden
 sidebar_position: 0
 slug: /ioe/msncs/year-2-part-1/elective-iv/identity-and-access-management
-description: 'MSNCS elective option — Identity and Access Management.'
+description: 'Identity and Access Management — overview, syllabus topics, and onward references.'
+last_update:
+  date: 2026-05-22
+  author: RaaZ Khanal
 ---
 
 # Identity and Access Management
 
-> **Type:** Elective option · **Credits:** 4 · **Program:** M.Sc. Network & Cybersecurity
+> **Code:** TBD · **Credits:** 4 · **Hours:** 60 · **Type:** ELECTIVE
 
-This is one of the elective options offered under the parent elective slot.
-Students select one of the listed options per slot.
+Modern security architecture is identity-led: the network perimeter has all but dissolved, and every access decision is now made against a claim about who is requesting it. This elective covers the protocols, the lifecycle, and the privilege model that hold this together.
 
-## Suggested topics
+## Key topics
 
-- IAM architecture, federation, SAML/OAuth/OIDC.
-- Privileged access management, MFA, FIDO2/passkeys.
-- Identity governance and lifecycle.
+- Identity sources: directory services (LDAP, Active Directory), HR systems, federated SoR.
+- Authentication factors and modern MFA: TOTP, push, FIDO2 / WebAuthn / passkeys.
+- Federation protocols: SAML 2.0, OAuth 2.1, OIDC, SCIM, just-in-time provisioning.
+- Privileged Access Management (PAM): vaulting, session recording, JIT elevation.
+- Identity governance: access reviews, separation of duties, role mining.
+- Zero-trust identity: device posture, conditional access, BeyondCorp pattern.
+- Identity for non-human actors: service accounts, workload identity, SPIFFE/SPIRE.
 
-## Chapter notes
+## Learning outcomes
 
-Notes for this elective option are not yet written. To start, follow the
-[contributing guide](/contribute).
+By the end of this subject, a student should be able to:
+
+- Design federation between a Nepali bank's AD and a SaaS HR system using OIDC.
+- Implement FIDO2 / passkey authentication on a sample app.
+- Roll out PAM for 50 admin users without breaking existing workflows.
+- Run an access-recertification campaign and report the residual risk.
+
+## Further reading
+
+- NIST SP 800-63 series, _Digital Identity Guidelines_.
+- OAuth 2.1, OIDC Core 1.0 specifications.
+- Gartner IAM market guides.
+- _Identity Attack Vectors_ — Haber & Rolls.
+
+---
+
+:::info Chapter notes
+Detailed chapter-by-chapter notes for this subject are still being written.
+The topic outline above mirrors the published syllabus. If you'd like to help
+draft a chapter, see the [contributing guide](/contribute).
+:::

@@ -7,7 +7,7 @@ slug: /ioe/msncs/year-1-part-2/elective-i/routing-and-switching/notes/ch01
 tags: [msncs, ENCTNS561, notes]
 last_update:
   date: 2026-05-22
-  author: Rajesh Khanal
+  author: RaaZ Khanal
 ---
 
 Modern enterprise networks are not just collections of switches, routers, and cables. They are operating environments embedded in organisations that have business objectives, regulatory obligations, and security adversaries. Before this course examines the technical specifics of routing protocols, VLANs, and VPNs, it sets the governance context that shapes every technical decision. The network architect who designs without governance produces switches that work but compliance that fails. The network engineer who configures without security thinking opens vulnerabilities that a single attacker exploits. This chapter covers the foundations: digital transformation and its cybersecurity consequences, the Rubik Cube model of information security, IT service management, the information security management framework, IT governance, and the policy/procedure/guideline structure that operationalises governance.

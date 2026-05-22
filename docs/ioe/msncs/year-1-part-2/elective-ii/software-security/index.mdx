@@ -1,25 +1,50 @@
 ---
 title: 'Software Security'
-sidebar_label: 'Software Security'
+sidebar_class_name: sidebar-overview-hidden
 sidebar_position: 0
 slug: /ioe/msncs/year-1-part-2/elective-ii/software-security
-description: 'MSNCS elective option — Software Security.'
+description: 'Software Security — overview, syllabus topics, and onward references.'
+last_update:
+  date: 2026-05-22
+  author: RaaZ Khanal
 ---
 
 # Software Security
 
-> **Type:** Elective option · **Credits:** 4 · **Program:** M.Sc. Network & Cybersecurity
+> **Code:** TBD · **Credits:** 4 · **Hours:** 60 · **Type:** ELECTIVE
 
-This is one of the elective options offered under the parent elective slot.
-Students select one of the listed options per slot.
+Most breaches start in code. This elective treats security as a property of software engineering — design, implementation, testing, supply chain — rather than as something layered on after deployment. Covers the secure development lifecycle, the classes of bugs that produce CVEs, and the tooling that catches them early.
 
-## Suggested topics
+## Key topics
 
-- Secure development lifecycle, threat modelling, code review.
-- Memory-safety bugs, web vulnerabilities, fuzzing, static analysis.
-- Supply-chain security.
+- Threat modelling (STRIDE, attack trees, abuser stories).
+- Memory-safety bugs in C/C++: buffer overflows, UAF, type confusion; modern mitigations (ASLR, CFI, MTE).
+- Web-class bugs: injection, deserialisation, SSRF, prototype pollution.
+- Cryptographic anti-patterns: ECB, predictable nonces, custom protocols.
+- Code review, static analysis (semgrep, CodeQL), fuzzing (libFuzzer, AFL++, sanitizers).
+- Supply chain: SBOM, dependency confusion, typosquatting, SLSA framework.
+- Secure SDLC: SAMM, BSIMM, threat modelling in CI.
 
-## Chapter notes
+## Learning outcomes
 
-Notes for this elective option are not yet written. To start, follow the
-[contributing guide](/contribute).
+By the end of this subject, a student should be able to:
+
+- Run a structured threat-model session on a new design and produce the artifact.
+- Identify the top OWASP / CWE classes in unfamiliar code via review.
+- Configure SAST/DAST/SCA in a CI pipeline and triage findings.
+- Write a defensible vulnerability report and remediation plan.
+
+## Further reading
+
+- Howard & LeBlanc, _Writing Secure Code_, 2nd ed.
+- McGraw, _Software Security: Building Security In_.
+- OWASP Top 10 (current edition), ASVS, SAMM.
+- CWE / CAPEC catalogues.
+
+---
+
+:::info Chapter notes
+Detailed chapter-by-chapter notes for this subject are still being written.
+The topic outline above mirrors the published syllabus. If you'd like to help
+draft a chapter, see the [contributing guide](/contribute).
+:::

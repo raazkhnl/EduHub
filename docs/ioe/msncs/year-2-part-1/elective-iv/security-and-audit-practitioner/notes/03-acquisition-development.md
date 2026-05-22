@@ -7,7 +7,7 @@ slug: /ioe/msncs/year-2-part-1/elective-iv/security-and-audit-practitioner/notes
 tags: [msncs, ENCTNS625, notes]
 last_update:
   date: 2026-05-22
-  author: Rajesh Khanal
+  author: RaaZ Khanal
 ---
 
 The acquisition and development of information systems introduces substantial change and substantial risk. Projects fail; budgets overrun; security vulnerabilities ship; controls are bypassed during implementation; testing is inadequate; documentation is lost. The IS auditor examines project management discipline, feasibility analysis quality, development lifecycle controls, and security testing rigour — assessing whether changes are introduced with appropriate governance, risk consideration, and control. This chapter covers each, with the practitioner perspective on how to plan and execute audits of acquisition and development activities, the specific tests that are conducted, the evidence that is gathered, and the findings that typically emerge.

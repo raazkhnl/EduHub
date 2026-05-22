@@ -7,7 +7,7 @@ slug: /ioe/msncs/year-1-part-2/elective-i/managing-secure-network-systems/notes/
 tags: [msncs, ENCTNS562, notes]
 last_update:
   date: 2026-05-22
-  author: Rajesh Khanal
+  author: RaaZ Khanal
 ---
 
 The firewall is the most-recognised network-security device, sitting at the boundary between trust zones and deciding what traffic crosses. From the early packet-filter routers of the late 1980s to the modern next-generation firewalls integrating multiple security functions in a single platform, the technology has evolved continuously while the central role has remained the same. This chapter covers firewall types from packet filters through stateful inspection to application-layer firewalls, the specialised forms (WAF, email security gateways), firewall architectures and policies, the perimeter and DMZ design, object-based rule management, NAT in firewall context, and the modern Next-Generation Firewall integrating UTM and IoT security.

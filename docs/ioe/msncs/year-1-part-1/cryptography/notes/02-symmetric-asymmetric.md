@@ -7,7 +7,7 @@ slug: /ioe/msncs/year-1-part-1/cryptography/notes/ch02
 tags: [msncs, ENCTNS502, notes]
 last_update:
   date: 2026-05-22
-  author: Rajesh Khanal
+  author: RaaZ Khanal
 ---
 
 This chapter is the algorithmic heart of the subject. It covers the two families of cryptographic primitives that protect almost every byte of digital traffic in 2026 — symmetric ciphers (where both parties share the same key) and asymmetric ciphers (where each party holds a key pair). The chapter starts with the one cipher that is provably unbreakable (the one-time pad), explains why no other cipher can match it, then walks through the block ciphers and stream ciphers that achieve practical symmetric security. The second half introduces public-key cryptography — the 1976 conceptual revolution — and the two number-theoretic problems on which most of it rests: the discrete logarithm (Diffie-Hellman, ECC) and integer factorisation (RSA). Attacks and countermeasures appear in both halves.

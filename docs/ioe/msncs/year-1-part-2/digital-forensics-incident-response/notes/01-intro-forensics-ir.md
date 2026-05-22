@@ -7,7 +7,7 @@ slug: /ioe/msncs/year-1-part-2/digital-forensics-incident-response/notes/ch01
 tags: [msncs, ENCTNS551, notes]
 last_update:
   date: 2026-05-22
-  author: Rajesh Khanal
+  author: RaaZ Khanal
 ---
 
 Digital forensics is the discipline of recovering and examining digital evidence in a way that allows the findings to stand up in court. Incident response is the discipline of detecting, containing, eradicating, and recovering from cyber incidents in a way that limits harm to the organisation. The two overlap heavily in practice — most serious incidents involve forensic investigation, and most forensic investigations are triggered by incidents — but they have distinct goals, audiences, and standards of proof. This chapter sets the foundations: what digital forensics is, what makes digital evidence legally admissible, what Nepal's evidence law says about it, what incident response is, and what frameworks structure the response. The chapter is the longest in the subject because every later chapter (disk, memory, network, mobile, cloud, malware, logs) rests on the legal and procedural foundations laid here.

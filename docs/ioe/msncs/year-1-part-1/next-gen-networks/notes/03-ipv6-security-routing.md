@@ -7,7 +7,7 @@ slug: /ioe/msncs/year-1-part-1/next-gen-networks/notes/ch03
 tags: [msncs, ENCTNS501, notes]
 last_update:
   date: 2026-05-22
-  author: Rajesh Khanal
+  author: RaaZ Khanal
 ---
 
 The first half of this chapter handles security — what the older Internet got wrong, what attacks exist, what defences are used, and how IPsec brings cryptographic protection into the IP layer itself. The second half handles routing — how IPv6 routers learn paths, the differences between IPv4 and IPv6 routing protocols, and how multicast is routed. Security and routing sit together here because IPv6's design touches both: every IPv6 node was expected to implement IPsec, and every IPv6 routing protocol had to be revisited or rebuilt for the new addressing model.

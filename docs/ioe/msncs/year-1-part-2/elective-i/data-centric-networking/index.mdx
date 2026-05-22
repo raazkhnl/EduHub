@@ -1,25 +1,50 @@
 ---
 title: 'Data Centric Networking'
-sidebar_label: 'Data Centric Networking'
+sidebar_class_name: sidebar-overview-hidden
 sidebar_position: 0
 slug: /ioe/msncs/year-1-part-2/elective-i/data-centric-networking
-description: 'MSNCS elective option — Data Centric Networking.'
+description: 'Data Centric Networking — overview, syllabus topics, and onward references.'
+last_update:
+  date: 2026-05-22
+  author: RaaZ Khanal
 ---
 
 # Data Centric Networking
 
-> **Type:** Elective option · **Credits:** 4 · **Program:** M.Sc. Network & Cybersecurity
+> **Code:** TBD · **Credits:** 4 · **Hours:** 60 · **Type:** ELECTIVE
 
-This is one of the elective options offered under the parent elective slot.
-Students select one of the listed options per slot.
+Today's internet was designed to connect hosts, but most modern traffic asks for a specific piece of data — not a specific host. Information-Centric Networking (ICN) reorganises the network around named content. This elective covers ICN/NDN architecture, the security and caching model, and where it competes with (or complements) the IP stack.
 
-## Suggested topics
+## Key topics
 
-- Information-Centric Networking (ICN), NDN, CCN.
-- Content naming, in-network caching, security model.
-- Comparative study with IP-centric networking.
+- Why ICN: end-host bottleneck of IPv6, mobility, multi-source delivery, CDN duplication.
+- Named Data Networking (NDN) and Content-Centric Networking (CCN) data plane.
+- Naming conventions, signing, interest/data packet flow.
+- In-network caching strategies (LRU, ARC, probabilistic).
+- Forwarding strategies and the Pending Interest Table (PIT).
+- ICN security: provenance via signatures, privacy and naming linkability.
+- Comparative analysis with IP, HTTP/3, and CDN overlays.
 
-## Chapter notes
+## Learning outcomes
 
-Notes for this elective option are not yet written. To start, follow the
-[contributing guide](/contribute).
+By the end of this subject, a student should be able to:
+
+- Explain why an IP-centric web struggles with mobility and multi-source delivery.
+- Trace an NDN interest/data exchange end to end.
+- Reason about caching policy under different traffic mixes.
+- Evaluate the realistic deployment paths for ICN in the next 5–10 years.
+
+## Further reading
+
+- Zhang et al., _Named Data Networking_ (NSF FIA Project).
+- Jacobson et al., _Networking Named Content_ (CCN paper).
+- IRTF ICN Research Group RFCs.
+- Open-source: NDN Forwarding Daemon (nfd-android), ndn-cxx.
+
+---
+
+:::info Chapter notes
+Detailed chapter-by-chapter notes for this subject are still being written.
+The topic outline above mirrors the published syllabus. If you'd like to help
+draft a chapter, see the [contributing guide](/contribute).
+:::

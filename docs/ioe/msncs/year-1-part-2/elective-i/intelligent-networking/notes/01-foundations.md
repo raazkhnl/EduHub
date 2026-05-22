@@ -7,7 +7,7 @@ slug: /ioe/msncs/year-1-part-2/elective-i/intelligent-networking/notes/ch01
 tags: [msncs, ENCTNS565, notes]
 last_update:
   date: 2026-05-22
-  author: Rajesh Khanal
+  author: RaaZ Khanal
 ---
 
 For most of networking's commercial history, decisions about traffic flow, capacity allocation, fault response, and security were made by human operators implementing static configurations. Routing tables were computed by distributed algorithms running fixed protocols; firewalls applied human-written rules; bandwidth provisioning followed planning cycles measured in months. The networks worked, but they could not adapt at the speed that modern applications demand. Intelligent networking is the broad direction that brings machine learning, artificial intelligence, and data-driven decision-making into the network itself — letting the network learn from what it sees, optimise its own operation, and respond to conditions in seconds rather than weeks. This chapter introduces the foundations: how intelligent networking evolved, what the major technology directions are (SDN, IPv6, IBN, DCN, CDN), how quantum and self-organising networks fit, what cognitive networking means in practice, and how the basic categories of machine learning apply to networking problems.

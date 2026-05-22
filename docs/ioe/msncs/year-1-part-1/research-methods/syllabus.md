@@ -7,7 +7,7 @@ slug: /ioe/msncs/year-1-part-1/research-methods/syllabus
 tags: [msncs, ENCTNS504, notes]
 last_update:
   date: 2026-05-22
-  author: Rajesh Khanal
+  author: RaaZ Khanal
 ---
 
 Year I, Part I — MSNCS, IOE Pulchowk, Tribhuvan University. 4 credits.

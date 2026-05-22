@@ -1,25 +1,50 @@
 ---
 title: 'Web Application Security'
-sidebar_label: 'Web Application Security'
+sidebar_class_name: sidebar-overview-hidden
 sidebar_position: 0
 slug: /ioe/msncs/year-2-part-1/elective-iii/web-application-security
-description: 'MSNCS elective option — Web Application Security.'
+description: 'Web Application Security — overview, syllabus topics, and onward references.'
+last_update:
+  date: 2026-05-22
+  author: RaaZ Khanal
 ---
 
 # Web Application Security
 
-> **Type:** Elective option · **Credits:** 4 · **Program:** M.Sc. Network & Cybersecurity
+> **Code:** TBD · **Credits:** 4 · **Hours:** 60 · **Type:** ELECTIVE
 
-This is one of the elective options offered under the parent elective slot.
-Students select one of the listed options per slot.
+Web applications are the most common entry point in modern breaches. This elective drills into how they fail, how to attack them safely (with permission), and — most usefully — how to make them durably hard to exploit. Hands-on labs run against intentionally-vulnerable apps.
 
-## Suggested topics
+## Key topics
 
-- OWASP Top 10 (current edition) with practical labs.
-- Authentication/authorisation, session security, CSRF/SSRF, deserialisation.
-- WAF strategy and bypass techniques.
+- HTTP, sessions, cookies, same-origin policy, CORS, CSP.
+- OWASP Top 10 (current edition): broken access control, injection, SSRF, deserialisation, SSRF, XXE.
+- Authentication patterns: OAuth 2.1, OIDC, WebAuthn / passkeys.
+- API security: REST, GraphQL, gRPC; rate-limiting and quota design.
+- WAF strategy, virtual patching, bot defence.
+- Modern fronts: prototype pollution, dependency confusion, SSRF in cloud metadata.
+- Source-code review for web codebases, threat-modelling specific endpoints.
 
-## Chapter notes
+## Learning outcomes
 
-Notes for this elective option are not yet written. To start, follow the
-[contributing guide](/contribute).
+By the end of this subject, a student should be able to:
+
+- Perform a structured web-app pentest from recon to report.
+- Implement OAuth/OIDC + passkeys correctly on a sample app.
+- Tune a WAF without breaking legitimate users.
+- Write secure-by-default helper libraries for an internal framework.
+
+## Further reading
+
+- OWASP ASVS, WSTG, Cheat Sheet Series.
+- Stuttard & Pinto, _The Web Application Hacker's Handbook_.
+- PortSwigger Web Security Academy.
+- _Real-World Bug Hunting_ — Peter Yaworski.
+
+---
+
+:::info Chapter notes
+Detailed chapter-by-chapter notes for this subject are still being written.
+The topic outline above mirrors the published syllabus. If you'd like to help
+draft a chapter, see the [contributing guide](/contribute).
+:::

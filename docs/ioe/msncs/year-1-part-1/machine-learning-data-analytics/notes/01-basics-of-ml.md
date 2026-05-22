@@ -7,7 +7,7 @@ slug: /ioe/msncs/year-1-part-1/machine-learning-data-analytics/notes/ch01
 tags: [msncs, ENCTNS503, notes]
 last_update:
   date: 2026-05-22
-  author: Rajesh Khanal
+  author: RaaZ Khanal
 ---
 
 This chapter sets the foundations for the rest of the subject. It defines what machine learning is, where it came from, what its main branches are, what makes a learning problem feasible, and what goes wrong when it is not handled carefully. The mathematical apparatus is light at this stage — a review of summary statistics and the standard error metric — but the conceptual apparatus is heavy. Most failures in later chapters come from misunderstanding ideas introduced here: the split between training and test data, the bias-variance trade-off, overfitting, the meaning of generalisation. A student who has these clearly does not get lost in algorithms.

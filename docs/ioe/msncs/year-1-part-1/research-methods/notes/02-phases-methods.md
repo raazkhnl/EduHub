@@ -7,7 +7,7 @@ slug: /ioe/msncs/year-1-part-1/research-methods/notes/ch02
 tags: [msncs, ENCTNS504, notes]
 last_update:
   date: 2026-05-22
-  author: Rajesh Khanal
+  author: RaaZ Khanal
 ---
 
 An engineering research project moves through stages. The stages are not strictly sequential — work loops back as new information emerges — but each stage has its own purpose, methods, and standards of quality. This chapter walks through the standard phases that an engineering MSc or doctoral project passes through, from the initial desktop review of what is already known to the final verification that the contribution actually does what it claims, and then closes with the ethical discipline that must run through every stage. The chapter complements Chapter 1: where Chapter 1 was about how to design a research project, this chapter is about how to execute one.

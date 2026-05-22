@@ -7,7 +7,7 @@ slug: /ioe/msncs/year-2-part-1/elective-iv/security-and-audit-practitioner/notes
 tags: [msncs, ENCTNS625, notes]
 last_update:
   date: 2026-05-22
-  author: Rajesh Khanal
+  author: RaaZ Khanal
 ---
 
 The final chapter at 8 marks addresses incident response and forensics from the audit-practitioner perspective. The subject matter is covered in depth in ENCTNS551 (Digital Forensics and Incident Response) and aspects appear in the Information Systems Security Professionalism subject. Here the focus is the audit dimension — how the practitioner evaluates whether an organisation's security event monitoring is effective, whether its incident response process operates as documented, whether digital evidence is handled with appropriate rigour to support legal and regulatory needs, and whether forensic investigation capability is adequate for the threats faced. The Nepali context of incidents at NIC Asia, Foodmandu, Vianet, GIDC, MoE, and Nepal Police provides specific reference points for the kind of incident handling capability that practical audit examines.

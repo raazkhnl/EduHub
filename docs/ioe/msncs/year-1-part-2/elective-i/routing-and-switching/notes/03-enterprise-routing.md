@@ -7,7 +7,7 @@ slug: /ioe/msncs/year-1-part-2/elective-i/routing-and-switching/notes/ch03
 tags: [msncs, ENCTNS561, notes]
 last_update:
   date: 2026-05-22
-  author: Rajesh Khanal
+  author: RaaZ Khanal
 ---
 
 Routing is the discipline that makes the internet — and every enterprise network — function. Without routing, packets travel between directly-connected systems; with routing, they traverse any number of intermediate devices to reach destinations anywhere in the world. This chapter, the heaviest of the course, covers enterprise routing comprehensively: the architecture principles (fault tolerance, scalability, QoS, security), case studies, the distinction between interior and exterior routing, homogeneous and heterogeneous routing architectures, policy-based routing, IPv6 routing, segment routing, the SDN and quantum-networking horizons, multipath routing and load balancing, and predictive analytics for proactive routing.

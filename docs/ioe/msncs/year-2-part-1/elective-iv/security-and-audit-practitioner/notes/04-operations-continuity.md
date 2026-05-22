@@ -7,7 +7,7 @@ slug: /ioe/msncs/year-2-part-1/elective-iv/security-and-audit-practitioner/notes
 tags: [msncs, ENCTNS625, notes]
 last_update:
   date: 2026-05-22
-  author: Rajesh Khanal
+  author: RaaZ Khanal
 ---
 
 This chapter carries 12 marks — the heaviest of the subject — reflecting both the breadth of IS operations and the criticality of business resilience. Operations is where most IT runs most of the time; auditing operations examines whether daily activities are performed with appropriate control. Business continuity and disaster recovery address the question of what happens when operations are disrupted — by cyber incident, infrastructure failure, natural disaster, pandemic, or other disruption — and whether the organisation can recover within tolerable timeframes. The Nepali context is direct: the 2015 earthquake, recurring monsoon-season disruptions, the 2024 GIDC DDoS attack, and continuing infrastructure dependencies make resilience a practical rather than theoretical concern. The practitioner's task is to assess whether resilience capabilities exist, are tested, and would actually work when needed.

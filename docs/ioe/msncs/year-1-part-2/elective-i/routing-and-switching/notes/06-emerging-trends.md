@@ -7,7 +7,7 @@ slug: /ioe/msncs/year-1-part-2/elective-i/routing-and-switching/notes/ch06
 tags: [msncs, ENCTNS561, notes]
 last_update:
   date: 2026-05-22
-  author: Rajesh Khanal
+  author: RaaZ Khanal
 ---
 
 The networking field has gone through several disruption cycles since its commercial emergence in the 1980s — from mainframe-era networking to Ethernet and IP, from leased lines to the public internet, from physical to virtual infrastructure. The current cycle is shaped by several forces: the move of compute to the network edge, the explosion of IoT devices, the dominance of cloud as the destination for most enterprise traffic, the integration of network functions into software, the move from coarse to fine-grained segmentation, and the early exploration of post-classical paradigms like blockchain for trust and quantum for fundamentally different communication primitives. This chapter covers the trends shaping the next decade of routing and switching.

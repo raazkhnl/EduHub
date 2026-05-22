@@ -7,7 +7,7 @@ slug: /ioe/msncs/year-1-part-1/cryptography/notes/ch06
 tags: [msncs, ENCTNS502, notes]
 last_update:
   date: 2026-05-22
-  author: Rajesh Khanal
+  author: RaaZ Khanal
 ---
 
 This chapter is the broadest in the syllabus and the one that ties together everything before it. Cybersecurity is the operational discipline of defending information systems against attack; data privacy is the parallel discipline of governing how personal data is collected, used, and protected from harm to the individuals it describes. The two are distinct — a system can be secure but privacy-invasive (a well-defended surveillance database), or privacy-respecting but insecure (a properly minimised system that nonetheless leaks). A mature programme handles both. This chapter covers cybersecurity foundations and the major threat categories, the network controls (firewalls and IDS) that defend against them, the evolution of data-privacy norms in an era of social media and big data, the legal and regulatory frameworks that now govern personal data, the consent and erasure principles that anchor those frameworks, the governance practices organisations use to comply, the intersection with cyber-physical systems, the analytical tools used in modern defence (user behaviour analytics), and the specific categories of data — PII and PHI — that demand the most stringent protection.

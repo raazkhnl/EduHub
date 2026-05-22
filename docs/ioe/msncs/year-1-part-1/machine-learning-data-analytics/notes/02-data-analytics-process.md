@@ -7,7 +7,7 @@ slug: /ioe/msncs/year-1-part-1/machine-learning-data-analytics/notes/ch02
 tags: [msncs, ENCTNS503, notes]
 last_update:
   date: 2026-05-22
-  author: Rajesh Khanal
+  author: RaaZ Khanal
 ---
 
 Machine learning operates on data. Before any model is trained, the data must be collected, understood, cleaned, transformed, explored, and stored in a form the algorithms can use. This is the **data analytics process** — the workflow that surrounds modelling. It is often the largest part of a real ML project; surveys regularly find that data scientists spend 60–80% of their time on data preparation rather than on modelling. This chapter covers the standard analytics pipeline, the categories of data and attributes the pipeline handles, the preprocessing operations that bring raw data into usable form, the visualisation techniques used to explore it, the architectural patterns for handling data at scale, and the four common analytics framings — descriptive, diagnostic, predictive, prescriptive — that describe what kind of question the analytics is answering.

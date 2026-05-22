@@ -1,25 +1,50 @@
 ---
 title: 'Hardening Network Infrastructure'
-sidebar_label: 'Hardening Network Infrastructure'
+sidebar_class_name: sidebar-overview-hidden
 sidebar_position: 0
 slug: /ioe/msncs/year-2-part-1/elective-iii/hardening-network-infrastructure
-description: 'MSNCS elective option — Hardening Network Infrastructure.'
+description: 'Hardening Network Infrastructure — overview, syllabus topics, and onward references.'
+last_update:
+  date: 2026-05-22
+  author: RaaZ Khanal
 ---
 
 # Hardening Network Infrastructure
 
-> **Type:** Elective option · **Credits:** 4 · **Program:** M.Sc. Network & Cybersecurity
+> **Code:** TBD · **Credits:** 4 · **Hours:** 60 · **Type:** ELECTIVE
 
-This is one of the elective options offered under the parent elective slot.
-Students select one of the listed options per slot.
+The default configuration of a router, switch, or wireless controller is rarely the safe one. This elective covers concrete, vendor-aware hardening practices for the device, management plane, control plane, and routing fabric — and how to keep that hardening from drifting over time.
 
-## Suggested topics
+## Key topics
 
-- Device baselines, AAA, secure management planes, RPKI.
-- Segmentation, zero-trust networking, microsegmentation.
-- Configuration audit and drift control.
+- Device baselines: AAA, RBAC, banners, NTP, syslog, hardware integrity.
+- Management plane: out-of-band, secure protocols (SSHv2, NETCONF over TLS, gNMI).
+- Control-plane policing, CoPP, BGP TTL security, RPKI / ROAs.
+- Segmentation: VRFs, VLAN design, microsegmentation, zero-trust networking.
+- Configuration audit (Cisco SAFE, CIS Benchmarks), drift detection, NCM tooling.
+- Wireless hardening: rogue detection, RF planning, controller security.
+- Resilience: hardware redundancy, BFD, graceful restart, evacuation drills.
 
-## Chapter notes
+## Learning outcomes
 
-Notes for this elective option are not yet written. To start, follow the
-[contributing guide](/contribute).
+By the end of this subject, a student should be able to:
+
+- Apply a CIS Benchmark or vendor baseline and produce an evidence audit.
+- Diagnose and remediate a control-plane DoS condition.
+- Roll out RPKI ROAs for a small ISP / enterprise prefix portfolio.
+- Build a configuration-drift detection workflow that scales beyond 50 devices.
+
+## Further reading
+
+- CIS Benchmarks (Cisco IOS, Junos, Arista EOS).
+- NSA / CISA, _Network Infrastructure Security Guide_ (2022).
+- Cisco SAFE Reference Guide.
+- RFC 7454, _BGP Operations and Security_.
+
+---
+
+:::info Chapter notes
+Detailed chapter-by-chapter notes for this subject are still being written.
+The topic outline above mirrors the published syllabus. If you'd like to help
+draft a chapter, see the [contributing guide](/contribute).
+:::

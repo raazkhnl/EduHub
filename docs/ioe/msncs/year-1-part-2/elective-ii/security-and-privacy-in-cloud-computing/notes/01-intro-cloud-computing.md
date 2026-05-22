@@ -7,7 +7,7 @@ slug: /ioe/msncs/year-1-part-2/elective-ii/security-and-privacy-in-cloud-computi
 tags: [msncs, ENCTNS571, notes]
 last_update:
   date: 2026-05-22
-  author: Rajesh Khanal
+  author: RaaZ Khanal
 ---
 
 Cloud computing transformed information technology more thoroughly than any single development since the rise of the public internet. In two decades it moved from a marketing phrase used loosely by hosting companies to the dominant operating model for software, data, and infrastructure across most of the world's organisations. Nepali enterprises have followed the same trajectory at a slightly slower pace — early scepticism through the late 2000s, cautious adoption through the 2010s, mainstream usage through the 2020s. This chapter establishes the foundation for the security and privacy considerations that follow: the history that shaped cloud computing, the features that define it, the requirements for cloud services, the dynamic-infrastructure concept that distinguishes cloud from traditional hosting, and the challenges that operating in cloud creates.

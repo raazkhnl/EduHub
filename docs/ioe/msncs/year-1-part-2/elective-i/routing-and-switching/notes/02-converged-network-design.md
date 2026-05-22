@@ -7,7 +7,7 @@ slug: /ioe/msncs/year-1-part-2/elective-i/routing-and-switching/notes/ch02
 tags: [msncs, ENCTNS561, notes]
 last_update:
   date: 2026-05-22
-  author: Rajesh Khanal
+  author: RaaZ Khanal
 ---
 
 A converged network carries all of an organisation's traffic — data, voice, video, control plane, management — over a unified infrastructure. The economic and operational logic is compelling: one set of cables, switches, and routers instead of separate voice and data networks; one team to operate; one architecture to evolve. The cost is design complexity. A converged network must serve very different traffic types — bursty data, jitter-sensitive voice, bandwidth-hungry video, latency-sensitive financial transactions — simultaneously, securely, and reliably. This chapter covers the design guidelines: the principles that make converged networks workable, the framework that protects the network's foundation, the IP-addressing foundation in IPv4 and IPv6, the emerging discipline of cross-layer protocol engineering, the planning and documentation that keeps networks manageable, and the Terms of Reference document that starts every network project.

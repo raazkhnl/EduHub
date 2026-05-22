@@ -7,7 +7,7 @@ slug: /ioe/msncs/year-2-part-1/elective-iv/information-systems-security-professi
 tags: [msncs, INFOSEC-PRO, notes]
 last_update:
   date: 2026-05-22
-  author: Rajesh Khanal
+  author: RaaZ Khanal
 ---
 
 Year II, Part II — MSNCS, IOE Pulchowk, Tribhuvan University. 4 credits.

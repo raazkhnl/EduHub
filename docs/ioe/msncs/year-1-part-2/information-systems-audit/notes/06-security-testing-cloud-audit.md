@@ -7,7 +7,7 @@ slug: /ioe/msncs/year-1-part-2/information-systems-audit/notes/ch06
 tags: [msncs, ENCTNS552, notes]
 last_update:
   date: 2026-05-22
-  author: Rajesh Khanal
+  author: RaaZ Khanal
 ---
 
 The previous chapters have built up the audit framework — what an audit is, what controls it examines, what evidence supports findings, how the audit is conducted, and how business continuity is verified. This final chapter brings two contemporary practice areas into the audit picture: technical security testing (vulnerability assessment, penetration testing, secure software development practices, OWASP-aligned application security) and cloud audit. Both are domains where the audit has shifted in recent years — driven by the changing threat landscape, the migration to cloud, and the integration of security into modern software-delivery pipelines.

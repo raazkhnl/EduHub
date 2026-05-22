@@ -7,7 +7,7 @@ slug: /ioe/msncs/year-1-part-2/elective-i/intelligent-networking/notes/ch06
 tags: [msncs, ENCTNS565, notes]
 last_update:
   date: 2026-05-22
-  author: Rajesh Khanal
+  author: RaaZ Khanal
 ---
 
 The previous chapters covered specific intelligent-networking technologies — SDN, DCN, IBN, quantum networking — each with its own characteristic intelligence patterns. This chapter steps back to consider where the field is going. Several directions are clearly active: intelligent monitoring and automation expanding into AIOps and autonomous operations; self-X networks aspiring to autonomic operation; resource optimisation reframed as continuous machine-learning problems; load balancing and traffic engineering driven by predictive analytics; convergence patterns combining quantum, SDN, NDN, and IBN; blockchain for specific security and trust functions; and a longer list of open research challenges that the next decade will likely address. This chapter covers each direction with attention to research substance and practical horizon.

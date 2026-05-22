@@ -7,7 +7,7 @@ slug: /ioe/msncs/year-1-part-2/elective-ii/security-and-privacy-in-cloud-computi
 tags: [msncs, ENCTNS571, notes]
 last_update:
   date: 2026-05-22
-  author: Rajesh Khanal
+  author: RaaZ Khanal
 ---
 
 The previous chapter established cloud computing in broad terms — what it is, where it came from, what features define it, what challenges it brings. This chapter takes the architectural view: the reference models that organise cloud capabilities, the service models (IaaS, PaaS, SaaS) that define what customers consume, the deployment models (public, private, community, hybrid) that define how the cloud is operated and shared, the service-oriented-architecture principles that inform cloud design, and the cross-cutting concerns of security, trust, and privacy that the rest of the subject will examine in depth.

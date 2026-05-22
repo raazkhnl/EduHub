@@ -7,7 +7,7 @@ slug: /ioe/msncs/year-2-part-1/elective-iv/security-and-audit-practitioner/notes
 tags: [msncs, ENCTNS625, notes]
 last_update:
   date: 2026-05-22
-  author: Rajesh Khanal
+  author: RaaZ Khanal
 ---
 
 IT governance and risk management are simultaneously the foundation of mature IS practice and a primary focus of IS audit work. The practitioner assesses governance maturity, evaluates risk management effectiveness, examines enterprise architecture adequacy, and tests regulatory compliance. The frameworks were introduced in earlier subjects — particularly ENCTNS552 Information Systems Audit and the Information Systems Security Professionalism subject. This chapter takes them up specifically from the practitioner-auditor perspective: how to assess governance frameworks in practice, how to examine enterprise architecture in audit context, how the risk management process is tested operationally, how maturity models are applied for objective assessment, and how regulatory compliance is verified.

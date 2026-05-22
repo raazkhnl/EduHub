@@ -7,7 +7,7 @@ slug: /ioe/msncs/year-2-part-1/elective-iv/security-and-audit-practitioner/notes
 tags: [msncs, ENCTNS625, notes]
 last_update:
   date: 2026-05-22
-  author: Rajesh Khanal
+  author: RaaZ Khanal
 ---
 
 Information asset protection encompasses the controls that keep information confidential, accurate, and available — the operational reality of cybersecurity from the audit perspective. The frameworks have been discussed in earlier subjects; the technical controls have been examined in cryptography, networks, cloud security, and other technical subjects. This chapter applies them through the audit-practitioner lens: how to systematically assess whether an organisation's information assets are appropriately protected, what evidence to gather, what tests to run, and what findings typically emerge. The four subtopics — security frameworks, identity and access management, encryption and PKI, and network and cloud security — together cover most of the technical control surface the auditor examines in a typical engagement.

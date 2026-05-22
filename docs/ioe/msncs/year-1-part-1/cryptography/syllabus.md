@@ -7,7 +7,7 @@ slug: /ioe/msncs/year-1-part-1/cryptography/syllabus
 tags: [msncs, ENCTNS502, notes]
 last_update:
   date: 2026-05-22
-  author: Rajesh Khanal
+  author: RaaZ Khanal
 ---
 
 **Program:** M.Sc. in Network and Cybersecurity (MSNCS)

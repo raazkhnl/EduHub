@@ -7,7 +7,7 @@ slug: /ioe/msncs/year-1-part-2/elective-i/managing-secure-network-systems/notes/
 tags: [msncs, ENCTNS562, notes]
 last_update:
   date: 2026-05-22
-  author: Rajesh Khanal
+  author: RaaZ Khanal
 ---
 
 The previous chapters covered specific security technologies — protocols, VPNs, firewalls, IDS/IPS. This chapter steps back to the architectural level: how networks are designed to be secure from the start, how wired and wireless infrastructure is hardened, what topologies support security objectives, what wireless-specific protocols exist, and how the modern Zero Trust direction reshapes the entire approach. The audit, operations, and forensic perspectives covered elsewhere in this programme all assume an underlying architecture; this chapter is where the architecture is examined directly.

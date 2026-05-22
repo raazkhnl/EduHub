@@ -7,7 +7,7 @@ slug: /ioe/msncs/year-1-part-2/elective-i/managing-secure-network-systems/notes/
 tags: [msncs, ENCTNS562, notes]
 last_update:
   date: 2026-05-22
-  author: Rajesh Khanal
+  author: RaaZ Khanal
 ---
 
 The previous chapters covered network security as practiced in traditional on-premises infrastructure. This chapter takes the same security disciplines into cloud and virtualised environments where the operational model is different, the responsibility boundaries shift, and the controls take new forms. Hypervisors replace bare-metal servers, security groups replace traditional firewalls, identity-based access replaces network-based access, and data-centre design becomes a deliberate engineering challenge for both cloud providers and enterprise customers who continue running their own facilities. This chapter covers cloud-technology fundamentals and the shared-responsibility model, virtualisation security and its audit/compliance considerations, the specific approaches of AWS, Azure, and GCP, the security objects and network security groups that enforce policy in cloud, and the data-centre technologies, design, and planning that underpin both cloud and traditional infrastructure.

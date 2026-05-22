@@ -7,7 +7,7 @@ slug: /ioe/msncs/year-1-part-2/elective-ii/security-and-privacy-in-cloud-computi
 tags: [msncs, ENCTNS571, notes]
 last_update:
   date: 2026-05-22
-  author: Rajesh Khanal
+  author: RaaZ Khanal
 ---
 
 Data privacy is the human-rights-anchored dimension of cloud security. Where security broadly protects systems and data from harm, privacy specifically protects individuals from inappropriate use of their personal data. The two overlap substantially but are not identical — a system can be secure but privacy-violating, or privacy-respecting but insecure. This chapter focuses sharply on the data-privacy dimension as it applies to cloud computing: the lifecycle of data in cloud, the controls that protect confidentiality and integrity, the threats data faces, the specific protection techniques (encryption, redaction, tokenization, obfuscation, PKI, key management), the assurance of deletion, the retention and archiving procedures for tenant data, and the data-protection plans and strategies that organise everything into operational practice.

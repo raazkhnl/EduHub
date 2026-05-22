@@ -7,7 +7,7 @@ slug: /ioe/msncs/year-1-part-2/digital-forensics-incident-response/notes/ch04
 tags: [msncs, ENCTNS551, notes]
 last_update:
   date: 2026-05-22
-  author: Rajesh Khanal
+  author: RaaZ Khanal
 ---
 
 Networks carry the traffic of every modern system. When a host is breached, when data is exfiltrated, when an attacker establishes command and control, when a denial-of-service campaign hits a target — the activity passes over the network and, if captured, leaves recoverable evidence. Network forensics is the discipline of acquiring, analysing, and presenting that evidence. This chapter covers what network traffic carries forensically, how it is captured and analysed with PCAP and Wireshark, how IDS and IPS systems generate and use forensic data, and how network findings are documented for legal admissibility.

@@ -7,7 +7,7 @@ slug: /ioe/msncs/year-1-part-2/digital-forensics-incident-response/notes/ch05
 tags: [msncs, ENCTNS551, notes]
 last_update:
   date: 2026-05-22
-  author: Rajesh Khanal
+  author: RaaZ Khanal
 ---
 
 For most users in Nepal in 2026, the mobile phone is the most-used computing device — the place where banking happens (eSewa, Khalti, IME Pay, mobile-banking apps), where messaging happens (WhatsApp, Viber, Messenger, Telegram), where the camera lives, where the calendar lives, where location is constantly tracked. For an investigator, mobile devices are often the most-incriminating evidence source in cases ranging from financial fraud to harassment to organised crime. The forensic challenges, however, are distinct from desktop forensics: tightly-controlled hardware, sophisticated encryption, vendor-specific data structures, and a rapid evolution that quickly obsoletes tooling. This chapter covers mobile-device acquisition for iOS and Android, the categories of recoverable data, and the standard commercial and open-source tools.

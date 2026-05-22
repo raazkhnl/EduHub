@@ -1,25 +1,50 @@
 ---
 title: 'Wireless Network Security and Privacy'
-sidebar_label: 'Wireless Network Security and Privacy'
+sidebar_class_name: sidebar-overview-hidden
 sidebar_position: 0
 slug: /ioe/msncs/year-1-part-2/elective-ii/wireless-network-security-and-privacy
-description: 'MSNCS elective option — Wireless Network Security and Privacy.'
+description: 'Wireless Network Security and Privacy — overview, syllabus topics, and onward references.'
+last_update:
+  date: 2026-05-22
+  author: RaaZ Khanal
 ---
 
 # Wireless Network Security and Privacy
 
-> **Type:** Elective option · **Credits:** 4 · **Program:** M.Sc. Network & Cybersecurity
+> **Code:** TBD · **Credits:** 4 · **Hours:** 60 · **Type:** ELECTIVE
 
-This is one of the elective options offered under the parent elective slot.
-Students select one of the listed options per slot.
+Wireless links — Wi-Fi, cellular, Bluetooth, NFC, LoRa, satellite — carry an outsized share of modern personal traffic, and each carries a distinct attack surface. This elective studies the radio layer, the protocols built on top, and the privacy implications of always-on identifiers.
 
-## Suggested topics
+## Key topics
 
-- 802.11 / 802.15 / 802.16 attack surfaces, WPA2/WPA3 internals.
-- Cellular (2G–5G) security architectures, IMSI catchers.
-- Privacy and tracking in wireless infrastructure.
+- 802.11 protocol family: WEP, WPA2, WPA3, SAE handshake, PMF.
+- Enterprise Wi-Fi: 802.1X, RADIUS, EAP method comparison.
+- Bluetooth / BLE security: pairing modes, LE Secure Connections.
+- Cellular security across 2G→5G: SIM, USIM, IMSI catchers, 5G authentication (5G-AKA, EAP-AKA').
+- Localisation, privacy and MAC randomisation behaviour across OS versions.
+- Lower-power wireless: Zigbee, Thread, LoRaWAN, NB-IoT.
+- Real-world attacks: KRACK, Dragonblood, BlueBorne, BLESA, Stingray-class devices.
 
-## Chapter notes
+## Learning outcomes
 
-Notes for this elective option are not yet written. To start, follow the
-[contributing guide](/contribute).
+By the end of this subject, a student should be able to:
+
+- Configure WPA3-Enterprise correctly on a real AP and explain the handshake.
+- Detect rogue access points and IMSI catchers from a host or network perspective.
+- Reason about identifier linkability across radio sessions.
+- Apply the right pairing and link-layer encryption mode for IoT scenarios.
+
+## Further reading
+
+- Mathy Vanhoef's KRACK and Dragonblood papers.
+- Wi-Fi Alliance specs (WPA3, WPA-Enterprise).
+- 3GPP TS 33.501 (5G security architecture).
+- Bishop, _Computer Security: Art and Science_, chapter on wireless.
+
+---
+
+:::info Chapter notes
+Detailed chapter-by-chapter notes for this subject are still being written.
+The topic outline above mirrors the published syllabus. If you'd like to help
+draft a chapter, see the [contributing guide](/contribute).
+:::

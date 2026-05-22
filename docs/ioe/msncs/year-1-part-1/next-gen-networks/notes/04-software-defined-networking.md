@@ -7,7 +7,7 @@ slug: /ioe/msncs/year-1-part-1/next-gen-networks/notes/ch04
 tags: [msncs, ENCTNS501, notes]
 last_update:
   date: 2026-05-22
-  author: Rajesh Khanal
+  author: RaaZ Khanal
 ---
 
 For four decades the network was built out of standalone boxes — each router, switch, firewall, and load balancer running its own distributed control logic and reachable only through its own CLI. This model worked when networks were small enough to configure by hand and stable enough that the configuration did not change daily. By the late 2000s, hyperscale operators outgrew it. The response was **Software-Defined Networking (SDN)** — pull the control logic out of the boxes, run it centrally as software, and turn the boxes into commodity packet forwarders that take their instructions from above. This chapter covers SDN's architecture, its main protocol (OpenFlow), the API surfaces it exposes, the controller ecosystem, its application in telecom networks, the languages used to program data planes (P4, Frenetic), the closely related field of Network Function Virtualization (NFV), and the current direction of research.

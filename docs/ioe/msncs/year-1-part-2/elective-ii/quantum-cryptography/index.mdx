@@ -1,25 +1,50 @@
 ---
 title: 'Quantum Cryptography'
-sidebar_label: 'Quantum Cryptography'
+sidebar_class_name: sidebar-overview-hidden
 sidebar_position: 0
 slug: /ioe/msncs/year-1-part-2/elective-ii/quantum-cryptography
-description: 'MSNCS elective option — Quantum Cryptography.'
+description: 'Quantum Cryptography — overview, syllabus topics, and onward references.'
+last_update:
+  date: 2026-05-22
+  author: RaaZ Khanal
 ---
 
 # Quantum Cryptography
 
-> **Type:** Elective option · **Credits:** 4 · **Program:** M.Sc. Network & Cybersecurity
+> **Code:** TBD · **Credits:** 4 · **Hours:** 60 · **Type:** ELECTIVE
 
-This is one of the elective options offered under the parent elective slot.
-Students select one of the listed options per slot.
+Quantum computing breaks the asymmetric primitives — RSA, ECC, classical Diffie-Hellman — that underpin most of today's authenticated key exchange. This elective covers both halves of the response: quantum key distribution (using quantum mechanics for unconditional secrecy on the wire) and post-quantum cryptography (classical algorithms believed hard against quantum attackers).
 
-## Suggested topics
+## Key topics
 
-- Quantum key distribution (BB84, E91), QKD network architectures.
-- Post-quantum cryptography (lattice, code-based, hash-based).
-- Hybrid migration strategies.
+- Quantum mechanics primer: superposition, entanglement, the no-cloning theorem.
+- Quantum key distribution: BB84, E91, B92, decoy-state protocols.
+- QKD network architectures: trusted-node networks, satellite QKD.
+- Post-quantum cryptography families: lattice-based (Kyber, Dilithium), code-based (Classic McEliece), hash-based (SPHINCS+, XMSS), multivariate, isogeny.
+- NIST PQC standardisation outcomes (FIPS 203/204/205, 2024).
+- Hybrid TLS, crypto-agility, and migration planning.
+- Quantum-safe deadlines for NRB / IRD / banking sector in Nepal.
 
-## Chapter notes
+## Learning outcomes
 
-Notes for this elective option are not yet written. To start, follow the
-[contributing guide](/contribute).
+By the end of this subject, a student should be able to:
+
+- Explain the BB84 protocol and the security argument behind unconditional secrecy.
+- Compare the main PQC families on performance, key size, and maturity.
+- Plan a phased migration for a real PKI to hybrid + then PQC-only.
+- Identify which standards organisations and regulators have already mandated PQC timelines.
+
+## Further reading
+
+- NIST PQC project pages and FIPS 203 / 204 / 205.
+- Bernstein & Lange, _Post-Quantum Cryptography_ (Nature, 2017).
+- Nielsen & Chuang, _Quantum Computation and Quantum Information_.
+- ETSI QKD specifications.
+
+---
+
+:::info Chapter notes
+Detailed chapter-by-chapter notes for this subject are still being written.
+The topic outline above mirrors the published syllabus. If you'd like to help
+draft a chapter, see the [contributing guide](/contribute).
+:::

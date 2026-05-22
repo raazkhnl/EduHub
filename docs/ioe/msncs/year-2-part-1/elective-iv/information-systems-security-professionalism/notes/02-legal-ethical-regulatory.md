@@ -7,7 +7,7 @@ slug: /ioe/msncs/year-2-part-1/elective-iv/information-systems-security-professi
 tags: [msncs, INFOSEC-PRO, notes]
 last_update:
   date: 2026-05-22
-  author: Rajesh Khanal
+  author: RaaZ Khanal
 ---
 
 The security professional operates within an extensive framework of laws, regulations, and ethical norms. The legal frameworks define what conduct is permitted, required, or forbidden — both for the professional personally and for the organisations they serve. The ethical norms shape decisions in situations where the law is silent or where multiple legal courses are possible. The intersections — where law, ethics, organisational interests, and individual judgement meet — define some of the most consequential decisions security professionals make. This chapter examines cybercrime laws across jurisdictions including Nepal, intellectual property and liability considerations, privacy laws and compliance, and the specific discipline of responsible disclosure with its attendant ethical dilemmas.

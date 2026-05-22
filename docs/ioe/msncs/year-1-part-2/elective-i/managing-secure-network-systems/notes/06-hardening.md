@@ -7,7 +7,7 @@ slug: /ioe/msncs/year-1-part-2/elective-i/managing-secure-network-systems/notes/
 tags: [msncs, ENCTNS562, notes]
 last_update:
   date: 2026-05-22
-  author: Rajesh Khanal
+  author: RaaZ Khanal
 ---
 
 A network device — switch, router, firewall, wireless controller, load balancer — ships from the vendor with a default configuration that emphasises ease of initial setup, not security. Default credentials, unnecessary services enabled, weak protocols permitted, verbose error messages, debug features active. The discipline of hardening transforms a default configuration into a secure one. This chapter covers the applications of hardening, the configuration discipline that achieves it, the logging and reporting that make hardening verifiable, and the industry standards that codify hardening practice.

@@ -262,7 +262,7 @@ const config = {
           content:
             'IOE, CTEVT, MSNCS, BCT, Tribhuvan University, Nepal engineering notes, Pulchowk, syllabus, past papers',
         },
-        { name: 'author', content: 'Rajesh Khanal' },
+        { name: 'author', content: 'RaaZ Khanal' },
         { name: 'theme-color', content: '#0F766E' },
         { property: 'og:type', content: 'website' },
         { property: 'og:site_name', content: 'EduHub' },
@@ -331,14 +331,14 @@ const config = {
           {
             title: 'Author',
             items: [
-              { label: 'Rajesh Khanal', href: 'https://khanalrajesh.com.np' },
+              { label: 'RaaZ Khanal', href: 'https://khanalrajesh.com.np' },
               { label: '@raazkhnl on GitHub', href: 'https://github.com/raazkhnl' },
               { label: 'License: CC BY 4.0', href: 'https://creativecommons.org/licenses/by/4.0/' },
             ],
           },
         ],
         copyright: `
-          <div class="eh-copyline">© ${new Date().getFullYear()} Rajesh Khanal · Content licensed CC BY 4.0 · Built with Docusaurus.</div>
+          <div class="eh-copyline">© ${new Date().getFullYear()} RaaZ Khanal · Content licensed CC BY 4.0 · Built with Docusaurus.</div>
           <div class="eh-credit">Made with <span class="eh-heart" aria-label="love" role="img">ꨄ︎</span> by <a class="eh-credit-link" href="https://khanalrajesh.com.np" target="_blank" rel="noopener noreferrer">@raazkhnl</a></div>
         `,
       },
@@ -365,9 +365,9 @@ const config = {
       announcementBar: {
         id: 'beta-1',
         content:
-          'EduHub is in active development — content is being migrated curriculum-by-curriculum. <a href="/contribute">Help expand it →</a>',
-        backgroundColor: '#FBF8F2',
-        textColor: '#1A1B1F',
+          '<span class="eh-announce-dot" aria-hidden="true"></span> <strong>EduHub</strong> is in active development — content is being migrated curriculum-by-curriculum. <a href="/contribute">Help expand it →</a>',
+        // Colours intentionally omitted — CSS in custom.css handles both light
+        // and dark themes via the standard --ifm-color-* variables.
         isCloseable: true,
       },
       tableOfContents: {

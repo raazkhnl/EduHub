@@ -1,25 +1,50 @@
 ---
 title: 'IOT Security'
-sidebar_label: 'IOT Security'
+sidebar_class_name: sidebar-overview-hidden
 sidebar_position: 0
 slug: /ioe/msncs/year-2-part-1/elective-iii/iot-security
-description: 'MSNCS elective option — IOT Security.'
+description: 'IOT Security — overview, syllabus topics, and onward references.'
+last_update:
+  date: 2026-05-22
+  author: RaaZ Khanal
 ---
 
 # IOT Security
 
-> **Type:** Elective option · **Credits:** 4 · **Program:** M.Sc. Network & Cybersecurity
+> **Code:** TBD · **Credits:** 4 · **Hours:** 60 · **Type:** ELECTIVE
 
-This is one of the elective options offered under the parent elective slot.
-Students select one of the listed options per slot.
+IoT spans home devices, industrial sensors, smart meters, vehicle telemetry, and a long tail of single-purpose hardware. The security model has to fit constrained devices, intermittent connectivity, and 10-year deployment lifetimes. This elective covers the stack, the threats, and the engineering trade-offs.
 
-## Suggested topics
+## Key topics
 
-- IoT stack threats (device, gateway, cloud, mobile, network).
-- Constrained-device cryptography, secure boot, OTA updates.
-- Privacy and lifecycle management.
+- IoT reference stack: device, gateway, cloud, mobile, network.
+- Constrained-device cryptography (AES-CCM, ChaCha20-Poly1305, ECC).
+- Secure boot, code signing, OTA update authentication and rollback protection.
+- Protocols: MQTT, CoAP, AMQP — and their TLS/DTLS modes.
+- Device identity: hardware root of trust, TPM/TEE, attestation.
+- Privacy and lifecycle: ownership transfer, decommissioning, e-waste.
+- Real-world incidents: Mirai, Verkada cameras, smart-meter mass attacks, NTC routers.
 
-## Chapter notes
+## Learning outcomes
 
-Notes for this elective option are not yet written. To start, follow the
-[contributing guide](/contribute).
+By the end of this subject, a student should be able to:
+
+- Architect secure provisioning + OTA update for a fleet of 10k devices.
+- Audit a vendor IoT stack against the IEC 62443 family.
+- Implement constrained-device crypto correctly (no nonce reuse, no rolling-your-own).
+- Plan privacy-conscious telemetry for a Nepal-context smart-meter rollout.
+
+## Further reading
+
+- IEC 62443 series.
+- NIST IR 8259 / 8425.
+- IoT Security Foundation _Best Practice Guidelines_.
+- Cesare, _Practical IoT Hacking_.
+
+---
+
+:::info Chapter notes
+Detailed chapter-by-chapter notes for this subject are still being written.
+The topic outline above mirrors the published syllabus. If you'd like to help
+draft a chapter, see the [contributing guide](/contribute).
+:::

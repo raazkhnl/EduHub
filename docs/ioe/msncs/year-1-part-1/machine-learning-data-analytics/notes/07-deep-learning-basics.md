@@ -7,7 +7,7 @@ slug: /ioe/msncs/year-1-part-1/machine-learning-data-analytics/notes/ch07
 tags: [msncs, ENCTNS503, notes]
 last_update:
   date: 2026-05-22
-  author: Rajesh Khanal
+  author: RaaZ Khanal
 ---
 
 The previous chapters built up the classical machine-learning toolkit — linear models, decision trees, Bayesian methods, SVMs, K-means, PCA. Each works well for specific problem shapes. **Deep learning** is the modern descendant of the neural-network ideas introduced in Chapter 3, scaled up by orders of magnitude in depth, data, and computation. It has displaced classical methods on most large-scale problems involving images, speech, text, and complex sensor data, and has reshaped what machine learning can do. This chapter covers the foundations — what makes a network "deep," how backpropagation actually computes gradients, the activation functions that make non-linearity possible, the convolutional and recurrent architectures that dominate vision and sequence tasks, and the specific applications of ML in cybersecurity that draw together the threads of the whole subject.

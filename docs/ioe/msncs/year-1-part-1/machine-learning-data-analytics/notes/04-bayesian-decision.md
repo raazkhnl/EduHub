@@ -7,7 +7,7 @@ slug: /ioe/msncs/year-1-part-1/machine-learning-data-analytics/notes/ch04
 tags: [msncs, ENCTNS503, notes]
 last_update:
   date: 2026-05-22
-  author: Rajesh Khanal
+  author: RaaZ Khanal
 ---
 
 This chapter shifts the perspective from "find a decision boundary" to "reason about uncertainty." Bayesian decision theory provides the gold-standard answer to classification problems when the underlying probability distributions are known. Real algorithms approximate this ideal — naive Bayes uses simplifying independence assumptions, Bayesian belief networks structure dependencies explicitly, and K-nearest neighbours sidesteps explicit modelling by using the training data directly. The gradient descent method, also covered here, is the optimisation engine that drives most non-closed-form learning algorithms — including the logistic regression and neural networks introduced in Chapter 3.

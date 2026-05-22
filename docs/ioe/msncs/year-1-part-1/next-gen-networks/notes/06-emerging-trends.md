@@ -7,7 +7,7 @@ slug: /ioe/msncs/year-1-part-1/next-gen-networks/notes/ch06
 tags: [msncs, ENCTNS501, notes]
 last_update:
   date: 2026-05-22
-  author: Rajesh Khanal
+  author: RaaZ Khanal
 ---
 
 The earlier chapters covered specific technologies in depth — IPv6, SDN, NFV, 5G, IoT. This final chapter steps back and asks two questions. First: what does the operator who has to deploy these technologies actually face — the migration problem, the security problem, the operational problem? Second: what is coming after these technologies — Named Data Networking, Intent-Based Networking, Quantum Networking, and the spreading use of AI and ML inside the network itself? Some of the topics here are mature enough to deploy; some are still research; the line between the two is one of the things the chapter charts.

@@ -7,7 +7,7 @@ slug: /ioe/msncs/year-1-part-2/elective-i/routing-and-switching/notes/ch04
 tags: [msncs, ENCTNS561, notes]
 last_update:
   date: 2026-05-22
-  author: Rajesh Khanal
+  author: RaaZ Khanal
 ---
 
 The local area network is where users actually connect to the enterprise — the wired and wireless network in offices, branches, campuses, data centres. Layer 2 switching, VLANs, inter-VLAN routing, LAN security, first-hop redundancy, and link aggregation are the operational substance of every modern enterprise LAN. This chapter covers the enterprise LAN architecture, virtual LANs and the VLAN Trunking Protocol, inter-VLAN routing approaches, LAN security mechanisms, load balancing for first-hop redundancy, and link aggregation technologies.

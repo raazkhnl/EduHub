@@ -7,7 +7,7 @@ slug: /ioe/msncs/year-1-part-2/elective-ii/security-and-privacy-in-cloud-computi
 tags: [msncs, ENCTNS571, notes]
 last_update:
   date: 2026-05-22
-  author: Rajesh Khanal
+  author: RaaZ Khanal
 ---
 
 The previous chapter set out the architecture of cloud computing; this chapter takes up the discipline of managing security within that architecture. Security management is a continuous operational function — not just initial configuration but ongoing administration, monitoring, response, and improvement. The cloud context shapes the discipline in specific ways: management standards adapted to cloud, availability management distinct for each service model, access control reframed around identity rather than network location, vulnerability management at cloud scale, and patch and configuration management as continuous processes rather than periodic events. This chapter covers the security-management standards relevant to cloud, the availability-management approaches by service model, the access-control mechanisms, the vulnerability landscape, and the patch and configuration management disciplines.

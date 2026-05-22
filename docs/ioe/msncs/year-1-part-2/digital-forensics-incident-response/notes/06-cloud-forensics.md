@@ -7,7 +7,7 @@ slug: /ioe/msncs/year-1-part-2/digital-forensics-incident-response/notes/ch06
 tags: [msncs, ENCTNS551, notes]
 last_update:
   date: 2026-05-22
-  author: Rajesh Khanal
+  author: RaaZ Khanal
 ---
 
 Cloud computing has reshaped what an organisation's IT infrastructure looks like. The neat boundary of the corporate data centre — physical servers in a known room, controlled by the organisation's own staff — has dissolved into virtual machines, containers, serverless functions, and managed services running on hardware owned and operated by hyperscale cloud providers. For digital forensics, this is a serious shift. The investigator who was used to imaging a physical disk now faces evidence that lives on hardware they do not own, in jurisdictions they cannot enter, under control of providers who follow their own procedures. This chapter covers what cloud forensics is, why it is harder than traditional forensics, and how AWS, Azure, and Google Cloud Platform support forensic work in practice.

@@ -7,7 +7,7 @@ slug: /ioe/msncs/year-2-part-1/elective-iii/generative-ai-and-security/notes/ch0
 tags: [msncs, ENCTNS615, notes]
 last_update:
   date: 2026-05-22
-  author: Rajesh Khanal
+  author: RaaZ Khanal
 ---
 
 The first phase of nearly every cyberattack is reconnaissance — the systematic gathering of information about the target. The same activity from the defensive side is digital footprint analysis — understanding what an organisation exposes to the public internet and what attackers can therefore discover. Generative AI transforms both — automating collection at scale, synthesising disparate sources into coherent intelligence, generating likely passwords, identifying patterns invisible to manual analysis. This chapter examines AI-powered reconnaissance methodologies, the use of OSINT tools enhanced by generative models, digital footprinting automation, and the preventive measures that reduce attack-surface exposure.

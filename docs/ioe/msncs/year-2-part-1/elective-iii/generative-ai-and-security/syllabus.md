@@ -7,7 +7,7 @@ slug: /ioe/msncs/year-2-part-1/elective-iii/generative-ai-and-security/syllabus
 tags: [msncs, ENCTNS615, notes]
 last_update:
   date: 2026-05-22
-  author: Rajesh Khanal
+  author: RaaZ Khanal
 ---
 
 Year I, Part II — MSNCS, IOE Pulchowk, Tribhuvan University. 4 credits.

@@ -7,7 +7,7 @@ slug: /ioe/msncs/year-2-part-1/elective-iv/information-systems-security-professi
 tags: [msncs, INFOSEC-PRO, notes]
 last_update:
   date: 2026-05-22
-  author: Rajesh Khanal
+  author: RaaZ Khanal
 ---
 
 The previous chapters covered current professional practice — the roles, ethics, standards, risk management, leadership, and career development that define information security professionalism today. This final chapter looks ahead. AI in cybersecurity is transforming both attack and defence, with profound implications for professional roles and skill requirements. Cloud governance has evolved from emerging concern to mainstream practice, and continues to evolve as multi-cloud, AI-integrated cloud, and edge computing reshape the landscape. Real cases of professional misconduct illuminate what goes wrong and what could be done differently. The persistent underrepresentation of women and other groups in cybersecurity represents both a justice issue and a practical limitation on access to the full talent pool the field needs. This chapter examines each, with the perspective of the MSc graduate entering a profession that will continue to evolve substantially through their career.

@@ -7,7 +7,7 @@ slug: /ioe/msncs/year-1-part-1/cryptography/notes/ch07
 tags: [msncs, ENCTNS502, notes]
 last_update:
   date: 2026-05-22
-  author: Rajesh Khanal
+  author: RaaZ Khanal
 ---
 
 The previous chapters covered the established foundations — symmetric and asymmetric cryptography, hash functions, PKI, data security, cybersecurity, and data privacy. This final chapter looks forward. It covers the technical and operational directions the field is moving in over the late 2020s: threat intelligence as a defensive discipline, the post-quantum transition that is the most consequential cryptographic event since RSA's invention, homomorphic encryption as the most ambitious attempt to compute on encrypted data, supply-chain security as a response to a decade of upstream compromises, federated learning as the privacy-preserving alternative to centralised AI training, AI/ML as both a defensive tool and a new attack surface, and several other trends shaping the discipline's near future.

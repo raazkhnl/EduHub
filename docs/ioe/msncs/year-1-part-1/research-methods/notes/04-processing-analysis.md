@@ -7,7 +7,7 @@ slug: /ioe/msncs/year-1-part-1/research-methods/notes/ch04
 tags: [msncs, ENCTNS504, notes]
 last_update:
   date: 2026-05-22
-  author: Rajesh Khanal
+  author: RaaZ Khanal
 ---
 
 After data collection, the researcher has piles of raw material — questionnaire responses, instrument logs, interview transcripts, measurements. The data must be processed before any meaningful analysis can be done, and the analysis itself must follow the discipline of statistics rather than impression. This chapter covers the processing operations that prepare data for analysis, the types of analysis available, the role of statistics in research, and the specific descriptive statistics — central tendency, dispersion, skewness, relationship measures, and simple regression — that summarise what the data shows. The chapter is heavy on worked numerical examples because these topics are predominantly numerical.

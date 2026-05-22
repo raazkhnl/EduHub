@@ -7,7 +7,7 @@ slug: /ioe/msncs/year-1-part-1/research-methods/notes/ch03
 tags: [msncs, ENCTNS504, notes]
 last_update:
   date: 2026-05-22
-  author: Rajesh Khanal
+  author: RaaZ Khanal
 ---
 
 Data collection is where research design meets the world. The methods used at this stage decide what evidence the project will have to support its claims. This chapter covers the standard taxonomy of data collection methods used in research generally and in engineering research in particular — the distinction between primary and secondary data, the major techniques for collecting each, the strengths and weaknesses of each technique, and how to decide which to use. The Kothari textbook is the standard reference behind this material; the chapter follows that structure while updating examples for the contemporary Nepali engineering-research context.

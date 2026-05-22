@@ -7,7 +7,7 @@ slug: /ioe/msncs/year-1-part-1/research-methods/notes/ch06
 tags: [msncs, ENCTNS504, notes]
 last_update:
   date: 2026-05-22
-  author: Rajesh Khanal
+  author: RaaZ Khanal
 ---
 
 The previous chapter introduced parametric tests for means, proportions, and variances. This chapter covers two specific tests that recur in research: the **chi-square ($\chi^2$) test**, which extends hypothesis testing to categorical data and to comparisons of frequencies; and **analysis of variance (ANOVA)**, which extends hypothesis testing of means to comparisons of three or more groups simultaneously. Both are workhorses of applied research — most quantitative theses use at least one of them. The chapter is heavy on worked numerical examples.

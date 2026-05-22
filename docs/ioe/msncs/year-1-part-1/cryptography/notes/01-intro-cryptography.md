@@ -7,7 +7,7 @@ slug: /ioe/msncs/year-1-part-1/cryptography/notes/ch01
 tags: [msncs, ENCTNS502, notes]
 last_update:
   date: 2026-05-22
-  author: Rajesh Khanal
+  author: RaaZ Khanal
 ---
 
 Cryptography is the science of secret writing — the discipline that lets two parties communicate so that an adversary listening on the channel cannot read the message, cannot alter it without being detected, and cannot impersonate either party. It is older than the alphabet most languages use today, and it is more important to a modern digital economy than any other branch of mathematics in practical use. Every HTTPS connection, every eSewa payment, every Khalti OTP, every WhatsApp message, every Telegram channel, every banking-app login, every signed driver update on a Windows laptop in Nepal rests on cryptography. This chapter establishes the field — where it came from, the vocabulary that the rest of the subject depends on, the foundational principle (Kerckhoff's law) under which modern cryptosystems are designed, the special class of zero-knowledge proofs, the four classical goals the field is trying to achieve, the classical ciphers that show what fails when those goals are pursued naively, and the cryptanalysis techniques used to break them.

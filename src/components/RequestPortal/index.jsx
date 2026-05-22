@@ -18,7 +18,7 @@ import styles from './styles.module.css';
 export default function RequestPortal({
   formUrl,
   height = 720,
-  fallbackEmail = 'raju@astha.ai',
+  fallbackEmail = 'raazkhnl@gmail.com',
   title = 'Request a resource',
   subtitle = 'Missing a syllabus, lab manual, or past paper? Tell us what you need — most requests are filled within a week.',
 }) {

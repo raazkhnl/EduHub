@@ -7,7 +7,7 @@ slug: /ioe/msncs/year-1-part-1/research-methods/notes/ch05
 tags: [msncs, ENCTNS504, notes]
 last_update:
   date: 2026-05-22
-  author: Rajesh Khanal
+  author: RaaZ Khanal
 ---
 
 Most quantitative research ends with a question of the form "is this difference real, or could it have arisen by chance?" Hypothesis testing is the formal procedure that answers such questions. The framework was developed in the early twentieth century by R.A. Fisher, Jerzy Neyman, and Egon Pearson; refined in countless statistics textbooks since; and remains the standard of practice in engineering, biomedical, social science, and policy research. This chapter covers the framework, the standard tests, and the typical traps. The chapter is heavily numerical, with worked examples that demonstrate the standard tests on data shaped like real research problems in Nepal.

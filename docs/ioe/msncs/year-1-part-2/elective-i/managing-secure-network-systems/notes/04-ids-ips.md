@@ -7,7 +7,7 @@ slug: /ioe/msncs/year-1-part-2/elective-i/managing-secure-network-systems/notes/
 tags: [msncs, ENCTNS562, notes]
 last_update:
   date: 2026-05-22
-  author: Rajesh Khanal
+  author: RaaZ Khanal
 ---
 
 If the firewall is the gatekeeper deciding what traffic crosses zone boundaries, the IDS/IPS is the watcher and the responder — observing traffic that the firewall permits, looking for indicators of attack, and (in the IPS form) blocking what it identifies as malicious. The two technologies are complementary: the firewall enforces policy on allowed flows; the IDS/IPS detects attacks within those allowed flows. This chapter covers IDS and IPS fundamentals, the inline and promiscuous deployment models, the signature-based and anomaly-based detection approaches, and the deployment strategies that determine where and how these systems are positioned in a network.

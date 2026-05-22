@@ -43,7 +43,7 @@ write_mdx() {
     echo "tags: [msncs, $code, notes]"
     echo "last_update:"
     echo "  date: $LAST_UPDATE_DATE"
-    echo "  author: Rajesh Khanal"
+    echo "  author: RaaZ Khanal"
     echo "---"
     echo ""
     # Source files start with `# Chapter N — Title` on line 1.

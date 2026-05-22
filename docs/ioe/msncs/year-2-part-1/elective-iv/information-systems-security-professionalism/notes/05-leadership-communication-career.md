@@ -7,7 +7,7 @@ slug: /ioe/msncs/year-2-part-1/elective-iv/information-systems-security-professi
 tags: [msncs, INFOSEC-PRO, notes]
 last_update:
   date: 2026-05-22
-  author: Rajesh Khanal
+  author: RaaZ Khanal
 ---
 
 The technical and procedural foundations matter, but they are not sufficient for impact. The security professional who masters frameworks but cannot lead people, communicate effectively, or sustain career growth limits their contribution. This chapter takes up the human and career dimensions of the profession: leading security teams; building organisational security culture beyond the security team itself; leading incident response when systems and people are stressed; and developing one's own career through deliberate planning and continuing professional development. The skills are less codified than technical security knowledge but matter as much for the professional who aims for sustained contribution and growth over a multi-decade career.

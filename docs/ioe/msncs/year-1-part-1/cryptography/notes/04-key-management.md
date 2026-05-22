@@ -7,7 +7,7 @@ slug: /ioe/msncs/year-1-part-1/cryptography/notes/ch04
 tags: [msncs, ENCTNS502, notes]
 last_update:
   date: 2026-05-22
-  author: Rajesh Khanal
+  author: RaaZ Khanal
 ---
 
 Cryptography assumes the right keys are in the right hands. Symmetric ciphers assume both parties have the same secret. Asymmetric ciphers assume the verifier has the signer's authentic public key. Without working answers to "how does Alice get the right key for Bob?" and "how do we trust this key really belongs to who it claims to?" the cryptographic constructions of the previous chapters are useless. Key management is the operational discipline that answers these questions. This chapter focuses on the dominant deployed answer for public-key authentication — **Public Key Infrastructure (PKI)** — and on the certificate-based trust systems that secure most of the modern Internet.

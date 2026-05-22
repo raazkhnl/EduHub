@@ -20,9 +20,18 @@
 }
 .listBody {
   border: 1px solid var(--ah-rule);
-  border-radius: var(--ah-radius);
+  border-radius: 10px;
   background: var(--ah-paper-elev);
   overflow: hidden;
+  /* Premium card lift — a barely-there shadow + inset highlight. */
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.04) inset,
+    0 18px 40px -28px rgba(15, 20, 25, 0.18);
+}
+:global([data-theme='dark']) .listBody {
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.04) inset,
+    0 30px 60px -30px rgba(0, 0, 0, 0.7);
 }
 
 .item {
@@ -82,32 +91,50 @@
   color: var(--ah-ink);
   letter-spacing: -0.005em;
 }
+/* Chip — premium category badge. Tiny, monospace, hairline border, soft
+   coloured fill. Defaults to the neutral "course" variant. */
 .badge {
-  font-family: var(--ah-font-sans);
+  font-family: var(--ah-font-mono);
   font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 0.08em;
+  font-weight: 600;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
-  padding: 0.18em 0.55em;
+  padding: 0.22em 0.65em;
   border-radius: 999px;
-  background: var(--ah-secondary-soft);
-  color: var(--ah-secondary);
+  background: var(--ah-chip-course-bg);
+  color: var(--ah-chip-course-fg);
+  border: 1px solid var(--ah-chip-course-border);
+  white-space: nowrap;
 }
 .badge[data-variant='core'] {
-  background: var(--ah-accent-soft);
-  color: var(--ah-accent);
+  background: var(--ah-chip-core-bg);
+  color: var(--ah-chip-core-fg);
+  border-color: var(--ah-chip-core-border);
 }
 .badge[data-variant='elective'] {
-  background: var(--ah-secondary-soft);
-  color: var(--ah-secondary);
+  background: var(--ah-chip-elective-bg);
+  color: var(--ah-chip-elective-fg);
+  border-color: var(--ah-chip-elective-border);
 }
 .badge[data-variant='thesis'] {
-  background: rgba(29, 78, 216, 0.1);
-  color: var(--ah-info);
+  background: var(--ah-chip-thesis-bg);
+  color: var(--ah-chip-thesis-fg);
+  border-color: var(--ah-chip-thesis-border);
+}
+.badge[data-variant='project'] {
+  background: var(--ah-chip-project-bg);
+  color: var(--ah-chip-project-fg);
+  border-color: var(--ah-chip-project-border);
+}
+.badge[data-variant='course'] {
+  background: var(--ah-chip-course-bg);
+  color: var(--ah-chip-course-fg);
+  border-color: var(--ah-chip-course-border);
 }
 .badge[data-variant='lab'] {
-  background: rgba(21, 128, 61, 0.1);
-  color: var(--ah-good);
+  background: var(--ah-chip-core-bg);
+  color: var(--ah-chip-core-fg);
+  border-color: var(--ah-chip-core-border);
 }
 
 .desc {

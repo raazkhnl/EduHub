@@ -7,7 +7,7 @@ slug: /ioe/msncs/year-1-part-2/elective-i/intelligent-networking/notes/ch03
 tags: [msncs, ENCTNS565, notes]
 last_update:
   date: 2026-05-22
-  author: Rajesh Khanal
+  author: RaaZ Khanal
 ---
 
 The internet's foundational architecture is host-centric. To get content, a client opens a connection to a specific host at a specific IP address. The host then sends the content. This worked when networking was about reaching specific computers; it fits awkwardly when the goal is to get specific content regardless of where it lives. Data Centric Networking proposes a different model — the network speaks in terms of named content, not addressed hosts. Clients ask for a name; the network returns the content from wherever it can most efficiently. This chapter covers DCN concepts and architectural alternatives, the contrast with host-centric networking, the specific Named Data Networking architecture, benefits and challenges, and the substantial body of AI/ML work applying intelligence to caching, content discovery, routing, and secure distribution in DCN environments.

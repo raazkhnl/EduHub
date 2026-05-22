@@ -7,7 +7,7 @@ slug: /ioe/msncs/year-2-part-1/elective-iii/generative-ai-and-security/notes/ch0
 tags: [msncs, ENCTNS615, notes]
 last_update:
   date: 2026-05-22
-  author: Rajesh Khanal
+  author: RaaZ Khanal
 ---
 
 The previous chapters covered specific applications of generative AI in cybersecurity — reconnaissance, penetration testing, threat intelligence, social engineering, malware, wireless. This chapter takes up the operational disciplines that integrate everything: advanced security operations with AI-augmented SIEM and SOC workflows, building resilient AI systems against adversarial attacks (a critical concern as defenders increasingly depend on AI), AI in incident response and forensics, and the risk-management frameworks (NIST AI RMF, ISO 27001 and emerging ISO 42001) that help organisations govern AI deployments responsibly. The 10-mark weight reflects the scope and depth — this is where the operational reality of AI-augmented cybersecurity is made.

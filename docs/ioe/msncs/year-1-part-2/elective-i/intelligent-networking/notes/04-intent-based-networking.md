@@ -7,7 +7,7 @@ slug: /ioe/msncs/year-1-part-2/elective-i/intelligent-networking/notes/ch04
 tags: [msncs, ENCTNS565, notes]
 last_update:
   date: 2026-05-22
-  author: Rajesh Khanal
+  author: RaaZ Khanal
 ---
 
 The day-to-day work of network engineers has historically been intermediate-language work — taking high-level business requirements ("our finance department needs access to the new financial system") and translating them into low-level device configurations (VLAN definitions, ACL entries, routing protocol parameters, firewall rules, QoS markings). The translation is error-prone, time-consuming, and dependent on the engineer's knowledge of both the requirements and the implementation. Intent-Based Networking proposes that the network itself perform the translation — the operator expresses intent in business terms, and the network figures out the rest. This chapter covers IBN concepts and architecture, the contrast with traditional networking, the role of ML and NLP in intent processing, automated threat detection in IBN context, integration with SDN and NFV, and the application to 5G/6G network slicing where IBN is becoming foundational.

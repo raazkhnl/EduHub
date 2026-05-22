@@ -7,7 +7,7 @@ slug: /ioe/msncs/year-1-part-2/elective-i/managing-secure-network-systems/notes/
 tags: [msncs, ENCTNS562, notes]
 last_update:
   date: 2026-05-22
-  author: Rajesh Khanal
+  author: RaaZ Khanal
 ---
 
 Network security is the discipline of protecting the information and services that move across networks, and the infrastructure that carries them. Every keystroke at a Kathmandu bank, every transaction on eSewa or Khalti, every message on WhatsApp, every government e-service login — all depend on protocols and devices working together to provide confidentiality, integrity, and availability. When the protocols are insecure or the devices misconfigured, the consequences range from inconvenience to catastrophe: lost data, frozen banking, leaked health records, manipulated official documents. This chapter introduces the foundations of network security — the TCP/IP protocols and their weaknesses, the secure protocols that protect modern traffic, the certificates that anchor trust, the security goals that drive every design decision, the access-control mechanisms that gate who can do what, and the threat landscape and risk management approach that informs every defensive choice.

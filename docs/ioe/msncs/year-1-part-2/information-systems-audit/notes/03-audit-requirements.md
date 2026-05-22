@@ -7,7 +7,7 @@ slug: /ioe/msncs/year-1-part-2/information-systems-audit/notes/ch03
 tags: [msncs, ENCTNS552, notes]
 last_update:
   date: 2026-05-22
-  author: Rajesh Khanal
+  author: RaaZ Khanal
 ---
 
 Every audit starts with the question of what to examine and why. The answers come from the risk facing the organisation, the control objectives that respond to that risk, the audit objectives that translate control objectives into things the audit will test, and the evidence the audit will gather. This chapter develops these foundations: how risk is analysed, what control objectives and audit objectives look like, how effectiveness and efficiency differ, what counts as information-systems abuse, how assets are safeguarded, how evidence is collected and evaluated, and how logs and audit trails serve as evidence.

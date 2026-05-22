@@ -7,7 +7,7 @@ slug: /ioe/msncs/year-1-part-1/cryptography/notes/ch03
 tags: [msncs, ENCTNS502, notes]
 last_update:
   date: 2026-05-22
-  author: Rajesh Khanal
+  author: RaaZ Khanal
 ---
 
 A cryptographic hash function is the third great primitive of modern cryptography, alongside symmetric and asymmetric ciphers. Where ciphers protect data in motion, hash functions provide the fingerprints that authenticate the data — they let two parties verify they are looking at the same content, let a bank verify a password without storing it, let a blockchain link block to block in an unforgeable chain, and let a digital signature scheme compress an arbitrary-length document into a fixed-size input for the asymmetric operation. This chapter defines what a cryptographic hash function is, lists the deployed ones and their properties, surveys the attack classes that have broken successive hash designs, and walks through the major application areas.

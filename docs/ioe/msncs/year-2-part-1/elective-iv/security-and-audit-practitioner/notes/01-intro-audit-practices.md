@@ -7,7 +7,7 @@ slug: /ioe/msncs/year-2-part-1/elective-iv/security-and-audit-practitioner/notes
 tags: [msncs, ENCTNS625, notes]
 last_update:
   date: 2026-05-22
-  author: Rajesh Khanal
+  author: RaaZ Khanal
 ---
 
 This subject takes the security and audit practitioner's perspective — the working professional who plans, executes, and reports IS audits as a primary activity. Information systems audit was treated as a discipline in ENCTNS552 and as a professional role in the Information Systems Security Professionalism subject. Here the focus is operational — the methodologies, standards, audit types, and risk-based planning approaches that the practising IS auditor uses day-to-day, with emphasis on the practice rather than the theory. The course aligns closely with the ISACA Information Technology Audit Framework (ITAF) and the body of knowledge tested in CISA, the most-recognised IS audit certification. The Nepali context — NRB-regulated banks, ISO 27001 certified entities, government audits through OAG, and the growing IS audit consulting market — frames the practical examples.

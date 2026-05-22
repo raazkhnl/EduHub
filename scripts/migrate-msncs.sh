@@ -39,7 +39,7 @@ migrate_chapter() {
     printf 'description: "Chapter %d of %s (%s)."\n' "$position" "$subject_name" "$subject_code"
     printf 'slug: /ioe/msncs/year-1-part-1/%s/notes/ch%s\n' "$subject_slug" "$number"
     printf 'tags: [msncs, year-1-part-1, %s, chapter, notes]\n' "$(printf '%s' "$subject_code" | tr '[:upper:]' '[:lower:]')"
-    printf 'last_update:\n  date: %s\n  author: Rajesh Khanal\n' "$(date -u +%Y-%m-%d)"
+    printf 'last_update:\n  date: %s\n  author: RaaZ Khanal\n' "$(date -u +%Y-%m-%d)"
     printf -- '---\n\n'
     # Skip the original H1 — frontmatter `title` becomes the page H1.
     tail -n +2 "$src"

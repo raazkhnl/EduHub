@@ -7,7 +7,7 @@ slug: /ioe/msncs/year-1-part-2/information-systems-audit/notes/ch01
 tags: [msncs, ENCTNS552, notes]
 last_update:
   date: 2026-05-22
-  author: Rajesh Khanal
+  author: RaaZ Khanal
 ---
 
 Information systems run modern organisations. Banking, telecommunications, government services, retail, healthcare — every sector depends on computer systems that store data, process transactions, and connect people. When something goes wrong with those systems — a breach, a fraud, a regulatory violation, a system failure — the cost is borne by the organisation, its customers, and sometimes the public. Information systems audit is the discipline that examines whether these systems are working as they should: securely, reliably, in compliance with regulation, and aligned with business objectives. This chapter introduces the discipline. It defines what an information systems audit is, who an information systems auditor is, what legal requirements drive the audit, what the audit covers, and the major standards and frameworks that shape the work. The chapter is the foundation; every later chapter rests on the concepts and frameworks introduced here.

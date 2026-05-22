@@ -7,7 +7,7 @@ slug: /ioe/msncs/year-2-part-1/elective-iii/generative-ai-and-security/notes/ch0
 tags: [msncs, ENCTNS615, notes]
 last_update:
   date: 2026-05-22
-  author: Rajesh Khanal
+  author: RaaZ Khanal
 ---
 
 Social engineering — manipulating people to divulge information or take actions that compromise security — has always been among the most effective attack vectors. Phishing, the email-based variant, is the most common entry point for cyberattacks affecting organisations of every size. Generative AI has transformed this landscape: what previously required either generic templates or skilled human writers can now be produced at scale, in any language, customised for any target, in seconds. The defensive response combines technical controls, organisational practices, and user education adapted to the new threat reality. This chapter examines AI-generated phishing and spear-phishing, AI-crafted social engineering more broadly, and the defensive measures that mitigate these threats.

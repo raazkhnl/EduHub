@@ -7,7 +7,7 @@ slug: /ioe/msncs/year-1-part-2/elective-i/routing-and-switching/notes/ch05
 tags: [msncs, ENCTNS561, notes]
 last_update:
   date: 2026-05-22
-  author: Rajesh Khanal
+  author: RaaZ Khanal
 ---
 
 If the LAN connects devices inside a single building or campus, the wide-area network connects sites across geographic distance — branch offices, remote workers, partner organisations, cloud regions. For a Nepali commercial bank with 200 branches across the country, the WAN is what makes branch banking possible. For a manufacturer with offices in Kathmandu and a plant in Birgunj, the WAN carries the operational traffic. For a software firm whose team works from home offices distributed across districts, the WAN is the secure-remote-access infrastructure that lets them reach internal systems. This chapter covers the enterprise WAN architecture, network address translation that connects private networks to the public internet, the VPN technologies that secure traffic over public infrastructure, the formulation of VPN policy, and the monitoring and analytics that keep the WAN visible and manageable.

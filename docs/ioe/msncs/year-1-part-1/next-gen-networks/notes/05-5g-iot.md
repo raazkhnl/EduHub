@@ -7,7 +7,7 @@ slug: /ioe/msncs/year-1-part-1/next-gen-networks/notes/ch05
 tags: [msncs, ENCTNS501, notes]
 last_update:
   date: 2026-05-22
-  author: Rajesh Khanal
+  author: RaaZ Khanal
 ---
 
 The fifth generation of cellular and the Internet of Things share the same chapter because they share the same business case. The unit economics of cellular for the last two decades came from billing human users for voice and data. The unit economics that 5G needs to justify the capital cost of its rollout come from billing *things* — sensors, vehicles, robots, smart meters, drones, medical devices — for connectivity. The IoT side of the chapter is the demand; the 5G side is the supply that 4G could not provide. Edge computing and cyber-physical systems are the architectural and application patterns that connect the two.

@@ -7,7 +7,7 @@ slug: /ioe/msncs/year-1-part-1/research-methods/notes/ch01
 tags: [msncs, ENCTNS504, notes]
 last_update:
   date: 2026-05-22
-  author: Rajesh Khanal
+  author: RaaZ Khanal
 ---
 
 Research is the structured pursuit of new knowledge. In an engineering discipline like network and cybersecurity, this means the disciplined inquiry that produces new algorithms, new architectures, new threat models, new performance bounds, and new evidence about how systems behave. This chapter lays the foundation for the rest of the subject. It defines what research is, why it is done, how it is distinguished from other forms of inquiry, what types of research exist and when each applies, and how a research project is set up — the questions, problems, objectives, hypotheses, and designs that make the difference between disciplined inquiry and aimless effort. The mathematical apparatus is light at this stage. The conceptual apparatus is heavy and matters for every chapter that follows.

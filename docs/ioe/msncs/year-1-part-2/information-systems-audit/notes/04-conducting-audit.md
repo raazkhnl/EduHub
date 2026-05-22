@@ -7,7 +7,7 @@ slug: /ioe/msncs/year-1-part-2/information-systems-audit/notes/ch04
 tags: [msncs, ENCTNS552, notes]
 last_update:
   date: 2026-05-22
-  author: Rajesh Khanal
+  author: RaaZ Khanal
 ---
 
 This chapter walks through the actual practice of an IS audit from planning to reporting. The previous chapters established what an audit is, what controls and risks it examines, and what evidence it relies on. This chapter shows how all of that comes together into an audit engagement that produces a defensible opinion and useful findings. As the most-weighted chapter in the syllabus (12 marks), it covers the full lifecycle: audit programmes and plans, audit procedures and approaches, system understanding, compliance and substantive testing, audit tools and techniques, sampling, documentation and reporting, work-planning, process flow, risk-based auditing, and risk management strategy.

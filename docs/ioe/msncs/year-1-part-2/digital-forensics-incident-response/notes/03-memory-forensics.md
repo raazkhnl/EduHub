@@ -7,7 +7,7 @@ slug: /ioe/msncs/year-1-part-2/digital-forensics-incident-response/notes/ch03
 tags: [msncs, ENCTNS551, notes]
 last_update:
   date: 2026-05-22
-  author: Rajesh Khanal
+  author: RaaZ Khanal
 ---
 
 Disk forensics recovers what was written to persistent storage. Memory forensics recovers what was in RAM — the runtime state of the system at the moment of acquisition. Many of the most-valuable forensic findings exist only in memory: running processes, network connections, decrypted data, cryptographic keys, fileless malware that never touches disk, recent commands typed by an attacker. A disk image alone misses all of this. This chapter covers what memory contains, why it matters, how it is acquired, and how the standard tools — Volatility 3 and Rekall — extract evidence from it.

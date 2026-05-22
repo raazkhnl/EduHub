@@ -7,7 +7,7 @@ slug: /ioe/msncs/year-1-part-2/digital-forensics-incident-response/notes/ch02
 tags: [msncs, ENCTNS551, notes]
 last_update:
   date: 2026-05-22
-  author: Rajesh Khanal
+  author: RaaZ Khanal
 ---
 
 The disk — or, today, the SSD, NVMe drive, USB stick, SD card, or virtual disk image — is where most digital evidence lives. Files, deleted files, system artefacts, logs, browser history, application data, registry entries, slack space, unallocated space. The forensic examiner's job is to acquire all of this without altering any of it, then sift through it for evidence relevant to the case. This chapter covers how storage devices and filesystems are organised, how forensic images are made, how integrity is maintained, how deleted data is recovered, and how the standard tools — Autopsy, SleuthKit, FTK — support the work.

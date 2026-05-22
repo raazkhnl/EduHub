@@ -7,7 +7,7 @@ slug: /ioe/msncs/year-1-part-2/elective-i/managing-secure-network-systems/notes/
 tags: [msncs, ENCTNS562, notes]
 last_update:
   date: 2026-05-22
-  author: Rajesh Khanal
+  author: RaaZ Khanal
 ---
 
 The VPN technologies covered briefly in the Routing and Switching subject are revisited here from the operational and management perspective — the focus of this subject. A VPN deployed but unmanaged drifts into insecurity within months: stale users, outdated cryptography, exception-piled-on-exception rule sets, untested failover. This chapter walks through VPN concepts and technologies, the distinction between tunnel and transparent modes, the design and operation of site-to-site and remote-access VPNs, the technology choices among IPsec, SSL, and MPLS VPNs, GRE tunnelling, and the operational concepts of interesting-traffic definition and split tunnelling.

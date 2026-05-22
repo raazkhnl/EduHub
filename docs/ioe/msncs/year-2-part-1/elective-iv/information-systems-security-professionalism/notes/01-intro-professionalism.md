@@ -7,7 +7,7 @@ slug: /ioe/msncs/year-2-part-1/elective-iv/information-systems-security-professi
 tags: [msncs, INFOSEC-PRO, notes]
 last_update:
   date: 2026-05-22
-  author: Rajesh Khanal
+  author: RaaZ Khanal
 ---
 
 Information security has become a defined profession with its own body of knowledge, codes of ethics, certifications, career paths, and standards of conduct. The technical training across the MSNCS programme provides the substance — cryptography, networks, forensics, audit, cloud, generative AI, and the rest. This subject takes up a different dimension: how the individual practitioner operates as a professional. The roles practitioners fill, the ethical commitments they accept, the certifications that organise their career development, and the standards of behaviour expected by employers, clients, regulators, and peers. The five subtopics of this chapter establish the foundation — cybersecurity as a recognised profession, the roles and responsibilities within it, the codes of ethics that bind practitioners, the certification landscape, and the professional behaviour expected in daily practice.

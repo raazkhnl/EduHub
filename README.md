@@ -154,7 +154,7 @@ A `false` makes the component render `null` — no code change required.
 
 ## Licence
 
-Original site content is **CC BY 4.0** — © Rajesh Khanal
+Original site content is **CC BY 4.0** — © RaaZ Khanal
 ([@raazkhnl](https://github.com/raazkhnl)). See [LICENSE](./LICENSE) for the
 full notice. Third-party content (syllabus extracts, past papers) retains its
 original licence; we link to the source where required.
