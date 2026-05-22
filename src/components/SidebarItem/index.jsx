@@ -38,21 +38,24 @@ export default function SidebarItem({
     : { to: href };
 
   return (
-    <Wrapper
-      {...wrapperProps}
-      className={clsx(styles.item, active && styles.active, className)}
-    >
+    <Wrapper {...wrapperProps} className={clsx(styles.item, active && styles.active, className)}>
       <div className={styles.main}>
         <div className={styles.heading}>
           {code && <span className={styles.code}>{code}</span>}
           <span className={styles.title}>{title}</span>
-          {badge && <span className={styles.badge} data-variant={badge.toLowerCase()}>{badge}</span>}
+          {badge && (
+            <span className={styles.badge} data-variant={badge.toLowerCase()}>
+              {badge}
+            </span>
+          )}
         </div>
         {description && <p className={styles.desc}>{description}</p>}
       </div>
       <div className={styles.tail}>
         {meta && <span className={styles.meta}>{meta}</span>}
-        <span className={styles.chev} aria-hidden="true">→</span>
+        <span className={styles.chev} aria-hidden="true">
+          →
+        </span>
       </div>
     </Wrapper>
   );
@@ -65,7 +68,7 @@ export function SidebarItemList({ children, title, hint }) {
       {(title || hint) && (
         <header className={styles.listHead}>
           {title && <h3 className={styles.listTitle}>{title}</h3>}
-          {hint  && <p className={styles.listHint}>{hint}</p>}
+          {hint && <p className={styles.listHint}>{hint}</p>}
         </header>
       )}
       <div className={styles.listBody}>{children}</div>

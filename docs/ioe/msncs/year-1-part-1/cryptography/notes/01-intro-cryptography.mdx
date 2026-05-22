@@ -1,15 +1,14 @@
 ---
-title: "Chapter 1 — Introduction to Cryptography"
-sidebar_label: "Ch 01 — Introduction to Cryptography"
+title: 'Chapter 1 — Introduction to Cryptography'
+sidebar_label: 'Ch 01 — Introduction to Cryptography'
 sidebar_position: 1
-description: "Chapter 1 of Cryptography and Data Security (ENCTNS502)."
+description: 'Chapter 1 of Cryptography and Data Security (ENCTNS502).'
 slug: /ioe/msncs/year-1-part-1/cryptography/notes/ch01
 tags: [msncs, year-1-part-1, enctns502, chapter, notes]
 last_update:
   date: 2026-05-21
   author: Rajesh Khanal
 ---
-
 
 Cryptography is the science of secret writing — the discipline that lets two parties communicate so that an adversary listening on the channel cannot read the message, cannot alter it without being detected, and cannot impersonate either party. It is older than the alphabet most languages use today, and it is more important to a modern digital economy than any other branch of mathematics in practical use. Every HTTPS connection, every eSewa payment, every Khalti OTP, every WhatsApp message, every Telegram channel, every banking-app login, every signed driver update on a Windows laptop in Nepal rests on cryptography. This chapter establishes the field — where it came from, the vocabulary that the rest of the subject depends on, the foundational principle (Kerckhoff's law) under which modern cryptosystems are designed, the special class of zero-knowledge proofs, the four classical goals the field is trying to achieve, the classical ciphers that show what fails when those goals are pursued naively, and the cryptanalysis techniques used to break them.
 
@@ -25,7 +24,7 @@ The first cipher named after its inventor is the **Caesar cipher**, used by Juli
 
 The Arab scholar **al-Kindi**, working in 9th-century Baghdad, wrote the first known treatise on cryptanalysis. He observed that letters in any natural language appear with characteristic frequencies — `E` is the most common letter in English, `T` the second most common — and that a substitution cipher preserves these frequencies. Counting letter frequencies in the ciphertext therefore reveals the substitution. This is **frequency analysis**, and it broke the Caesar cipher and every monoalphabetic substitution that followed.
 
-The European Renaissance produced the **polyalphabetic cipher**, defended by Alberti (1467), refined by Trithemius and finally by Blaise de Vigenère in 1586. The Vigenère cipher uses a keyword to choose a different Caesar shift for each successive letter of the plaintext, defeating simple frequency analysis. It was called the *chiffre indéchiffrable* — the unbreakable cipher — for nearly three centuries. Then in 1854 Charles Babbage broke it (his work was kept secret), and independently in 1863 Friedrich Kasiski published the method. Frequency analysis still worked, just on each position of the keyword's cycle separately.
+The European Renaissance produced the **polyalphabetic cipher**, defended by Alberti (1467), refined by Trithemius and finally by Blaise de Vigenère in 1586. The Vigenère cipher uses a keyword to choose a different Caesar shift for each successive letter of the plaintext, defeating simple frequency analysis. It was called the _chiffre indéchiffrable_ — the unbreakable cipher — for nearly three centuries. Then in 1854 Charles Babbage broke it (his work was kept secret), and independently in 1863 Friedrich Kasiski published the method. Frequency analysis still worked, just on each position of the keyword's cycle separately.
 
 The 19th century also gave us the **Playfair cipher** (Charles Wheatstone, 1854), used by the British in the Boer War and the First World War. The cipher operated on pairs of letters via a 5×5 grid, partially obscuring single-letter frequencies. The 1880s saw the first treatments of cryptography as a mathematical subject, including **Kerckhoffs's principle** (1883), which we cover in Section 1.3.
 
@@ -41,11 +40,11 @@ The Allies had their own machines — the British **TypeX**, the American **SIGA
 
 Three milestones define the modern era.
 
-**Shannon, 1949.** Claude Shannon's paper *Communication Theory of Secrecy Systems* gave cryptography a mathematical foundation. Shannon defined **perfect secrecy** (the ciphertext gives no information about the plaintext), proved that perfect secrecy requires a key as long as the message (the one-time pad), and introduced **confusion** and **diffusion** as the two design principles for practical ciphers.
+**Shannon, 1949.** Claude Shannon's paper _Communication Theory of Secrecy Systems_ gave cryptography a mathematical foundation. Shannon defined **perfect secrecy** (the ciphertext gives no information about the plaintext), proved that perfect secrecy requires a key as long as the message (the one-time pad), and introduced **confusion** and **diffusion** as the two design principles for practical ciphers.
 
 **The publication of DES, 1977.** The US National Bureau of Standards (now NIST) published the **Data Encryption Standard**, the first publicly specified, widely deployed cipher. DES used a 56-bit key and a 64-bit block, with a structure (the Feistel network) that became the template for the next two decades of block-cipher design. Cryptography moved from a military and diplomatic secret to a public engineering discipline.
 
-**Public-key cryptography, 1976.** Whitfield Diffie and Martin Hellman's paper *New Directions in Cryptography* proposed that two parties could agree on a shared secret over a public channel — without ever exchanging it. The construction (Diffie-Hellman key exchange) was the first published example. Ron Rivest, Adi Shamir, and Leonard Adleman followed in 1977 with RSA, the first practical public-key encryption and signature system. These ideas had been independently discovered at GCHQ in the UK by James Ellis, Clifford Cocks, and Malcolm Williamson between 1969 and 1973, but their work was classified until 1997. The 1976–77 breakthrough turned cryptography into something that could secure commerce, banking, and consumer software, not just military communications.
+**Public-key cryptography, 1976.** Whitfield Diffie and Martin Hellman's paper _New Directions in Cryptography_ proposed that two parties could agree on a shared secret over a public channel — without ever exchanging it. The construction (Diffie-Hellman key exchange) was the first published example. Ron Rivest, Adi Shamir, and Leonard Adleman followed in 1977 with RSA, the first practical public-key encryption and signature system. These ideas had been independently discovered at GCHQ in the UK by James Ellis, Clifford Cocks, and Malcolm Williamson between 1969 and 1973, but their work was classified until 1997. The 1976–77 breakthrough turned cryptography into something that could secure commerce, banking, and consumer software, not just military communications.
 
 Three further milestones from 1990 to the present:
 
@@ -66,7 +65,7 @@ The literature uses fixed names for the parties in any cryptographic scenario:
 - **Alice** — the sender of a message.
 - **Bob** — the intended recipient.
 - **Eve** — a passive eavesdropper who listens but does not modify.
-- **Mallory** — an active attacker, the *malicious* adversary, who can also modify, inject, and delete messages.
+- **Mallory** — an active attacker, the _malicious_ adversary, who can also modify, inject, and delete messages.
 - **Trent** — a trusted third party.
 - **Carol, Dave** — additional honest parties in multi-party scenarios.
 
@@ -74,7 +73,7 @@ These names are standard in textbooks and academic papers. A descriptive answer 
 
 ### Plaintext, ciphertext, and the encryption function
 
-*The plaintext is the message in its original, readable form. The ciphertext is the same message after it has been transformed by an encryption algorithm. The encryption function takes a plaintext and a key and produces a ciphertext; the decryption function takes a ciphertext and a key and recovers the plaintext.*
+_The plaintext is the message in its original, readable form. The ciphertext is the same message after it has been transformed by an encryption algorithm. The encryption function takes a plaintext and a key and produces a ciphertext; the decryption function takes a ciphertext and a key and recovers the plaintext._
 
 Formally:
 
@@ -86,7 +85,7 @@ where $P$ is the plaintext, $C$ is the ciphertext, $K$ is the key, $E$ is the en
 
 ### Symmetric vs asymmetric keys
 
-*A symmetric (or secret-key) cryptosystem uses the same key for encryption and decryption. An asymmetric (or public-key) cryptosystem uses a pair of related keys — a public key, which anyone may know, and a private key, which only the owner holds.*
+_A symmetric (or secret-key) cryptosystem uses the same key for encryption and decryption. An asymmetric (or public-key) cryptosystem uses a pair of related keys — a public key, which anyone may know, and a private key, which only the owner holds._
 
 In a symmetric system, the key must be shared between Alice and Bob before they communicate. The challenge is how to share it securely. In an asymmetric system, Alice can encrypt a message to Bob using Bob's public key, which she can look up freely; only Bob's private key can decrypt it.
 
@@ -102,7 +101,7 @@ Block ciphers are more common in practice because they support a wider range of 
 
 ### Keys, key space, and key length
 
-*The key space of a cryptosystem is the set of all possible keys. The key length, expressed in bits, determines the size of the key space — a $k$-bit key gives $2^k$ possible keys.*
+_The key space of a cryptosystem is the set of all possible keys. The key length, expressed in bits, determines the size of the key space — a $k$-bit key gives $2^k$ possible keys._
 
 Key length matters because the simplest attack on any cryptosystem is to try every possible key — **brute force**. A 56-bit key (DES) gives $2^{56} \approx 7.2 \times 10^{16}$ keys; modern hardware can search this space in hours. A 128-bit key gives $2^{128} \approx 3.4 \times 10^{38}$ keys; even with all of humanity's computing power, this would take longer than the age of the universe.
 
@@ -135,14 +134,14 @@ A protocol can be secure only if its underlying schemes are secure, and the sche
 - **MAC (Message Authentication Code)** — a short tag computed from a message and a shared secret, used to verify authenticity and integrity. HMAC is the standard construction.
 - **Digital signature** — the asymmetric analogue of a MAC; Alice signs a message with her private key, anyone can verify with her public key.
 - **One-way function** — a function easy to compute in one direction, computationally infeasible to invert. Hash functions and public-key operations both rest on one-way functions.
-- **Trapdoor function** — a one-way function that is easy to invert *if* you have a secret (the trapdoor). RSA is built on a trapdoor function.
+- **Trapdoor function** — a one-way function that is easy to invert _if_ you have a secret (the trapdoor). RSA is built on a trapdoor function.
 - **Negligible probability** — a probability that decreases faster than any inverse polynomial in the security parameter. In modern cryptography, we accept "secure" to mean "any attacker has only negligible probability of success."
 
 ## 1.3 Kerckhoffs's law (Kerckhoff's principle)
 
-*Kerckhoffs's principle is the foundational design rule of modern cryptography, stated by Auguste Kerckhoffs in 1883, that a cryptosystem must remain secure even if everything about the system except the key is publicly known.*
+_Kerckhoffs's principle is the foundational design rule of modern cryptography, stated by Auguste Kerckhoffs in 1883, that a cryptosystem must remain secure even if everything about the system except the key is publicly known._
 
-Auguste Kerckhoffs was a Dutch linguist and cryptographer who published a series of articles on military cryptography in the *Journal des Sciences Militaires* in January and February 1883. He listed six design requirements for a practical military cipher. The second of these — that the system should not require secrecy, and would not be a problem if it fell into enemy hands — is the principle that bears his name.
+Auguste Kerckhoffs was a Dutch linguist and cryptographer who published a series of articles on military cryptography in the _Journal des Sciences Militaires_ in January and February 1883. He listed six design requirements for a practical military cipher. The second of these — that the system should not require secrecy, and would not be a problem if it fell into enemy hands — is the principle that bears his name.
 
 In modern phrasing: **the algorithm is public, only the key is secret.**
 
@@ -160,7 +159,7 @@ Several practical reasons make Kerckhoffs's principle essential.
 
 ### Shannon's restatement
 
-Claude Shannon, in his 1949 paper, restated Kerckhoffs's principle as: *the enemy knows the system*. This formulation is now part of the standard cryptographic worldview. Any modern cryptosystem is designed under the assumption that the attacker has read the specification, knows the implementation, and possibly possesses the same hardware. The only thing the attacker does not have is the key.
+Claude Shannon, in his 1949 paper, restated Kerckhoffs's principle as: _the enemy knows the system_. This formulation is now part of the standard cryptographic worldview. Any modern cryptosystem is designed under the assumption that the attacker has read the specification, knows the implementation, and possibly possesses the same hardware. The only thing the attacker does not have is the key.
 
 ### Violations and the term "security through obscurity"
 
@@ -178,15 +177,15 @@ The lesson is uniform. Designs that depend on the algorithm staying secret fail 
 
 ### What Kerckhoffs's principle does not say
 
-Kerckhoffs does not say that every implementation detail must be published. It says that *security must not depend on* keeping them secret. An operator may not publish their device's key derivation parameters, may keep their hardware tamper-resistant, may decline to disclose specific deployment details. None of this violates Kerckhoffs as long as the security guarantee would still hold if those details were public.
+Kerckhoffs does not say that every implementation detail must be published. It says that _security must not depend on_ keeping them secret. An operator may not publish their device's key derivation parameters, may keep their hardware tamper-resistant, may decline to disclose specific deployment details. None of this violates Kerckhoffs as long as the security guarantee would still hold if those details were public.
 
 The distinction is between "secret as a defence in depth" — fine, possibly useful — and "secret as the load-bearing wall of the security" — not fine, will fail.
 
 ## 1.4 Zero-knowledge proof
 
-*A zero-knowledge proof is a cryptographic protocol in which one party, the prover, convinces another party, the verifier, that a statement is true, without revealing any information about why the statement is true beyond the fact of its truth.*
+_A zero-knowledge proof is a cryptographic protocol in which one party, the prover, convinces another party, the verifier, that a statement is true, without revealing any information about why the statement is true beyond the fact of its truth._
 
-The concept was introduced by Shafi Goldwasser, Silvio Micali, and Charles Rackoff in 1985. Their paper *The Knowledge Complexity of Interactive Proof Systems* defined zero-knowledge formally and proved that many useful statements have zero-knowledge proofs. The work earned Goldwasser and Micali the Turing Award in 2012.
+The concept was introduced by Shafi Goldwasser, Silvio Micali, and Charles Rackoff in 1985. Their paper _The Knowledge Complexity of Interactive Proof Systems_ defined zero-knowledge formally and proved that many useful statements have zero-knowledge proofs. The work earned Goldwasser and Micali the Turing Award in 2012.
 
 ### What a zero-knowledge proof must satisfy
 
@@ -196,7 +195,7 @@ A zero-knowledge proof for a statement $S$ must have three properties:
 
 **Soundness.** If $S$ is false, then no prover (no matter how clever or computationally powerful, depending on the strength of the soundness definition) can convince an honest verifier to accept, except with negligible probability.
 
-**Zero-knowledge.** Whatever the verifier learns from the interaction, the verifier could have produced *without* talking to the prover — meaning the interaction reveals nothing beyond the bare truth of $S$.
+**Zero-knowledge.** Whatever the verifier learns from the interaction, the verifier could have produced _without_ talking to the prover — meaning the interaction reveals nothing beyond the bare truth of $S$.
 
 The zero-knowledge property is formalised through a **simulator**: a hypothetical algorithm that, given only the statement $S$, can produce a transcript indistinguishable from a real proof transcript. Since the simulator does not know the secret, anything in the transcript that the simulator can produce cannot have revealed the secret.
 
@@ -239,7 +238,7 @@ The four goals are the canonical objectives cryptography seeks to achieve. A sec
 
 ### Confidentiality
 
-*Confidentiality is the property that information is not disclosed to unauthorised parties; in cryptographic terms, that the ciphertext reveals no useful information about the plaintext to anyone without the decryption key.*
+_Confidentiality is the property that information is not disclosed to unauthorised parties; in cryptographic terms, that the ciphertext reveals no useful information about the plaintext to anyone without the decryption key._
 
 Confidentiality is what most people associate with cryptography — keeping secrets secret. It is achieved by **encryption**. Examples in the Nepali context:
 
@@ -251,7 +250,7 @@ Confidentiality alone is not enough. An attacker who cannot read the message can
 
 ### Integrity
 
-*Integrity is the property that information has not been altered in an unauthorised or undetected way; in cryptographic terms, that the recipient can verify the message they received is exactly what the sender sent.*
+_Integrity is the property that information has not been altered in an unauthorised or undetected way; in cryptographic terms, that the recipient can verify the message they received is exactly what the sender sent._
 
 Integrity is achieved by **message authentication codes (MACs)**, **digital signatures**, or **authenticated encryption** modes. A bare encryption scheme often provides confidentiality without integrity — and the gap is dangerous.
 
@@ -261,7 +260,7 @@ Modern systems use **authenticated encryption** modes — AES-GCM, ChaCha20-Poly
 
 ### Authentication
 
-*Authentication is the property that the recipient can verify the identity of the sender; in cryptographic terms, that the message came from the claimed source and not from someone impersonating them.*
+_Authentication is the property that the recipient can verify the identity of the sender; in cryptographic terms, that the message came from the claimed source and not from someone impersonating them._
 
 Authentication is achieved by **digital signatures** (for public-verifiability), **MACs** (for shared-secret verifiability), or **password-based** or **certificate-based** mechanisms in protocols.
 
@@ -275,7 +274,7 @@ Authentication and integrity are often achieved by the same mechanism (a signatu
 
 ### Non-repudiation
 
-*Non-repudiation is the property that the sender of a message cannot later credibly deny having sent it; in cryptographic terms, that the recipient can prove to a third party that the message originated with the claimed sender.*
+_Non-repudiation is the property that the sender of a message cannot later credibly deny having sent it; in cryptographic terms, that the recipient can prove to a third party that the message originated with the claimed sender._
 
 Non-repudiation requires **digital signatures**. A MAC does not provide non-repudiation, because both sides hold the same key — either could have produced the MAC, so neither can prove to a third party that the other did.
 
@@ -367,11 +366,11 @@ Attacks on transposition ciphers exploit either knowledge of likely plaintext (c
 
 The most sophisticated classical ciphers combined substitution and transposition. The ADFGVX cipher used by Germany in 1918 first substituted (replacing each letter with a pair from the set `A, D, F, G, V, X`) and then transposed the resulting digraphs. It was broken by the French cryptanalyst Georges Painvin during the war, in a feat of analysis the field still admires.
 
-The lesson from classical cryptography is that simple, individually-weak operations can be combined in ways that are stronger than the parts — *if the combination is well-designed*. Shannon's later formalisation of **confusion** (making the relationship between key and ciphertext complex; substitution provides this) and **diffusion** (spreading the influence of each plaintext bit across many ciphertext bits; transposition provides this) reflects exactly this insight. Every modern block cipher, including AES, is built on combined confusion-and-diffusion rounds.
+The lesson from classical cryptography is that simple, individually-weak operations can be combined in ways that are stronger than the parts — _if the combination is well-designed_. Shannon's later formalisation of **confusion** (making the relationship between key and ciphertext complex; substitution provides this) and **diffusion** (spreading the influence of each plaintext bit across many ciphertext bits; transposition provides this) reflects exactly this insight. Every modern block cipher, including AES, is built on combined confusion-and-diffusion rounds.
 
 ## 1.7 Cryptanalysis techniques
 
-*Cryptanalysis is the study of techniques for analysing cryptographic systems with the goal of recovering the plaintext, the key, or the secret algorithm, given the ciphertext and possibly some additional information.*
+_Cryptanalysis is the study of techniques for analysing cryptographic systems with the goal of recovering the plaintext, the key, or the secret algorithm, given the ciphertext and possibly some additional information._
 
 The discipline classifies attacks by what the attacker has access to, and by what the attacker is trying to learn.
 
@@ -409,7 +408,7 @@ A modern cryptosystem is expected to be secure under at least IND-CPA (indisting
 
 **Birthday attacks.** Based on the **birthday paradox** — in a room of 23 people, two share a birthday with probability over 50%. For a hash function with $n$-bit output, finding a collision takes about $2^{n/2}$ work, not $2^n$. This is why a hash function with 128-bit output gives only 64-bit collision resistance — the practical reason SHA-1 (160-bit) was deprecated and SHA-256 became the standard.
 
-**Side-channel attacks.** Exploiting information leaked by the *implementation* rather than the algorithm. Categories include:
+**Side-channel attacks.** Exploiting information leaked by the _implementation_ rather than the algorithm. Categories include:
 
 - **Timing attacks.** The time taken by a cryptographic operation can depend on the secret key — for example, branch decisions in a non-constant-time implementation. Paul Kocher's 1996 paper showed RSA could be broken by carefully timing decryption operations.
 - **Power-analysis attacks.** The instantaneous power consumption of a cryptographic processor depends on what bits it is processing. Simple power analysis (SPA) reads the key by inspecting a single trace; differential power analysis (DPA) extracts secrets by statistical analysis of many traces.

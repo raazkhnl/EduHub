@@ -29,12 +29,14 @@ function Impl() {
     const update = () => {
       const docEl = document.documentElement;
       const scrolled = docEl.scrollTop || document.body.scrollTop;
-      const height   = (docEl.scrollHeight - docEl.clientHeight) || 1;
+      const height = docEl.scrollHeight - docEl.clientHeight || 1;
       const pct = Math.min(100, Math.max(0, (scrolled / height) * 100));
       if (ref.current) ref.current.style.transform = `scaleX(${pct / 100})`;
       raf = 0;
     };
-    const onScroll = () => { if (!raf) raf = requestAnimationFrame(update); };
+    const onScroll = () => {
+      if (!raf) raf = requestAnimationFrame(update);
+    };
     update();
     window.addEventListener('scroll', onScroll, { passive: true });
     window.addEventListener('resize', onScroll);
@@ -46,5 +48,9 @@ function Impl() {
   }, [visible, location.pathname]);
 
   if (!visible) return null;
-  return <div className={styles.bar} aria-hidden="true"><div ref={ref} className={styles.fill}/></div>;
+  return (
+    <div className={styles.bar} aria-hidden="true">
+      <div ref={ref} className={styles.fill} />
+    </div>
+  );
 }

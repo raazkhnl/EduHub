@@ -1,6 +1,6 @@
 # EduHub
 
-[![Deploy](https://github.com/raazkhnl/eduhub/actions/workflows/deploy.yml/badge.svg)](https://github.com/raazkhnl/eduhub/actions/workflows/deploy.yml)
+[![Deploy](https://github.com/raazkhnl/EduHub/actions/workflows/deploy.yml/badge.svg)](https://github.com/raazkhnl/EduHub/actions/workflows/deploy.yml)
 [![License: CC BY 4.0](https://img.shields.io/badge/license-CC%20BY%204.0-0F766E)](https://creativecommons.org/licenses/by/4.0/)
 
 **Smart study, simplified.** A scholarly-minimalist academic portal for Nepali
@@ -102,6 +102,11 @@ The `static/CNAME` file already pins the custom domain on every deploy.
 to `npm run build` and the publish directory to `build`. Add the env vars
 listed in DEPLOY.md if you want Algolia / GA.
 
+**Building for the GH Pages preview URL** (no custom domain yet): set
+`DEPLOY_TARGET=ghpages` — this switches `baseUrl` to `/EduHub/`, points `url`
+at `raazkhnl.github.io`, and omits `CNAME` from the build. See DEPLOY.md §1
+for the full toggle and the "site did not load properly" error explained.
+
 ---
 
 ## Tech
@@ -117,16 +122,16 @@ listed in DEPLOY.md if you want Algolia / GA.
 
 ## Reader-facing features
 
-| Feature             | What it does                                                                          | Toggle (in `docusaurus.config.js → customFields.features`) | Shortcut         |
-| ------------------- | ------------------------------------------------------------------------------------- | ---------------------------------------------------------- | ---------------- |
-| **Bundle Builder**  | Pick chapters across any curriculum, export as Markdown / ZIP / printable PDF.        | `bundleBuilder`                                            | —                |
-| **Progress Tracker**| LocalStorage syllabus checklist with sparkle on 100% completion.                      | `progressTracker`                                          | —                |
-| **Focus Mode**      | Hides navbar, sidebar, footer for distraction-free reading.                           | `focusMode`                                                | `Shift + F` / `Esc` |
-| **Scroll Progress** | Hairline bar under the navbar showing how far through a chapter you are.              | `scrollProgress`                                           | —                |
-| **Reading Time**    | Per-chapter estimate at the bottom of every doc page.                                 | `readingTime`                                              | —                |
-| **Keyboard Help**   | Modal listing every shortcut.                                                          | `keyboardHelp`                                             | `?`              |
-| **Search**          | Site-wide full-text. Algolia DocSearch if keyed, local index otherwise.               | (always on)                                                | `⌘ K` / `Ctrl K` |
-| **PWA / Offline**   | Cache every chapter for offline reading; installable app shell.                       | (always on)                                                | —                |
+| Feature              | What it does                                                                   | Toggle (in `docusaurus.config.js → customFields.features`) | Shortcut            |
+| -------------------- | ------------------------------------------------------------------------------ | ---------------------------------------------------------- | ------------------- |
+| **Bundle Builder**   | Pick chapters across any curriculum, export as Markdown / ZIP / printable PDF. | `bundleBuilder`                                            | —                   |
+| **Progress Tracker** | LocalStorage syllabus checklist with sparkle on 100% completion.               | `progressTracker`                                          | —                   |
+| **Focus Mode**       | Hides navbar, sidebar, footer for distraction-free reading.                    | `focusMode`                                                | `Shift + F` / `Esc` |
+| **Scroll Progress**  | Hairline bar under the navbar showing how far through a chapter you are.       | `scrollProgress`                                           | —                   |
+| **Reading Time**     | Per-chapter estimate at the bottom of every doc page.                          | `readingTime`                                              | —                   |
+| **Keyboard Help**    | Modal listing every shortcut.                                                  | `keyboardHelp`                                             | `?`                 |
+| **Search**           | Site-wide full-text. Algolia DocSearch if keyed, local index otherwise.        | (always on)                                                | `⌘ K` / `Ctrl K`    |
+| **PWA / Offline**    | Cache every chapter for offline reading; installable app shell.                | (always on)                                                | —                   |
 
 Toggle any of the above by editing `docusaurus.config.js`:
 

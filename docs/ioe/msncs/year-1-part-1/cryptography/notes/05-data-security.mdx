@@ -1,8 +1,8 @@
 ---
-title: "Chapter 5 — Data Security"
-sidebar_label: "Ch 05 — Data Security"
+title: 'Chapter 5 — Data Security'
+sidebar_label: 'Ch 05 — Data Security'
 sidebar_position: 5
-description: "Chapter 5 of Cryptography and Data Security (ENCTNS502)."
+description: 'Chapter 5 of Cryptography and Data Security (ENCTNS502).'
 slug: /ioe/msncs/year-1-part-1/cryptography/notes/ch05
 tags: [msncs, year-1-part-1, enctns502, chapter, notes]
 last_update:
@@ -10,12 +10,11 @@ last_update:
   author: Rajesh Khanal
 ---
 
-
-Cryptography protects data in motion through the network. But data spends most of its life *not* in motion — sitting on disks, in databases, in object stores, on backup tapes, in mobile devices, in cloud buckets. Securing data through its full lifecycle is the broader discipline of **data security**, and it draws on cryptography but extends well beyond it into classification, access control, monitoring, and operational practice. This chapter covers data security as an end-to-end concern: what the field is trying to protect, what threatens it, the standard techniques for protecting data at rest and in transit, how organisations classify and label their data, the supporting operations of obfuscation and tokenisation, the data-loss-prevention discipline, and the specific challenges of mobile and cloud environments.
+Cryptography protects data in motion through the network. But data spends most of its life _not_ in motion — sitting on disks, in databases, in object stores, on backup tapes, in mobile devices, in cloud buckets. Securing data through its full lifecycle is the broader discipline of **data security**, and it draws on cryptography but extends well beyond it into classification, access control, monitoring, and operational practice. This chapter covers data security as an end-to-end concern: what the field is trying to protect, what threatens it, the standard techniques for protecting data at rest and in transit, how organisations classify and label their data, the supporting operations of obfuscation and tokenisation, the data-loss-prevention discipline, and the specific challenges of mobile and cloud environments.
 
 ## 5.1 Data security concepts, terminology, and principles
 
-*Data security is the set of policies, procedures, and technical controls that protect data from unauthorised access, disclosure, modification, destruction, or unavailability throughout its lifecycle from creation through use, storage, transmission, archival, and eventual deletion.*
+_Data security is the set of policies, procedures, and technical controls that protect data from unauthorised access, disclosure, modification, destruction, or unavailability throughout its lifecycle from creation through use, storage, transmission, archival, and eventual deletion._
 
 The discipline is broader than cryptography. Encryption is one tool; access control, network segmentation, monitoring, training, and incident response are others. A working data-security programme uses many tools coherently rather than relying on any single one.
 
@@ -112,11 +111,11 @@ Different actors pose different risks:
 
 **Credential-based attacks.** The most common entry point in 2025–26 breach reports. Categories:
 
-- *Phishing* and its variants (spear-phishing, whaling, smishing, vishing).
-- *Credential stuffing* — using leaked passwords from one site to log in to others where users have reused them.
-- *Password spraying* — trying a small number of common passwords against many accounts.
-- *Pass-the-hash and pass-the-ticket* — using stolen authentication artefacts within an internal network.
-- *SIM swapping* — taking over a victim's phone number to defeat SMS-based MFA.
+- _Phishing_ and its variants (spear-phishing, whaling, smishing, vishing).
+- _Credential stuffing_ — using leaked passwords from one site to log in to others where users have reused them.
+- _Password spraying_ — trying a small number of common passwords against many accounts.
+- _Pass-the-hash and pass-the-ticket_ — using stolen authentication artefacts within an internal network.
+- _SIM swapping_ — taking over a victim's phone number to defeat SMS-based MFA.
 
 **Ransomware.** Already discussed in the Next Generation Networks chapter. The 2023–25 wave of double-extortion ransomware (exfiltrate, encrypt, threaten publication) makes ransomware also a data-security event, not just an availability one.
 
@@ -156,7 +155,7 @@ The two halves of cryptographic data protection. Each has standard mechanisms an
 
 ### Encryption at rest
 
-*Encryption at rest is the application of cryptographic protection to data while it is stored on persistent media — disks, databases, backup tapes, object stores — so that the storage medium alone, without the decryption key, reveals no information about the data.*
+_Encryption at rest is the application of cryptographic protection to data while it is stored on persistent media — disks, databases, backup tapes, object stores — so that the storage medium alone, without the decryption key, reveals no information about the data._
 
 Several layers exist; serious deployments combine them.
 
@@ -170,17 +169,20 @@ Several layers exist; serious deployments combine them.
 FDE protects against device theft. It does not protect against an attacker who can run code on the unlocked machine — once decrypted, the data is in clear inside the OS.
 
 **File-level encryption.** Individual files are encrypted, often with per-file keys. Used in:
+
 - macOS FileVault (under the hood, per-file keys).
 - Windows EFS (Encrypting File System, less commonly deployed than BitLocker).
 - VeraCrypt, BoxCryptor, Cryptomator — third-party tools for encrypting specific folders or container files.
 
 **Database encryption.** Several layers:
-- *Transparent Data Encryption (TDE)* — the database engine encrypts data files on disk. SQL Server, Oracle, MySQL Enterprise, PostgreSQL (via extensions) support TDE.
-- *Column-level encryption* — specific sensitive columns (credit-card numbers, salaries) are encrypted by the application before storage. The database stores ciphertext; only authorised application code can decrypt.
-- *Searchable encryption* — research-grade techniques that allow queries over encrypted data. Less common in production.
-- *Application-managed encryption* — the application maintains keys externally (in a KMS) and decrypts on the fly. Best practice for highly sensitive fields.
+
+- _Transparent Data Encryption (TDE)_ — the database engine encrypts data files on disk. SQL Server, Oracle, MySQL Enterprise, PostgreSQL (via extensions) support TDE.
+- _Column-level encryption_ — specific sensitive columns (credit-card numbers, salaries) are encrypted by the application before storage. The database stores ciphertext; only authorised application code can decrypt.
+- _Searchable encryption_ — research-grade techniques that allow queries over encrypted data. Less common in production.
+- _Application-managed encryption_ — the application maintains keys externally (in a KMS) and decrypts on the fly. Best practice for highly sensitive fields.
 
 **Cloud-storage encryption.** Every major cloud provider offers encryption-at-rest by default:
+
 - AWS S3 server-side encryption (SSE-S3, SSE-KMS, SSE-C).
 - Azure Storage Service Encryption.
 - Google Cloud Storage default encryption.
@@ -195,7 +197,7 @@ A useful consequence of encryption-at-rest: **cryptographic erasure** — destro
 
 ### Encryption in transit
 
-*Encryption in transit is the application of cryptographic protection to data while it moves over networks — between client and server, between data centres, between services in a distributed system.*
+_Encryption in transit is the application of cryptographic protection to data while it moves over networks — between client and server, between data centres, between services in a distributed system._
 
 The dominant protocol is TLS. Already covered in the Next Generation Networks chapter (Chapter 6, where it appears as part of zero-trust architecture). Key points for data security:
 
@@ -282,7 +284,7 @@ Two related techniques for protecting sensitive data when encryption is impracti
 
 ### Obfuscation (data masking)
 
-*Obfuscation, also called data masking, is the process of replacing sensitive data values with realistic-but-fake substitutes that preserve the data's format and statistical properties for testing, analytics, or display while removing the ability to recover the original values.*
+_Obfuscation, also called data masking, is the process of replacing sensitive data values with realistic-but-fake substitutes that preserve the data's format and statistical properties for testing, analytics, or display while removing the ability to recover the original values._
 
 Use cases:
 
@@ -296,18 +298,19 @@ Use cases:
 **Dynamic masking.** The database stores cleartext, but specific users see masked values when they query. Implemented in the database (Microsoft SQL Server Dynamic Data Masking, Oracle Data Redaction) or in a proxy.
 
 **Masking techniques.**
-- *Substitution* — replace with a fixed value, or with a value from a lookup list (real-looking but unrelated names).
-- *Shuffling* — keep the values but reassign them to different rows. Statistical distributions preserved; identifying matches destroyed.
-- *Generalisation* — replace specific values with broader categories (exact age → age range, exact salary → salary band).
-- *Perturbation* — add small random noise to numeric values.
-- *Truncation* — show only the last few digits (the credit-card display example).
-- *Pseudonymisation* — replace identifiers with consistent fake identifiers; the same person always gets the same pseudonym.
+
+- _Substitution_ — replace with a fixed value, or with a value from a lookup list (real-looking but unrelated names).
+- _Shuffling_ — keep the values but reassign them to different rows. Statistical distributions preserved; identifying matches destroyed.
+- _Generalisation_ — replace specific values with broader categories (exact age → age range, exact salary → salary band).
+- _Perturbation_ — add small random noise to numeric values.
+- _Truncation_ — show only the last few digits (the credit-card display example).
+- _Pseudonymisation_ — replace identifiers with consistent fake identifiers; the same person always gets the same pseudonym.
 
 Masking is irreversible in most uses. The original data, if needed later, must come from a separately protected source.
 
 ### Tokenisation
 
-*Tokenisation is the process of replacing a sensitive data value with a randomly generated token that has the same format but no mathematical relationship to the original value, with the mapping between tokens and originals stored in a secure separate system (the token vault).*
+_Tokenisation is the process of replacing a sensitive data value with a randomly generated token that has the same format but no mathematical relationship to the original value, with the mapping between tokens and originals stored in a secure separate system (the token vault)._
 
 Tokenisation differs from obfuscation in that it is reversible — given a token, an authorised system can look up the original. The token vault is the trusted store; everything else only deals with tokens.
 
@@ -332,20 +335,20 @@ The merchant's systems no longer hold cardholder data — only tokens. The PCI-D
 
 When to choose which:
 
-| | Encryption | Tokenisation |
-|---|---|---|
-| Reversibility | Yes (with key) | Yes (with vault lookup) |
-| Format preservation | Not by default; FPE preserves format | Yes by design |
-| Storage of original | Encrypted ciphertext is the data | Original is in the vault; everything else has tokens |
-| Compliance scope | Encrypted data may still be in scope | Tokens are typically out of scope |
-| Best for | Bulk data, structured and unstructured | Specific high-value fields (PAN, SSN) |
-| Operational risk | Lose the key → lose all data | Lose the vault → lose all originals |
+|                     | Encryption                             | Tokenisation                                         |
+| ------------------- | -------------------------------------- | ---------------------------------------------------- |
+| Reversibility       | Yes (with key)                         | Yes (with vault lookup)                              |
+| Format preservation | Not by default; FPE preserves format   | Yes by design                                        |
+| Storage of original | Encrypted ciphertext is the data       | Original is in the vault; everything else has tokens |
+| Compliance scope    | Encrypted data may still be in scope   | Tokens are typically out of scope                    |
+| Best for            | Bulk data, structured and unstructured | Specific high-value fields (PAN, SSN)                |
+| Operational risk    | Lose the key → lose all data           | Lose the vault → lose all originals                  |
 
 A mature deployment uses both. Bulk data at rest is encrypted. Specific high-value fields are tokenised in addition.
 
 ## 5.6 Data Loss Prevention (DLP)
 
-*Data Loss Prevention is the security discipline and set of technologies that detect, monitor, and prevent unauthorised transmission, copying, or storage of sensitive data, applied at endpoints, networks, and cloud services to keep data within organisational boundaries.*
+_Data Loss Prevention is the security discipline and set of technologies that detect, monitor, and prevent unauthorised transmission, copying, or storage of sensitive data, applied at endpoints, networks, and cloud services to keep data within organisational boundaries._
 
 DLP is the operational answer to "how do we stop sensitive data from leaving?" It is one of the most mature data-security disciplines, with a well-developed product market and a well-known set of strengths and limitations.
 
@@ -354,6 +357,7 @@ DLP is the operational answer to "how do we stop sensitive data from leaving?" I
 DLP runs at three points where data flows can be inspected:
 
 **Endpoint DLP.** An agent runs on every laptop and workstation. It monitors:
+
 - File copies to USB drives, optical media, network shares.
 - Print operations.
 - Clipboard operations.
@@ -364,11 +368,13 @@ DLP runs at three points where data flows can be inspected:
 The agent applies policies — block, warn, log — based on what is being moved and where.
 
 **Network DLP.** A device on the network inspects traffic for sensitive content.
+
 - Email gateway DLP inspects outbound email.
 - Web gateway DLP inspects HTTP/HTTPS uploads (requires TLS interception).
 - Database activity monitoring detects unusual queries against sensitive tables.
 
 **Cloud DLP.** Cloud-native DLP scans data stored in SaaS applications and cloud storage.
+
 - Microsoft 365 DLP inspects email, OneDrive, SharePoint, Teams.
 - Google Workspace DLP for Gmail, Drive, Docs.
 - CASB (Cloud Access Security Broker) products like Netskope, Zscaler, McAfee MVISION provide cross-cloud DLP.
@@ -440,6 +446,7 @@ Mobile devices are now the primary computing endpoint for most users. They carry
 **Mobile Device Management (MDM).**
 
 For enterprise-issued devices, MDM platforms let the organisation enforce policies:
+
 - Mandatory passcode complexity.
 - Forced encryption.
 - Application allowlists/blocklists.
@@ -473,13 +480,13 @@ Cloud security is its own discipline with several distinct concerns.
 
 **The shared-responsibility model.**
 
-Every major cloud provider publishes a shared-responsibility model. The provider is responsible for the security *of* the cloud; the customer is responsible for security *in* the cloud.
+Every major cloud provider publishes a shared-responsibility model. The provider is responsible for the security _of_ the cloud; the customer is responsible for security _in_ the cloud.
 
-| | Provider responsible | Customer responsible |
-|---|---|---|
-| IaaS (VMs, storage) | Hypervisor, hardware, physical, network | OS, applications, configurations, data |
-| PaaS (managed databases, runtimes) | Underlying OS, runtime, patches | Application code, data, access control |
-| SaaS (Office 365, Salesforce) | Almost everything | Access control, data classification, user behaviour |
+|                                    | Provider responsible                    | Customer responsible                                |
+| ---------------------------------- | --------------------------------------- | --------------------------------------------------- |
+| IaaS (VMs, storage)                | Hypervisor, hardware, physical, network | OS, applications, configurations, data              |
+| PaaS (managed databases, runtimes) | Underlying OS, runtime, patches         | Application code, data, access control              |
+| SaaS (Office 365, Salesforce)      | Almost everything                       | Access control, data classification, user behaviour |
 
 Misunderstanding the model is the single biggest cause of cloud breaches. Customers assume the provider protects something the provider does not; the configuration that requires customer action is left at insecure defaults.
 
@@ -529,6 +536,7 @@ Most large enterprises use multiple clouds and combine cloud with on-premise. Th
 - **Data sovereignty.** Different clouds have different jurisdictional implications. EU-based customers may require EU-only data residency; certain government workloads may require national-borders-only deployment.
 
 For Nepali organisations using cloud services, the practical landscape:
+
 - Major banks and fintechs use a mix of AWS Mumbai, Azure regions in Singapore/Mumbai, and on-premise infrastructure.
 - Government workloads remain heavily on-premise (Government Integrated Data Centre), with limited cloud adoption pending data-residency policy clarification.
 - SaaS (Microsoft 365, Google Workspace) is widely adopted by enterprises.

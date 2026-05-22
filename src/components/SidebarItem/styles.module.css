@@ -1,5 +1,9 @@
-.list { margin: 2rem 0; }
-.listHead { margin-bottom: 0.8rem; }
+.list {
+  margin: 2rem 0;
+}
+.listHead {
+  margin-bottom: 0.8rem;
+}
 .listTitle {
   font-family: var(--ah-font-serif);
   font-weight: 600;
@@ -29,18 +33,37 @@
   border-bottom: 1px solid var(--ah-rule);
   text-decoration: none !important;
   color: var(--ah-ink);
-  transition: background-color var(--ah-dur-fast), color var(--ah-dur-fast);
+  transition:
+    background-color var(--ah-dur-fast),
+    color var(--ah-dur-fast);
 }
-.item:last-child { border-bottom: 0; }
-.item:hover { background: var(--ah-accent-faint); }
-.item:hover .chev { transform: translateX(3px); color: var(--ah-accent); }
-.item.active { background: var(--ah-accent-faint); }
-.item.active .title { color: var(--ah-accent); }
+.item:last-child {
+  border-bottom: 0;
+}
+.item:hover {
+  background: var(--ah-accent-faint);
+}
+.item:hover .chev {
+  transform: translateX(3px);
+  color: var(--ah-accent);
+}
+.item.active {
+  background: var(--ah-accent-faint);
+}
+.item.active .title {
+  color: var(--ah-accent);
+}
 
-.main { flex: 1; min-width: 0; }
+.main {
+  flex: 1;
+  min-width: 0;
+}
 
 .heading {
-  display: flex; align-items: baseline; gap: 0.55rem; flex-wrap: wrap;
+  display: flex;
+  align-items: baseline;
+  gap: 0.55rem;
+  flex-wrap: wrap;
 }
 .code {
   font-family: var(--ah-font-mono);
@@ -70,10 +93,22 @@
   background: var(--ah-secondary-soft);
   color: var(--ah-secondary);
 }
-.badge[data-variant='core']     { background: var(--ah-accent-soft); color: var(--ah-accent); }
-.badge[data-variant='elective'] { background: var(--ah-secondary-soft); color: var(--ah-secondary); }
-.badge[data-variant='thesis']   { background: rgba(29, 78, 216, 0.10); color: var(--ah-info); }
-.badge[data-variant='lab']      { background: rgba(21, 128, 61, 0.10); color: var(--ah-good); }
+.badge[data-variant='core'] {
+  background: var(--ah-accent-soft);
+  color: var(--ah-accent);
+}
+.badge[data-variant='elective'] {
+  background: var(--ah-secondary-soft);
+  color: var(--ah-secondary);
+}
+.badge[data-variant='thesis'] {
+  background: rgba(29, 78, 216, 0.1);
+  color: var(--ah-info);
+}
+.badge[data-variant='lab'] {
+  background: rgba(21, 128, 61, 0.1);
+  color: var(--ah-good);
+}
 
 .desc {
   margin: 0.25rem 0 0;
@@ -84,18 +119,30 @@
 }
 
 .tail {
-  display: flex; align-items: center; gap: 0.7rem;
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
   flex-shrink: 0;
   color: var(--ah-ink-mute);
 }
-.meta { font-size: 12.5px; }
+.meta {
+  font-size: 12.5px;
+}
 .chev {
   font-family: var(--ah-font-mono);
   font-size: 16px;
-  transition: transform var(--ah-dur) var(--ah-ease), color var(--ah-dur-fast);
+  transition:
+    transform var(--ah-dur) var(--ah-ease),
+    color var(--ah-dur-fast);
 }
 
 @media (max-width: 560px) {
-  .item { flex-wrap: wrap; }
-  .tail { width: 100%; justify-content: space-between; margin-top: 0.3rem; }
+  .item {
+    flex-wrap: wrap;
+  }
+  .tail {
+    width: 100%;
+    justify-content: space-between;
+    margin-top: 0.3rem;
+  }
 }

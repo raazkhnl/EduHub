@@ -27,14 +27,22 @@ export default function RequestPortal({
       <section className={styles.fallback}>
         <h3 className={styles.title}>{title}</h3>
         <p className={styles.subtitle}>{subtitle}</p>
-        <a className={styles.btn} href={`mailto:${fallbackEmail}?subject=EduHub%20—%20resource%20request`}>
+        <a
+          className={styles.btn}
+          href={`mailto:${fallbackEmail}?subject=EduHub%20—%20resource%20request`}
+        >
           Email the request
         </a>
         <p className={styles.note}>
           Or open an issue on{' '}
-          <a href="https://github.com/raazkhnl/eduhub/issues/new?labels=request" target="_blank" rel="noopener noreferrer">
+          <a
+            href="https://github.com/raazkhnl/EduHub/issues/new?labels=request"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             GitHub
-          </a>.
+          </a>
+          .
         </p>
       </section>
     );
@@ -43,7 +51,9 @@ export default function RequestPortal({
   return (
     <section className={styles.wrap} aria-labelledby="rp-title">
       <header className={styles.head}>
-        <h3 id="rp-title" className={styles.title}>{title}</h3>
+        <h3 id="rp-title" className={styles.title}>
+          {title}
+        </h3>
         <p className={styles.subtitle}>{subtitle}</p>
       </header>
       <div className={styles.frameWrap} style={{ minHeight: height }}>

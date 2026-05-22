@@ -28,13 +28,16 @@ function Impl() {
   // Global ?/Esc handler. We keep the listener mounted always (cheap) and read
   // `open` via a ref so we don't have to re-bind on every state change.
   const openRef = React.useRef(open);
-  React.useEffect(() => { openRef.current = open; }, [open]);
+  React.useEffect(() => {
+    openRef.current = open;
+  }, [open]);
 
   React.useEffect(() => {
     if (!enabled) return undefined;
     const onKey = (e) => {
       const tgt = e.target;
-      const typing = tgt && (tgt.tagName === 'INPUT' || tgt.tagName === 'TEXTAREA' || tgt.isContentEditable);
+      const typing =
+        tgt && (tgt.tagName === 'INPUT' || tgt.tagName === 'TEXTAREA' || tgt.isContentEditable);
       if (typing) return;
       if (e.key === '?' && !e.ctrlKey && !e.metaKey) {
         e.preventDefault();
@@ -70,11 +73,13 @@ function Impl() {
     );
     if (focusables.length === 0) return;
     const first = focusables[0];
-    const last  = focusables[focusables.length - 1];
+    const last = focusables[focusables.length - 1];
     if (e.shiftKey && document.activeElement === first) {
-      e.preventDefault(); last.focus();
+      e.preventDefault();
+      last.focus();
     } else if (!e.shiftKey && document.activeElement === last) {
-      e.preventDefault(); first.focus();
+      e.preventDefault();
+      first.focus();
     }
   };
 
@@ -92,14 +97,18 @@ function Impl() {
         onKeyDown={onDialogKeyDown}
       >
         <div className={styles.head}>
-          <h2 id="kbd-title" className={styles.title}>Keyboard shortcuts</h2>
+          <h2 id="kbd-title" className={styles.title}>
+            Keyboard shortcuts
+          </h2>
           <button
             type="button"
             ref={closeBtnRef}
             className={styles.close}
             onClick={() => setOpen(false)}
             aria-label="Close keyboard shortcuts"
-          >×</button>
+          >
+            ×
+          </button>
         </div>
         <dl className={styles.list}>
           <Row keys={['⌘', 'K']} altKeys={['Ctrl', 'K']} label="Open search" />
@@ -120,9 +129,17 @@ function Row({ keys, altKeys, label }) {
     <div className={styles.row}>
       <dt className={styles.label}>{label}</dt>
       <dd className={styles.combo}>
-        {keys.map((k, i) => <kbd key={i} className={styles.kbd}>{k}</kbd>)}
+        {keys.map((k, i) => (
+          <kbd key={i} className={styles.kbd}>
+            {k}
+          </kbd>
+        ))}
         {altKeys && <span className={styles.sep}>or</span>}
-        {altKeys?.map((k, i) => <kbd key={'a' + i} className={styles.kbd}>{k}</kbd>)}
+        {altKeys?.map((k, i) => (
+          <kbd key={'a' + i} className={styles.kbd}>
+            {k}
+          </kbd>
+        ))}
       </dd>
     </div>
   );

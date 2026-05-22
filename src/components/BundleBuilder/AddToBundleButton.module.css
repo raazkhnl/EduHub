@@ -11,14 +11,26 @@
   border: 1px solid var(--ah-rule);
   border-radius: 999px;
   cursor: pointer;
-  transition: color var(--ah-dur-fast), border-color var(--ah-dur-fast),
-              background-color var(--ah-dur-fast), transform var(--ah-dur-fast);
+  transition:
+    color var(--ah-dur-fast),
+    border-color var(--ah-dur-fast),
+    background-color var(--ah-dur-fast),
+    transform var(--ah-dur-fast);
 }
-.btn:hover { color: var(--ah-accent); border-color: var(--ah-accent); transform: translateY(-1px); }
+.btn:hover {
+  color: var(--ah-accent);
+  border-color: var(--ah-accent);
+  transform: translateY(-1px);
+}
 .btnActive {
   background: var(--ah-accent);
   color: #fff;
   border-color: var(--ah-accent);
 }
-.btnActive:hover { background: var(--ah-accent-hover); color: #fff; }
-.label { letter-spacing: 0.01em; }
+.btnActive:hover {
+  background: var(--ah-accent-hover);
+  color: #fff;
+}
+.label {
+  letter-spacing: 0.01em;
+}

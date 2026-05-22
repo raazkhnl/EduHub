@@ -1,8 +1,8 @@
 ---
-title: "Chapter 3 — Cryptographic Hash Functions"
-sidebar_label: "Ch 03 — Cryptographic Hash Functions"
+title: 'Chapter 3 — Cryptographic Hash Functions'
+sidebar_label: 'Ch 03 — Cryptographic Hash Functions'
 sidebar_position: 3
-description: "Chapter 3 of Cryptography and Data Security (ENCTNS502)."
+description: 'Chapter 3 of Cryptography and Data Security (ENCTNS502).'
 slug: /ioe/msncs/year-1-part-1/cryptography/notes/ch03
 tags: [msncs, year-1-part-1, enctns502, chapter, notes]
 last_update:
@@ -10,30 +10,29 @@ last_update:
   author: Rajesh Khanal
 ---
 
-
 A cryptographic hash function is the third great primitive of modern cryptography, alongside symmetric and asymmetric ciphers. Where ciphers protect data in motion, hash functions provide the fingerprints that authenticate the data — they let two parties verify they are looking at the same content, let a bank verify a password without storing it, let a blockchain link block to block in an unforgeable chain, and let a digital signature scheme compress an arbitrary-length document into a fixed-size input for the asymmetric operation. This chapter defines what a cryptographic hash function is, lists the deployed ones and their properties, surveys the attack classes that have broken successive hash designs, and walks through the major application areas.
 
 ## 3.1 Definition and properties of cryptographic hash functions
 
-*A cryptographic hash function is a mathematical function that takes an input (a "message") of arbitrary length and produces a fixed-length output (a "hash," "digest," or "fingerprint") such that the function is easy to compute in the forward direction and computationally infeasible to invert or to find two inputs producing the same output.*
+_A cryptographic hash function is a mathematical function that takes an input (a "message") of arbitrary length and produces a fixed-length output (a "hash," "digest," or "fingerprint") such that the function is easy to compute in the forward direction and computationally infeasible to invert or to find two inputs producing the same output._
 
 The fixed output length is the defining feature. SHA-256 always produces 256 bits regardless of whether the input is one byte or one terabyte. The forward computation is deterministic: the same input always produces the same output.
 
 ### The three required security properties
 
-A function is called *cryptographically secure* only if it satisfies three properties. Each property corresponds to a class of attack the function must resist.
+A function is called _cryptographically secure_ only if it satisfies three properties. Each property corresponds to a class of attack the function must resist.
 
-**Pre-image resistance.** *Given a hash value $h$, it is computationally infeasible to find any message $m$ such that $H(m) = h$.*
+**Pre-image resistance.** _Given a hash value $h$, it is computationally infeasible to find any message $m$ such that $H(m) = h$._
 
 This is the one-way property. The hash function should be impossible to invert. For an $n$-bit hash, the best generic attack is brute force — try random inputs until one matches — which takes $2^n$ work.
 
-**Second pre-image resistance.** *Given a message $m_1$, it is computationally infeasible to find a different message $m_2 \neq m_1$ such that $H(m_1) = H(m_2)$.*
+**Second pre-image resistance.** _Given a message $m_1$, it is computationally infeasible to find a different message $m_2 \neq m_1$ such that $H(m_1) = H(m_2)$._
 
 The "weak collision resistance" property. Given one input, finding a second input that produces the same output should be infeasible. Generic difficulty: $2^n$.
 
-**Collision resistance.** *It is computationally infeasible to find any two distinct messages $m_1 \neq m_2$ such that $H(m_1) = H(m_2)$.*
+**Collision resistance.** _It is computationally infeasible to find any two distinct messages $m_1 \neq m_2$ such that $H(m_1) = H(m_2)$._
 
-The "strong collision resistance" property. Finding *any* two inputs that collide should be infeasible. This is the strongest of the three. By the birthday paradox, the generic attack is faster than for the other two — about $2^{n/2}$ work for an $n$-bit hash. For a 256-bit hash, this is $2^{128}$, still safely infeasible. For a 128-bit hash (MD5, half of SHA-1), it is $2^{64}$, reachable with significant effort. For SHA-1's 160 bits, it is $2^{80}$ — and a real collision was found in 2017.
+The "strong collision resistance" property. Finding _any_ two inputs that collide should be infeasible. This is the strongest of the three. By the birthday paradox, the generic attack is faster than for the other two — about $2^{n/2}$ work for an $n$-bit hash. For a 256-bit hash, this is $2^{128}$, still safely infeasible. For a 128-bit hash (MD5, half of SHA-1), it is $2^{64}$, reachable with significant effort. For SHA-1's 160 bits, it is $2^{80}$ — and a real collision was found in 2017.
 
 ### The birthday paradox
 
@@ -57,7 +56,7 @@ Beyond the three required properties, several others matter in practice.
 
 ### Properties hash functions do not provide
 
-What a hash function alone does *not* give:
+What a hash function alone does _not_ give:
 
 **Confidentiality.** A hash leaks no information about the input that an attacker who can guess the input could not check directly. But it provides no encryption — anyone can compute $H(m)$ for any $m$.
 
@@ -88,9 +87,11 @@ Most pre-2010 hash functions (MD5, SHA-1, SHA-2) use the **Merkle-Damgård** con
 $$
 H_0 = IV
 $$
+
 $$
 H_i = f(H_{i-1}, m_i)
 $$
+
 $$
 \text{output} = H_n
 $$
@@ -105,13 +106,14 @@ The newer SHA-3 family uses a different construction (the **sponge construction*
 
 ### MD5 (Message Digest 5)
 
-*MD5 is the cryptographic hash function designed by Ronald Rivest in 1991, producing a 128-bit output from an arbitrary-length input via a Merkle-Damgård construction, which has been considered cryptographically broken since 2004 due to practical collision attacks.*
+_MD5 is the cryptographic hash function designed by Ronald Rivest in 1991, producing a 128-bit output from an arbitrary-length input via a Merkle-Damgård construction, which has been considered cryptographically broken since 2004 due to practical collision attacks._
 
 MD5 was the dominant general-purpose hash function through the 1990s. It is fast (gigabytes per second on modern hardware), produces a compact 128-bit output, and is still used in non-cryptographic settings.
 
 **Status:** broken. In 2004, Wang Xiaoyun's team published a practical collision attack on MD5, finding pairs of distinct messages with the same MD5 hash in hours of computation. By 2008, the **Flame malware** used a chosen-prefix MD5 collision to forge a Microsoft code-signing certificate — the first known weaponisation of an MD5 collision in the wild. By 2012, collisions could be produced in minutes on commodity hardware.
 
 MD5 is still used for:
+
 - Non-cryptographic checksums (file-integrity verification where the attacker cannot choose the input).
 - Hash-table indexing and other database applications.
 - Legacy protocols (CRAM-MD5 authentication, some HMAC-MD5 uses, though even HMAC-MD5 is now discouraged).
@@ -120,13 +122,14 @@ MD5 must not be used for any new cryptographic purpose. Microsoft, NIST, and eve
 
 ### SHA-1 (Secure Hash Algorithm 1)
 
-*SHA-1 is the cryptographic hash function published by NIST as FIPS PUB 180-1 in 1995, producing a 160-bit output, designed as a successor to SHA-0 and similar in structure to MD5 with extra security margin, formally broken in 2017 by Google's SHAttered collision attack.*
+_SHA-1 is the cryptographic hash function published by NIST as FIPS PUB 180-1 in 1995, producing a 160-bit output, designed as a successor to SHA-0 and similar in structure to MD5 with extra security margin, formally broken in 2017 by Google's SHAttered collision attack._
 
 SHA-1 was the dominant hash function from the mid-1990s to the mid-2010s. It was used in TLS certificate signatures, Git's commit identifiers, PGP signatures, and almost every protocol that needed a hash.
 
 **Status:** broken. Theoretical attacks reducing the work below brute force were published as early as 2005 (Wang et al., $2^{69}$ work versus $2^{80}$ brute force). In February 2017, Google researchers published **SHAttered** — the first public SHA-1 collision, two different PDF files with the same SHA-1 hash. The attack cost about $110,000 in cloud compute. By 2020 the **chosen-prefix collision** (Leurent and Peyrin) brought the cost down to about $45,000.
 
 SHA-1 is deprecated:
+
 - **TLS certificates:** browsers refused to validate SHA-1 certificates from 2016 onwards. NIST formally disallowed SHA-1 in federal use from 2030, with practical removal much earlier.
 - **Git:** has begun migrating to SHA-256 (since Git 2.29 in 2020). Existing repositories use SHA-1; new repositories may use SHA-256.
 - **Signatures:** any new signature using SHA-1 is unsafe.
@@ -135,22 +138,23 @@ Like MD5, SHA-1 survives in legacy systems and in non-cryptographic uses. It mus
 
 ### SHA-2 family (SHA-224, SHA-256, SHA-384, SHA-512)
 
-*The SHA-2 family is the set of cryptographic hash functions published by NIST as FIPS PUB 180-2 in 2001 (and revised through FIPS PUB 180-4 in 2015), built on the same Merkle-Damgård structure as SHA-1 but with larger internal state, larger output sizes, and different mixing functions — comprising SHA-224, SHA-256, SHA-384, and SHA-512 as the main variants.*
+_The SHA-2 family is the set of cryptographic hash functions published by NIST as FIPS PUB 180-2 in 2001 (and revised through FIPS PUB 180-4 in 2015), built on the same Merkle-Damgård structure as SHA-1 but with larger internal state, larger output sizes, and different mixing functions — comprising SHA-224, SHA-256, SHA-384, and SHA-512 as the main variants._
 
 SHA-2 is the current default. SHA-256 is the most widely deployed member.
 
 | Variant | Output size | Block size | Internal state | Rounds |
-|---|---|---|---|---|
-| SHA-224 | 224 bits | 512 bits | 256 bits | 64 |
-| SHA-256 | 256 bits | 512 bits | 256 bits | 64 |
-| SHA-384 | 384 bits | 1024 bits | 512 bits | 80 |
-| SHA-512 | 512 bits | 1024 bits | 512 bits | 80 |
+| ------- | ----------- | ---------- | -------------- | ------ |
+| SHA-224 | 224 bits    | 512 bits   | 256 bits       | 64     |
+| SHA-256 | 256 bits    | 512 bits   | 256 bits       | 64     |
+| SHA-384 | 384 bits    | 1024 bits  | 512 bits       | 80     |
+| SHA-512 | 512 bits    | 1024 bits  | 512 bits       | 80     |
 
 SHA-224 and SHA-384 are truncated outputs of SHA-256 and SHA-512 respectively (with different initial values).
 
 **Security status.** SHA-2 has been heavily studied for over two decades with no significant cryptographic weaknesses found. Best known attacks reduce the work only marginally below brute force. SHA-2 is expected to remain secure for the foreseeable future, modulo quantum attacks (Grover's algorithm provides a quadratic speed-up against pre-image attacks, so SHA-256 gives 128-bit post-quantum pre-image security — still adequate).
 
 **Use cases.** SHA-2 (specifically SHA-256 and SHA-384) is used in:
+
 - TLS certificates (signature algorithms like SHA256withRSA, SHA384withECDSA).
 - Code signing.
 - TLS handshake transcript hashing.
@@ -161,33 +165,35 @@ SHA-224 and SHA-384 are truncated outputs of SHA-256 and SHA-512 respectively (w
 
 ### SHA-3 family
 
-*SHA-3 is the cryptographic hash function family published by NIST as FIPS PUB 202 in 2015, based on the Keccak design selected through a public competition (2008–2012), built on the sponge construction rather than Merkle-Damgård, providing variants with 224, 256, 384, and 512-bit outputs plus the extendable-output functions SHAKE128 and SHAKE256.*
+_SHA-3 is the cryptographic hash function family published by NIST as FIPS PUB 202 in 2015, based on the Keccak design selected through a public competition (2008–2012), built on the sponge construction rather than Merkle-Damgård, providing variants with 224, 256, 384, and 512-bit outputs plus the extendable-output functions SHAKE128 and SHAKE256._
 
 SHA-3 came from a five-year NIST competition prompted by concerns that the structurally-similar MD5 and SHA-1 failures might foreshadow an attack on SHA-2. Keccak won partly because its sponge construction is structurally different from SHA-2 — providing diversity in deployed hash functions in case one family is broken.
 
 The sponge construction has two phases: **absorbing** (XOR message blocks into the state, apply the permutation between blocks) and **squeezing** (output state bits, apply the permutation between blocks for more output). The state is large (1600 bits in Keccak-f); the rate (number of bits absorbed/squeezed per permutation) trades off speed and security.
 
-| Variant | Output size | Notes |
-|---|---|---|
-| SHA3-224 | 224 bits | |
-| SHA3-256 | 256 bits | |
-| SHA3-384 | 384 bits | |
-| SHA3-512 | 512 bits | |
-| SHAKE128 | Any length | Extendable-output function |
-| SHAKE256 | Any length | Extendable-output function |
+| Variant  | Output size | Notes                      |
+| -------- | ----------- | -------------------------- |
+| SHA3-224 | 224 bits    |                            |
+| SHA3-256 | 256 bits    |                            |
+| SHA3-384 | 384 bits    |                            |
+| SHA3-512 | 512 bits    |                            |
+| SHAKE128 | Any length  | Extendable-output function |
+| SHAKE256 | Any length  | Extendable-output function |
 
 **Status.** Secure. Deployed but less widely than SHA-2 because SHA-2 has not been broken — most operators continue using SHA-2 unless they specifically need SHA-3's properties (notably immunity to length extension, or extendable output for SHAKE).
 
 **Where SHA-3 is used.**
+
 - Ethereum and some other cryptocurrencies use Keccak-256 (similar to but not identical to SHA3-256).
 - Some IETF protocols specify SHA-3 as an alternative.
 - Many post-quantum cryptographic schemes (including some NIST PQC candidates) use SHAKE128 or SHAKE256 internally.
 
 ### BLAKE2 and BLAKE3
 
-*BLAKE2 is a cryptographic hash function designed by Aumasson, Neves, Wilcox-O'Hearn, and Winnerlein in 2012 as a faster alternative to SHA-2 and SHA-3, with BLAKE2b providing up to 512-bit output and BLAKE2s providing up to 256-bit output, used widely in performance-sensitive contexts where SHA-2 hardware acceleration is missing.*
+_BLAKE2 is a cryptographic hash function designed by Aumasson, Neves, Wilcox-O'Hearn, and Winnerlein in 2012 as a faster alternative to SHA-2 and SHA-3, with BLAKE2b providing up to 512-bit output and BLAKE2s providing up to 256-bit output, used widely in performance-sensitive contexts where SHA-2 hardware acceleration is missing._
 
 BLAKE2 is faster than SHA-2 in software on CPUs without SHA hardware instructions. It is used in:
+
 - The Argon2 password-hashing function.
 - The libsodium cryptography library.
 - WireGuard VPN.
@@ -197,15 +203,15 @@ BLAKE2 is faster than SHA-2 in software on CPUs without SHA hardware instruction
 
 ### Comparison summary
 
-| Hash | Output | Year | Speed (CPU) | Speed (with HW) | Security status |
-|---|---|---|---|---|---|
-| MD5 | 128 | 1991 | Very fast | Very fast | Broken |
-| SHA-1 | 160 | 1995 | Fast | Very fast | Broken (since 2017) |
-| SHA-256 | 256 | 2001 | Fast | Very fast (SHA-NI) | Secure |
-| SHA-384 / SHA-512 | 384/512 | 2001 | Fast (faster on 64-bit) | Very fast | Secure |
-| SHA3-256 | 256 | 2015 | Moderate | Faster on dedicated HW | Secure |
-| BLAKE2b | up to 512 | 2012 | Fastest in pure software | (no HW acceleration) | Secure |
-| BLAKE3 | up to 256/extendable | 2020 | Very fast, parallel | (no HW acceleration) | Secure |
+| Hash              | Output               | Year | Speed (CPU)              | Speed (with HW)        | Security status     |
+| ----------------- | -------------------- | ---- | ------------------------ | ---------------------- | ------------------- |
+| MD5               | 128                  | 1991 | Very fast                | Very fast              | Broken              |
+| SHA-1             | 160                  | 1995 | Fast                     | Very fast              | Broken (since 2017) |
+| SHA-256           | 256                  | 2001 | Fast                     | Very fast (SHA-NI)     | Secure              |
+| SHA-384 / SHA-512 | 384/512              | 2001 | Fast (faster on 64-bit)  | Very fast              | Secure              |
+| SHA3-256          | 256                  | 2015 | Moderate                 | Faster on dedicated HW | Secure              |
+| BLAKE2b           | up to 512            | 2012 | Fastest in pure software | (no HW acceleration)   | Secure              |
+| BLAKE3            | up to 256/extendable | 2020 | Very fast, parallel      | (no HW acceleration)   | Secure              |
 
 **Selection guidance for 2026.**
 
@@ -223,7 +229,7 @@ The three required hash properties — pre-image, second pre-image, and collisio
 
 ### Generic attacks
 
-These work against any hash function with no special structure. The generic bounds set the *minimum* work an attacker needs.
+These work against any hash function with no special structure. The generic bounds set the _minimum_ work an attacker needs.
 
 **Brute-force pre-image attack.** For an $n$-bit hash, finding $m$ with $H(m) = h$ takes $2^n$ work on average.
 

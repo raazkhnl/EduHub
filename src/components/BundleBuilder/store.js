@@ -18,12 +18,16 @@ function read() {
     if (!raw) return [];
     const arr = JSON.parse(raw);
     return Array.isArray(arr) ? arr : [];
-  } catch { return []; }
+  } catch {
+    return [];
+  }
 }
 
 function write(arr) {
   if (!isBrowser) return;
-  try { window.sessionStorage.setItem(KEY, JSON.stringify(arr)); } catch {}
+  try {
+    window.sessionStorage.setItem(KEY, JSON.stringify(arr));
+  } catch {}
   listeners.forEach((fn) => fn(arr));
 }
 
@@ -79,12 +83,12 @@ export function useBundle() {
     return unsub;
   }, []);
 
-  const add    = useCallback((slug) => bundleStore.add(slug), []);
+  const add = useCallback((slug) => bundleStore.add(slug), []);
   const remove = useCallback((slug) => bundleStore.remove(slug), []);
   const toggle = useCallback((slug) => bundleStore.toggle(slug), []);
-  const set    = useCallback((arr)  => bundleStore.set(arr),    []);
-  const clear  = useCallback(()     => bundleStore.clear(),     []);
-  const has    = useCallback((slug) => sel.includes(slug),      [sel]);
+  const set = useCallback((arr) => bundleStore.set(arr), []);
+  const clear = useCallback(() => bundleStore.clear(), []);
+  const has = useCallback((slug) => sel.includes(slug), [sel]);
 
   return { selection: sel, add, remove, toggle, set, clear, has, count: sel.length };
 }

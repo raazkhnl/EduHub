@@ -1,1 +1,6 @@
-{ "label": "Diploma in Electrical Engineering", "position": 3, "collapsed": true, "link": { "type": "doc", "id": "ctevt/diploma-electrical/index" } }
+{
+  "label": "Diploma in Electrical Engineering",
+  "position": 3,
+  "collapsed": true,
+  "link": { "type": "doc", "id": "ctevt/diploma-electrical/index" }
+}

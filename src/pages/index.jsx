@@ -9,10 +9,7 @@ export default function Home() {
   const { siteConfig } = useDocusaurusContext();
 
   return (
-    <Layout
-      title="Notes for Nepali engineering curricula"
-      description={siteConfig.tagline}
-    >
+    <Layout title="Notes for Nepali engineering curricula" description={siteConfig.tagline}>
       <Hero />
       <main className="container">
         <Curricula />
@@ -29,15 +26,21 @@ function Hero() {
       <div className="container">
         <p className={styles.eyebrow}>EduHub · v0.1</p>
         <h1 className={styles.headline}>
-          Smart study,<br />simplified.
+          Smart study,
+          <br />
+          simplified.
         </h1>
         <p className={styles.lede}>
           Curated chapter notes, lab manuals, and past papers for IOE, CTEVT, and TU programs —
           carefully typeset, searchable, and free to read, share, and fork.
         </p>
         <div className={styles.heroActions}>
-          <Link to="/ioe/msncs" className={styles.btnPrimary}>Browse IOE M.Sc. (MSNCS)</Link>
-          <Link to="/contribute" className={styles.btnGhost}>How to contribute →</Link>
+          <Link to="/ioe/msncs" className={styles.btnPrimary}>
+            Browse IOE M.Sc. (MSNCS)
+          </Link>
+          <Link to="/contribute" className={styles.btnGhost}>
+            How to contribute →
+          </Link>
         </div>
         <p className={styles.heroFoot}>
           <span>·</span> Built with Docusaurus
@@ -131,27 +134,44 @@ function Principles() {
       <div className={styles.grid}>
         <div>
           <h3 className={styles.cardH}>Read, don't decorate</h3>
-          <p>Lora and Inter on a warm paper background, hairline rules, no decorative gradients. Reading is the feature.</p>
+          <p>
+            Lora and Inter on a warm paper background, hairline rules, no decorative gradients.
+            Reading is the feature.
+          </p>
         </div>
         <div>
           <h3 className={styles.cardH}>Equations as first-class</h3>
-          <p>KaTeX renders inline and display math at native quality. No image stand-ins, no surprise typography.</p>
+          <p>
+            KaTeX renders inline and display math at native quality. No image stand-ins, no surprise
+            typography.
+          </p>
         </div>
         <div>
           <h3 className={styles.cardH}>Search, sync, offline</h3>
-          <p>Algolia DocSearch when available, with a local index as fallback. PWA caches everything for offline review.</p>
+          <p>
+            Algolia DocSearch when available, with a local index as fallback. PWA caches everything
+            for offline review.
+          </p>
         </div>
         <div>
           <h3 className={styles.cardH}>Edit on GitHub</h3>
-          <p>Every page links to its source. Spot a typo or a better explanation — open a PR straight from the page.</p>
+          <p>
+            Every page links to its source. Spot a typo or a better explanation — open a PR straight
+            from the page.
+          </p>
         </div>
         <div>
           <h3 className={styles.cardH}>Track your syllabus</h3>
-          <p>A LocalStorage checklist on each syllabus page so you can mark chapters complete as you study them.</p>
+          <p>
+            A LocalStorage checklist on each syllabus page so you can mark chapters complete as you
+            study them.
+          </p>
         </div>
         <div>
           <h3 className={styles.cardH}>Focus when needed</h3>
-          <p>Shift+F enters Focus Mode: navbar, sidebar, and chrome step aside. Esc brings them back.</p>
+          <p>
+            Shift+F enters Focus Mode: navbar, sidebar, and chrome step aside. Esc brings them back.
+          </p>
         </div>
       </div>
     </section>
@@ -163,9 +183,14 @@ function CTA() {
     <section className={styles.cta}>
       <div>
         <h2 className={styles.h2}>Missing something?</h2>
-        <p>If a subject, lab manual, or past paper isn't here yet, request it — most fills happen within a week.</p>
+        <p>
+          If a subject, lab manual, or past paper isn't here yet, request it — most fills happen
+          within a week.
+        </p>
       </div>
-      <Link to="/contribute#request" className={styles.btnPrimary}>Request a resource</Link>
+      <Link to="/contribute#request" className={styles.btnPrimary}>
+        Request a resource
+      </Link>
     </section>
   );
 }

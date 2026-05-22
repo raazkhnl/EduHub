@@ -46,7 +46,9 @@ function TrackerImpl({ storageKey, title, items = [], showResetButton = true }) 
   // celebrate a user-driven transition during this session.
   const wasFullRef = React.useRef(items.length > 0 && initial.size === items.length);
 
-  React.useEffect(() => { saveSet(key, done); }, [key, done]);
+  React.useEffect(() => {
+    saveSet(key, done);
+  }, [key, done]);
 
   React.useEffect(() => {
     if (items.length === 0) return undefined;
@@ -56,7 +58,8 @@ function TrackerImpl({ storageKey, title, items = [], showResetButton = true }) 
     if (!transitioned) return undefined;
 
     // Respect reduced motion.
-    const m = typeof window !== 'undefined' && window.matchMedia?.('(prefers-reduced-motion: reduce)');
+    const m =
+      typeof window !== 'undefined' && window.matchMedia?.('(prefers-reduced-motion: reduce)');
     if (m && m.matches) return undefined;
 
     setSparkleOn(true);
@@ -88,12 +91,22 @@ function TrackerImpl({ storageKey, title, items = [], showResetButton = true }) 
           {isFull && <span className={styles.fullBadge}>Complete</span>}
         </h3>
         <div className={styles.stats}>
-          <span className={styles.count}>{done.size}/{items.length}</span>
-          <span className={styles.pct} aria-hidden="true">· {pct}%</span>
+          <span className={styles.count}>
+            {done.size}/{items.length}
+          </span>
+          <span className={styles.pct} aria-hidden="true">
+            · {pct}%
+          </span>
         </div>
       </header>
 
-      <div className={styles.bar} role="progressbar" aria-valuenow={pct} aria-valuemin={0} aria-valuemax={100}>
+      <div
+        className={styles.bar}
+        role="progressbar"
+        aria-valuenow={pct}
+        aria-valuemin={0}
+        aria-valuemax={100}
+      >
         <div className={styles.barFill} style={{ width: `${pct}%` }} />
       </div>
 
@@ -132,9 +145,13 @@ function TrackerSkeleton({ title, items = [] }) {
     <section className={styles.tracker} aria-busy="true">
       <header className={styles.head}>
         <h3 className={styles.title}>{title || 'Progress'}</h3>
-        <div className={styles.stats}><span className={styles.count}>0/{items.length}</span></div>
+        <div className={styles.stats}>
+          <span className={styles.count}>0/{items.length}</span>
+        </div>
       </header>
-      <div className={styles.bar}><div className={styles.barFill} style={{ width: 0 }} /></div>
+      <div className={styles.bar}>
+        <div className={styles.barFill} style={{ width: 0 }} />
+      </div>
     </section>
   );
 }
@@ -145,12 +162,19 @@ const loadSet = (key) => {
     if (!raw) return new Set();
     const arr = JSON.parse(raw);
     return new Set(Array.isArray(arr) ? arr : []);
-  } catch { return new Set(); }
+  } catch {
+    return new Set();
+  }
 };
 const saveSet = (key, set) => {
-  try { window.localStorage.setItem(key, JSON.stringify(Array.from(set))); } catch {}
+  try {
+    window.localStorage.setItem(key, JSON.stringify(Array.from(set)));
+  } catch {}
 };
-const slugOf = (s) => String(s).replace(/[^a-z0-9]+/gi, '-').toLowerCase();
+const slugOf = (s) =>
+  String(s)
+    .replace(/[^a-z0-9]+/gi, '-')
+    .toLowerCase();
 
 // Sparkle — tiny, tasteful celebration on completion. Six dots fan out and fade.
 function Sparkle() {

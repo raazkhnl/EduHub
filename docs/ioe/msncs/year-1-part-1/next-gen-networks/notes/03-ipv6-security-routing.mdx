@@ -1,15 +1,14 @@
 ---
-title: "Chapter 3 — Security and Routing in IPv6"
-sidebar_label: "Ch 03 — Security and Routing in IPv6"
+title: 'Chapter 3 — Security and Routing in IPv6'
+sidebar_label: 'Ch 03 — Security and Routing in IPv6'
 sidebar_position: 3
-description: "Chapter 3 of Next Generation Network Technologies (ENCTNS501)."
+description: 'Chapter 3 of Next Generation Network Technologies (ENCTNS501).'
 slug: /ioe/msncs/year-1-part-1/next-gen-networks/notes/ch03
 tags: [msncs, year-1-part-1, enctns501, chapter, notes]
 last_update:
   date: 2026-05-21
   author: Rajesh Khanal
 ---
-
 
 The first half of this chapter handles security — what the older Internet got wrong, what attacks exist, what defences are used, and how IPsec brings cryptographic protection into the IP layer itself. The second half handles routing — how IPv6 routers learn paths, the differences between IPv4 and IPv6 routing protocols, and how multicast is routed. Security and routing sit together here because IPv6's design touches both: every IPv6 node was expected to implement IPsec, and every IPv6 routing protocol had to be revisited or rebuilt for the new addressing model.
 
@@ -55,7 +54,7 @@ A network attack can be classified by what the attacker wants and by how the att
 
 ### By target: the CIA triad
 
-*The CIA triad is the security model that classifies attacks by which of three properties they violate — Confidentiality (information disclosure), Integrity (information modification), or Availability (denial of service).*
+_The CIA triad is the security model that classifies attacks by which of three properties they violate — Confidentiality (information disclosure), Integrity (information modification), or Availability (denial of service)._
 
 **Confidentiality attacks** disclose information the attacker is not authorised to see. Passive eavesdropping on a clear-text protocol, exfiltration of customer data after a breach, side-channel attacks that leak secrets through timing, traffic analysis that infers content from packet sizes and timing — all are confidentiality attacks. The 2020 Foodmandu breach in Nepal that exposed about 50,000 customer records, and the 2020 Vianet breach that exposed about 170,000 subscriber records, are confidentiality attacks.
 
@@ -113,7 +112,7 @@ The defensive toolkit divides into cryptographic primitives, identity and authen
 
 ### Symmetric encryption
 
-*Symmetric encryption is the class of encryption schemes where the same key is used to encrypt and decrypt, providing confidentiality but requiring that the key be shared in advance between the parties.*
+_Symmetric encryption is the class of encryption schemes where the same key is used to encrypt and decrypt, providing confidentiality but requiring that the key be shared in advance between the parties._
 
 The standard algorithms in current use are **AES** (Advanced Encryption Standard, FIPS 197) with key sizes of 128, 192, or 256 bits, and **ChaCha20** in performance-sensitive software contexts where AES hardware acceleration is missing.
 
@@ -121,7 +120,7 @@ Symmetric ciphers are fast — modern CPUs encrypt and decrypt AES at gigabits p
 
 ### Asymmetric (public-key) encryption
 
-*Asymmetric encryption is the class of encryption schemes where each party holds a key pair — a public key shared freely and a private key kept secret — such that data encrypted with the public key can only be decrypted by the matching private key.*
+_Asymmetric encryption is the class of encryption schemes where each party holds a key pair — a public key shared freely and a private key kept secret — such that data encrypted with the public key can only be decrypted by the matching private key._
 
 The standard algorithms are **RSA** (Rivest-Shamir-Adleman, 2048 or 3072-bit keys for current use, 4096-bit for long-term security), **ECC** (Elliptic Curve Cryptography, with curves like P-256 or Curve25519 providing comparable security at much smaller key sizes), and **EdDSA** (a modern elliptic-curve signature scheme).
 
@@ -129,7 +128,7 @@ Asymmetric encryption is much slower than symmetric — about three orders of ma
 
 ### Hashing
 
-*A cryptographic hash function is a one-way function that takes an arbitrary-length input and produces a fixed-length output (the hash or digest) such that finding two inputs with the same output, or finding any input matching a given output, is computationally infeasible.*
+_A cryptographic hash function is a one-way function that takes an arbitrary-length input and produces a fixed-length output (the hash or digest) such that finding two inputs with the same output, or finding any input matching a given output, is computationally infeasible._
 
 Current standards: **SHA-256** and **SHA-384** for general use, **SHA-3** for new designs, **BLAKE2** in performance-sensitive software. Older hashes — MD5 (broken since 2004, full collision attack since 2008) and SHA-1 (broken since 2017) — must not be used for security purposes, though they still appear in legacy protocols and file integrity checks.
 
@@ -137,7 +136,7 @@ Hashes are the building block for integrity checks, password storage (with a sal
 
 ### Message Authentication Codes (MACs)
 
-*A MAC (Message Authentication Code) is a fixed-length value computed from a message and a shared secret key, attached to the message, and verified by the recipient to confirm both that the message has not been altered and that it came from someone holding the same secret key.*
+_A MAC (Message Authentication Code) is a fixed-length value computed from a message and a shared secret key, attached to the message, and verified by the recipient to confirm both that the message has not been altered and that it came from someone holding the same secret key._
 
 The standard construction is **HMAC** (RFC 2104) — `HMAC(K, M) = H((K ⊕ opad) || H((K ⊕ ipad) || M))` where H is a hash function. AES-CMAC and GMAC (used inside AES-GCM) are alternatives.
 
@@ -145,7 +144,7 @@ A MAC provides integrity and authentication, but not non-repudiation: either par
 
 ### Digital signatures
 
-*A digital signature is a cryptographic value, computed from a message and the signer's private key, that lets any holder of the matching public key verify both the integrity of the message and the identity of the signer, while preventing the signer from later denying having signed it.*
+_A digital signature is a cryptographic value, computed from a message and the signer's private key, that lets any holder of the matching public key verify both the integrity of the message and the identity of the signer, while preventing the signer from later denying having signed it._
 
 A signature is computed by hashing the message and applying the private-key operation to the hash. Verification applies the public-key operation to the signature and compares with a fresh hash of the message.
 
@@ -153,7 +152,7 @@ The current algorithms are **RSA-PSS** (RSA Probabilistic Signature Scheme), **E
 
 ### Key exchange — Diffie-Hellman
 
-*Diffie-Hellman is a key-agreement protocol in which two parties exchange public values over an insecure channel and each independently computes a shared secret that an eavesdropper cannot derive from the exchanged values.*
+_Diffie-Hellman is a key-agreement protocol in which two parties exchange public values over an insecure channel and each independently computes a shared secret that an eavesdropper cannot derive from the exchanged values._
 
 The classical construction uses modular exponentiation: each side picks a private exponent, raises a public generator to that exponent modulo a large prime, and sends the result to the other side. Each side then raises the received value to its own private exponent. Both arrive at the same shared secret. **Elliptic Curve Diffie-Hellman (ECDH)** uses point multiplication on an elliptic curve instead of modular exponentiation, with much smaller numbers for the same security level.
 
@@ -161,13 +160,13 @@ Diffie-Hellman is the workhorse for **perfect forward secrecy** — a property t
 
 ### Public Key Infrastructure (PKI)
 
-*A PKI (Public Key Infrastructure) is the system of certificate authorities, registration procedures, and revocation mechanisms that issues, distributes, and validates the X.509 certificates that bind public keys to identities.*
+_A PKI (Public Key Infrastructure) is the system of certificate authorities, registration procedures, and revocation mechanisms that issues, distributes, and validates the X.509 certificates that bind public keys to identities._
 
 A **certificate** is a document signed by a CA stating "this public key belongs to this entity," along with validity dates, an identifier, and other attributes. The recipient verifies the CA's signature using the CA's public key (which the recipient already trusts). The web's TLS ecosystem rests on PKI — Let's Encrypt, DigiCert, GlobalSign, Sectigo, and the like issue billions of certificates. **Certificate Transparency** logs (RFC 6962) provide public, append-only logs of issued certificates, so misissuance can be detected.
 
 ### Authentication mechanisms
 
-Authentication answers "who is this?" The methods are commonly classified by *factor*:
+Authentication answers "who is this?" The methods are commonly classified by _factor_:
 
 - **Something you know** — password, PIN, security question
 - **Something you have** — hardware token, phone with OTP, smart card
@@ -197,7 +196,7 @@ IPsec applies cryptographic protection to IP packets. It supports two modes — 
 
 ### Transport mode
 
-*Transport mode is the IPsec mode in which the IPsec protection (AH or ESP) is inserted between the original IP header and the transport-layer payload, encrypting and/or authenticating the payload while leaving the original IP header in clear.*
+_Transport mode is the IPsec mode in which the IPsec protection (AH or ESP) is inserted between the original IP header and the transport-layer payload, encrypting and/or authenticating the payload while leaving the original IP header in clear._
 
 The packet layout for transport mode with ESP:
 
@@ -225,7 +224,7 @@ The original IP header stays intact. The original IP source and destination rema
 
 ### Tunnel mode
 
-*Tunnel mode is the IPsec mode in which the entire original IP packet (header and payload) is encapsulated inside a new outer IP packet whose payload is the IPsec-protected original, hiding the original source and destination addresses and allowing IPsec gateways to protect traffic on behalf of other hosts.*
+_Tunnel mode is the IPsec mode in which the entire original IP packet (header and payload) is encapsulated inside a new outer IP packet whose payload is the IPsec-protected original, hiding the original source and destination addresses and allowing IPsec gateways to protect traffic on behalf of other hosts._
 
 The packet layout for tunnel mode with ESP:
 
@@ -254,15 +253,15 @@ Tunnel mode is also the standard for the **remote-access VPN** that a user's IPs
 
 ### Transport vs tunnel — when to use which
 
-| | Transport | Tunnel |
-|---|---|---|
-| Endpoints | Host-to-host | Gateway-to-gateway (most common) or gateway-to-host |
-| Outer IP header | Original | New, addressing the tunnel endpoints |
-| What is encrypted | Payload | Entire original packet |
-| Hides internal topology | No | Yes |
-| Survives NAT | Difficult (needs NAT-T) | Easier (NAT-T still helps) |
-| Overhead | Lower (no extra IP header) | Higher (extra IP header + ESP) |
-| Typical use | End-to-end IPsec between two hosts | Site-to-site and remote-access VPNs |
+|                         | Transport                          | Tunnel                                              |
+| ----------------------- | ---------------------------------- | --------------------------------------------------- |
+| Endpoints               | Host-to-host                       | Gateway-to-gateway (most common) or gateway-to-host |
+| Outer IP header         | Original                           | New, addressing the tunnel endpoints                |
+| What is encrypted       | Payload                            | Entire original packet                              |
+| Hides internal topology | No                                 | Yes                                                 |
+| Survives NAT            | Difficult (needs NAT-T)            | Easier (NAT-T still helps)                          |
+| Overhead                | Lower (no extra IP header)         | Higher (extra IP header + ESP)                      |
+| Typical use             | End-to-end IPsec between two hosts | Site-to-site and remote-access VPNs                 |
 
 ### Authentication-only vs encryption
 
@@ -280,7 +279,7 @@ IPsec is not a single protocol. It is a framework of protocols, algorithms, and 
 
 ### Components of the IPsec architecture
 
-**Security Association (SA).** *A Security Association is the set of cryptographic parameters — algorithms, keys, sequence number state, lifetimes — that two IPsec peers agree on for a one-way flow of protected traffic between them.*
+**Security Association (SA).** _A Security Association is the set of cryptographic parameters — algorithms, keys, sequence number state, lifetimes — that two IPsec peers agree on for a one-way flow of protected traffic between them._
 
 An SA is unidirectional. Two-way protected communication needs two SAs — one for each direction. An SA is identified by three values:
 
@@ -319,12 +318,12 @@ The minimum IKEv2 exchange is four messages — two pairs:
 ```
 Initiator                                  Responder
 ---------                                  ---------
-IKE_SA_INIT request                      
+IKE_SA_INIT request
 (proposals, KE, nonce)             ----->
                                            IKE_SA_INIT response
                                    <-----  (chosen proposal, KE, nonce)
 
-IKE_AUTH request 
+IKE_AUTH request
 (identity, AUTH, SA-child, TS)     ----->
                                            IKE_AUTH response
                                    <-----  (identity, AUTH, SA-child, TS)
@@ -381,16 +380,16 @@ Routing in IPv6 follows the same principles as routing in IPv4 — routers excha
 
 The routing protocols are similar in spirit but updated in important ways for IPv6.
 
-| | IPv4 routing | IPv6 routing |
-|---|---|---|
-| RIP | RIP v1/v2 | RIPng (RFC 2080) |
-| OSPF | OSPFv2 (RFC 2328) | OSPFv3 (RFC 5340) |
-| IS-IS | IS-IS for IP | IS-IS with IPv6 TLVs (RFC 5308) |
-| BGP | BGP-4 | MP-BGP for IPv6 |
-| EIGRP | EIGRP | EIGRPv6 |
-| Use of multicast | 224.0.0.0/24 range | ff02::/16 range |
-| Next-hop addressing | IPv4 next-hop | Usually link-local IPv6 next-hop |
-| Authentication | Built into protocols (often) | Often relies on IPsec underneath |
+|                     | IPv4 routing                 | IPv6 routing                     |
+| ------------------- | ---------------------------- | -------------------------------- |
+| RIP                 | RIP v1/v2                    | RIPng (RFC 2080)                 |
+| OSPF                | OSPFv2 (RFC 2328)            | OSPFv3 (RFC 5340)                |
+| IS-IS               | IS-IS for IP                 | IS-IS with IPv6 TLVs (RFC 5308)  |
+| BGP                 | BGP-4                        | MP-BGP for IPv6                  |
+| EIGRP               | EIGRP                        | EIGRPv6                          |
+| Use of multicast    | 224.0.0.0/24 range           | ff02::/16 range                  |
+| Next-hop addressing | IPv4 next-hop                | Usually link-local IPv6 next-hop |
+| Authentication      | Built into protocols (often) | Often relies on IPsec underneath |
 
 A common surprise during IPv6 rollout is that IPv6 dynamic routing protocols typically use **link-local addresses** as their next-hop value. The OSPFv3 neighbour adjacency runs on link-local addresses, and the next hop in OSPFv3 LSAs is the neighbour's link-local. This works because routing-protocol adjacencies are always between directly connected neighbours, and link-local is the natural address space for that.
 
@@ -398,7 +397,7 @@ A common surprise during IPv6 rollout is that IPv6 dynamic routing protocols typ
 
 ### RIPng
 
-*RIPng (RIP next generation) is a distance-vector interior gateway protocol defined in RFC 2080 that adapts RIP version 2 for IPv6 by using IPv6 addresses, IPv6 multicast for periodic updates, and UDP port 521.*
+_RIPng (RIP next generation) is a distance-vector interior gateway protocol defined in RFC 2080 that adapts RIP version 2 for IPv6 by using IPv6 addresses, IPv6 multicast for periodic updates, and UDP port 521._
 
 RIPng inherits RIP's structure:
 
@@ -421,7 +420,7 @@ Practical deployment of RIPng is rare in serious networks today. It survives in 
 
 ### OSPFv3
 
-*OSPFv3 (Open Shortest Path First version 3) is the link-state interior gateway protocol defined in RFC 5340 that extends OSPFv2 for IPv6 by removing addressing from the protocol's core packet formats, making it run per-link rather than per-subnet, and adding support for both IPv4 and IPv6 address families.*
+_OSPFv3 (Open Shortest Path First version 3) is the link-state interior gateway protocol defined in RFC 5340 that extends OSPFv2 for IPv6 by removing addressing from the protocol's core packet formats, making it run per-link rather than per-subnet, and adding support for both IPv4 and IPv6 address families._
 
 OSPFv3 retains the core OSPFv2 design — Dijkstra's shortest-path-first algorithm on a topology database that every router in an area shares. The main changes:
 
@@ -482,7 +481,7 @@ Multicast delivers a single packet from one source to many receivers across a ne
 
 ### Group membership management
 
-*MLD (Multicast Listener Discovery) is the IPv6 equivalent of IGMP, used by hosts to tell their first-hop router that they want to receive a particular multicast group, and used by routers to track which groups have listeners on each link.*
+_MLD (Multicast Listener Discovery) is the IPv6 equivalent of IGMP, used by hosts to tell their first-hop router that they want to receive a particular multicast group, and used by routers to track which groups have listeners on each link._
 
 MLDv2 (RFC 3810) is the current version, with source-specific membership filters. The host sends an MLD Report to indicate interest in a group; the router periodically sends MLD Queries to confirm which hosts are still listening. MLD runs as a set of ICMPv6 message types (types 130, 131, 132, 143).
 
@@ -490,9 +489,9 @@ MLD only handles the host-to-router signalling. The router-to-router multicast r
 
 ### PIM-SM
 
-*PIM-SM (Protocol Independent Multicast — Sparse Mode) is the multicast routing protocol defined in RFC 7761 that builds explicit multicast distribution trees from receivers towards a Rendezvous Point shared with sources, suited to scenarios where multicast receivers are sparsely distributed across the network.*
+_PIM-SM (Protocol Independent Multicast — Sparse Mode) is the multicast routing protocol defined in RFC 7761 that builds explicit multicast distribution trees from receivers towards a Rendezvous Point shared with sources, suited to scenarios where multicast receivers are sparsely distributed across the network._
 
-"Protocol Independent" means PIM does not run its own topology discovery — it uses whatever unicast routing table the underlying IGP/BGP has built. PIM operates *on top of* that table to compute reverse-path forwarding for multicast.
+"Protocol Independent" means PIM does not run its own topology discovery — it uses whatever unicast routing table the underlying IGP/BGP has built. PIM operates _on top of_ that table to compute reverse-path forwarding for multicast.
 
 "Sparse Mode" means PIM-SM uses an explicit join model — receivers must signal interest before traffic is delivered. The alternative is Dense Mode, where traffic is flooded everywhere first and then pruned, suited only to dense receiver distributions.
 
@@ -502,11 +501,11 @@ PIM-SM uses a **Rendezvous Point (RP)** — a designated router that serves as t
 
 The mechanism:
 
-1. **A receiver joins.** A host sends an MLD Report for group G to its first-hop router. The router sends a PIM Join message towards the RP for group G. Every router along the path installs forwarding state for (*, G) — "any source to group G goes downstream this way."
+1. **A receiver joins.** A host sends an MLD Report for group G to its first-hop router. The router sends a PIM Join message towards the RP for group G. Every router along the path installs forwarding state for (\*, G) — "any source to group G goes downstream this way."
 2. **A source sends.** The source's first-hop router (called the **Designated Router** for the source's LAN) encapsulates the source's multicast packets in PIM Register messages and unicasts them to the RP.
 3. **The RP de-encapsulates** the packets and forwards them down the shared tree to all known receivers.
 4. **The RP sends a Source-Specific Join** towards the source. A native multicast path is built from source to RP, eliminating the Register-encapsulation overhead.
-5. **Tree optimisation.** Once receivers see traffic flowing through the shared tree, the last-hop routers may switch to a **Shortest Path Tree (SPT)** rooted at the source — a (S, G) tree — for better efficiency. The original shared tree (*, G) remains as a fallback for new sources.
+5. **Tree optimisation.** Once receivers see traffic flowing through the shared tree, the last-hop routers may switch to a **Shortest Path Tree (SPT)** rooted at the source — a (S, G) tree — for better efficiency. The original shared tree (\*, G) remains as a fallback for new sources.
 
 ### RP discovery
 

@@ -19,13 +19,13 @@ docs/{institution}/{program}/{level}/{subject}/{material-type}/{file}.mdx
                                                         └── optional sub-folder
 ```
 
-| Level             | Allowed values                                                                                                | Example                          |
-| ----------------- | ------------------------------------------------------------------------------------------------------------- | -------------------------------- |
-| **institution**   | `ioe`, `ctevt`, `tu`, `pu`, `ku`                                                                              | `ioe`                            |
-| **program**       | `msncs`, `mscske`, `bct`, `bce`, `bel`, `bex`, `bme`, `bge`, `diploma-computer`, `diploma-civil`, `bsc-csit`… | `msncs`                          |
-| **level**         | `year-1-part-1` … `year-4-part-2`, or `semester-1` … `semester-8` for CTEVT                                   | `year-1-part-1`                  |
-| **subject**       | kebab-case subject slug                                                                                       | `cryptography`                   |
-| **material-type** | `notes`, `labs`, `past-papers`, `slides`, `projects`, `references`                                            | `notes`                          |
+| Level             | Allowed values                                                                                                | Example         |
+| ----------------- | ------------------------------------------------------------------------------------------------------------- | --------------- |
+| **institution**   | `ioe`, `ctevt`, `tu`, `pu`, `ku`                                                                              | `ioe`           |
+| **program**       | `msncs`, `mscske`, `bct`, `bce`, `bel`, `bex`, `bme`, `bge`, `diploma-computer`, `diploma-civil`, `bsc-csit`… | `msncs`         |
+| **level**         | `year-1-part-1` … `year-4-part-2`, or `semester-1` … `semester-8` for CTEVT                                   | `year-1-part-1` |
+| **subject**       | kebab-case subject slug                                                                                       | `cryptography`  |
+| **material-type** | `notes`, `labs`, `past-papers`, `slides`, `projects`, `references`                                            | `notes`         |
 
 A subject **must** contain an `index.mdx` that introduces it, links the syllabus
 checklist (`<ProgressTracker>`), and lists companion `<ResourceCard>` files.
@@ -57,7 +57,12 @@ For section landing pages (no concrete `index.mdx`) use:
 
 ```json
 {
-  "link": { "type": "generated-index", "title": "…", "description": "…", "slug": "/…" }
+  "link": {
+    "type": "generated-index",
+    "title": "…",
+    "description": "…",
+    "slug": "/…"
+  }
 }
 ```
 
@@ -69,10 +74,10 @@ Every `.mdx` page **must** have this frontmatter block:
 
 ```yaml
 ---
-title: "Page title shown as H1 and tab title"
-sidebar_label: "Short label for the sidebar"   # optional but recommended
-sidebar_position: 3                             # numeric; lower = higher
-description: "One-sentence SEO + social-card description, ~140 chars."
+title: 'Page title shown as H1 and tab title'
+sidebar_label: 'Short label for the sidebar' # optional but recommended
+sidebar_position: 3 # numeric; lower = higher
+description: 'One-sentence SEO + social-card description, ~140 chars.'
 slug: /ioe/msncs/year-1-part-1/cryptography/notes/ch03
 tags: [msncs, year-1-part-1, enctns502, chapter, notes]
 last_update:
@@ -100,11 +105,11 @@ The following components are **globally registered** — no import needed.
   title="Cryptography — 2079 Past Paper"
   description="Regular 2079 attempt — covers DES, RSA, PKI."
   file="/files/ioe/msncs/i-i/cryptography/past-papers/2079.pdf"
-  type="pdf"        // pdf | doc | slide | code | dataset | image | video | link
+  type="pdf" // pdf | doc | slide | code | dataset | image | video | link
   tags={['PAST PAPER', '2079']}
   size="412 KB"
   pages={4}
-  inlineView        // renders an in-page iframe preview button
+  inlineView // renders an in-page iframe preview button
 />
 ```
 
@@ -154,7 +159,7 @@ URL automatically:
 <AddToBundleButton />
 ```
 
-To add a *different* page (e.g. from a syllabus index linking to a chapter),
+To add a _different_ page (e.g. from a syllabus index linking to a chapter),
 pass an explicit `slug`:
 
 ```mdx
@@ -171,13 +176,13 @@ A short "~12 min read" tag. Counts words in the live article DOM, so it works
 on any rendered MDX. Auto-mounted in the doc footer; rarely needed inline.
 
 ```mdx
-<ReadingTime />              {/* default 220 wpm */}
-<ReadingTime wpm={260} />     {/* heavier reader */}
+<ReadingTime /> {/* default 220 wpm */}
+<ReadingTime wpm={260} /> {/* heavier reader */}
 ```
 
 ### Math (KaTeX)
 
-Inline: `$ E = mc^2 $`.  Display: `$$ \sum_{i=1}^n a_i $$`.
+Inline: `$ E = mc^2 $`. Display: `$$ \sum_{i=1}^n a_i $$`.
 
 ### Admonitions
 
@@ -227,12 +232,12 @@ disable a feature during a maintenance window.
 
 ## 3b. Keyboard shortcuts (reader-facing)
 
-| Shortcut          | Action                                       |
-| ----------------- | -------------------------------------------- |
-| `⌘ K` / `Ctrl K`  | Open search                                  |
-| `Shift + F`       | Toggle Focus Mode                            |
-| `?`               | Open the keyboard-shortcut modal             |
-| `Esc`             | Close Focus Mode / shortcut modal            |
+| Shortcut         | Action                            |
+| ---------------- | --------------------------------- |
+| `⌘ K` / `Ctrl K` | Open search                       |
+| `Shift + F`      | Toggle Focus Mode                 |
+| `?`              | Open the keyboard-shortcut modal  |
+| `Esc`            | Close Focus Mode / shortcut modal |
 
 The shortcuts modal lists everything reader-facing. Add a row to
 [`KeyboardHelp/index.jsx`](./src/components/KeyboardHelp/index.jsx) when you

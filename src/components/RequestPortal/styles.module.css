@@ -1,4 +1,5 @@
-.wrap, .fallback {
+.wrap,
+.fallback {
   margin: 2rem 0;
   padding: 1.4rem 1.5rem;
   border: 1px solid var(--ah-rule);
@@ -6,7 +7,9 @@
   background: var(--ah-paper-elev);
 }
 
-.head { margin-bottom: 1rem; }
+.head {
+  margin-bottom: 1rem;
+}
 .title {
   font-family: var(--ah-font-serif);
   font-weight: 600;
@@ -28,7 +31,11 @@
   padding-top: 1rem;
   background: transparent;
 }
-.frameWrap iframe { display: block; background: transparent; border-radius: var(--ah-radius-sm); }
+.frameWrap iframe {
+  display: block;
+  background: transparent;
+  border-radius: var(--ah-radius-sm);
+}
 
 .btn {
   display: inline-block;
@@ -43,6 +50,13 @@
   border-radius: var(--ah-radius-sm);
   transition: background-color var(--ah-dur-fast);
 }
-.btn:hover { background: var(--ah-accent-hover); color: #fff; }
+.btn:hover {
+  background: var(--ah-accent-hover);
+  color: #fff;
+}
 
-.note { color: var(--ah-ink-mute); font-size: 13px; margin: 0.6rem 0 0; }
+.note {
+  color: var(--ah-ink-mute);
+  font-size: 13px;
+  margin: 0.6rem 0 0;
+}

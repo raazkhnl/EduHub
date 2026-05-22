@@ -46,6 +46,27 @@ If `npm run build` fails:
 4. Push to `main` — the workflow at `.github/workflows/deploy.yml` builds and
    deploys. First deploy typically takes ~3–5 minutes.
 
+### Building for the GitHub Pages **preview** URL
+
+The default build (`npm run build`) targets the custom domain
+(`eduhub.khanalrajesh.com.np`, `baseUrl=/`) and ships `static/CNAME`. If you
+haven't set up DNS yet and want to test on the GH Pages preview URL
+(`raazkhnl.github.io/EduHub/`), build with `DEPLOY_TARGET=ghpages`:
+
+```bash
+DEPLOY_TARGET=ghpages npm run build
+```
+
+That swaps `baseUrl` to `/EduHub/`, points `url` at `raazkhnl.github.io`, and
+omits the `CNAME` file from the build output so GitHub Pages won't redirect
+to the custom domain. Override individually with `SITE_URL=` or `BASE_URL=`
+if you're hosting under a different path.
+
+If you ever see the Docusaurus error _"Your Docusaurus site did not load
+properly … Current configured baseUrl = / … We suggest trying baseUrl =
+/EduHub/"_, that's exactly this mismatch: the served URL has a path prefix
+that the build wasn't told about.
+
 ## 3. Custom domain (eduhub.khanalrajesh.com.np)
 
 Two DNS records, both at your registrar / DNS host:

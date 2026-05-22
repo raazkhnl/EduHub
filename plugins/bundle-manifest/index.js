@@ -50,8 +50,14 @@ module.exports = function bundleManifestPlugin(context, opts = {}) {
         count: docs.length,
         documents: docs,
       };
-      await fsp.writeFile(path.join(outFolder, 'manifest.json'), JSON.stringify(out, null, 2), 'utf8');
-      console.log(`[bundle-manifest] wrote ${docs.length} documents → ${options.outDir}/manifest.json`);
+      await fsp.writeFile(
+        path.join(outFolder, 'manifest.json'),
+        JSON.stringify(out, null, 2),
+        'utf8',
+      );
+      console.log(
+        `[bundle-manifest] wrote ${docs.length} documents → ${options.outDir}/manifest.json`,
+      );
     },
 
     // Also expose during dev. We can't reach build outputs in dev mode, so we
@@ -69,7 +75,11 @@ module.exports = function bundleManifestPlugin(context, opts = {}) {
       await fsp.mkdir(devOut, { recursive: true });
       await fsp.writeFile(
         path.join(devOut, 'manifest.json'),
-        JSON.stringify({ generatedAt: new Date().toISOString(), count: docs.length, documents: docs }, null, 2),
+        JSON.stringify(
+          { generatedAt: new Date().toISOString(), count: docs.length, documents: docs },
+          null,
+          2,
+        ),
         'utf8',
       );
       return { count: docs.length };
@@ -97,14 +107,15 @@ async function walk(absDir, rootDir, acc, opts) {
     const { frontmatter, body } = parseFrontmatter(raw);
 
     // Skip files that don't carry a chapter — index/landing pages still useful.
-    const title = frontmatter.title || stripH1(body) || path.basename(entry.name, path.extname(entry.name));
-    const slug = frontmatter.slug || ('/' + relFromDocs.replace(/\.(md|mdx)$/i, ''));
+    const title =
+      frontmatter.title || stripH1(body) || path.basename(entry.name, path.extname(entry.name));
+    const slug = frontmatter.slug || '/' + relFromDocs.replace(/\.(md|mdx)$/i, '');
     const description = frontmatter.description || '';
     const tags = Array.isArray(frontmatter.tags) ? frontmatter.tags : parseTags(frontmatter.tags);
     const sidebarPosition = num(frontmatter.sidebar_position);
 
     const wordCount = body.split(/\s+/).filter(Boolean).length;
-    const minutes = Math.max(1, Math.round(wordCount / 220));   // ~220 wpm
+    const minutes = Math.max(1, Math.round(wordCount / 220)); // ~220 wpm
 
     acc.push({
       path: relFromDocs,
@@ -148,7 +159,11 @@ function parseFrontmatter(raw) {
   }
   // Coerce tags `[a, b, c]` → ['a','b','c']
   if (typeof fm.tags === 'string' && fm.tags.startsWith('[') && fm.tags.endsWith(']')) {
-    fm.tags = fm.tags.slice(1, -1).split(',').map((s) => unquote(s.trim())).filter(Boolean);
+    fm.tags = fm.tags
+      .slice(1, -1)
+      .split(',')
+      .map((s) => unquote(s.trim()))
+      .filter(Boolean);
   }
   return { frontmatter: fm, body };
 }
@@ -163,7 +178,10 @@ function unquote(s) {
 function parseTags(v) {
   if (!v) return [];
   if (Array.isArray(v)) return v;
-  return String(v).split(',').map((s) => s.trim()).filter(Boolean);
+  return String(v)
+    .split(',')
+    .map((s) => s.trim())
+    .filter(Boolean);
 }
 function stripH1(body) {
   const m = /^#\s+(.+)$/m.exec(body);

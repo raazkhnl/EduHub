@@ -6,10 +6,10 @@
 
 import React from 'react';
 import OriginalLayout from '@theme-original/Layout';
-import FocusMode      from '@site/src/components/FocusMode';
+import FocusMode from '@site/src/components/FocusMode';
 import ScrollProgress from '@site/src/components/ScrollProgress';
-import KeyboardHelp   from '@site/src/components/KeyboardHelp';
-import BundleFab      from '@site/src/components/BundleBuilder/BundleFab';
+import KeyboardHelp from '@site/src/components/KeyboardHelp';
+import BundleFab from '@site/src/components/BundleBuilder/BundleFab';
 
 export default function LayoutWrapper(props) {
   return (

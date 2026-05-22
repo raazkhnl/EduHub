@@ -1,8 +1,8 @@
 ---
-title: "Chapter 7 — Emerging Trends in Cryptography and Security"
-sidebar_label: "Ch 07 — Emerging Trends in Cryptography and Security"
+title: 'Chapter 7 — Emerging Trends in Cryptography and Security'
+sidebar_label: 'Ch 07 — Emerging Trends in Cryptography and Security'
 sidebar_position: 7
-description: "Chapter 7 of Cryptography and Data Security (ENCTNS502)."
+description: 'Chapter 7 of Cryptography and Data Security (ENCTNS502).'
 slug: /ioe/msncs/year-1-part-1/cryptography/notes/ch07
 tags: [msncs, year-1-part-1, enctns502, chapter, notes]
 last_update:
@@ -10,12 +10,11 @@ last_update:
   author: Rajesh Khanal
 ---
 
-
 The previous chapters covered the established foundations — symmetric and asymmetric cryptography, hash functions, PKI, data security, cybersecurity, and data privacy. This final chapter looks forward. It covers the technical and operational directions the field is moving in over the late 2020s: threat intelligence as a defensive discipline, the post-quantum transition that is the most consequential cryptographic event since RSA's invention, homomorphic encryption as the most ambitious attempt to compute on encrypted data, supply-chain security as a response to a decade of upstream compromises, federated learning as the privacy-preserving alternative to centralised AI training, AI/ML as both a defensive tool and a new attack surface, and several other trends shaping the discipline's near future.
 
 ## 7.1 Threat intelligence and predictive analytics
 
-*Threat intelligence is the discipline of collecting, analysing, and operationalising information about adversaries — their tools, infrastructure, techniques, motivations, and targets — to inform defensive decisions, with the goal of moving from reactive incident response to proactive risk reduction.*
+_Threat intelligence is the discipline of collecting, analysing, and operationalising information about adversaries — their tools, infrastructure, techniques, motivations, and targets — to inform defensive decisions, with the goal of moving from reactive incident response to proactive risk reduction._
 
 Threat intelligence shifts defensive posture from "respond when something happens" to "anticipate what is likely and prepare for it." It is now a standard function in mature security organisations, with dedicated teams, commercial feeds, and frameworks for sharing.
 
@@ -43,7 +42,7 @@ IoCs go stale quickly — attackers rotate infrastructure constantly. IoAs are m
 
 ### MITRE ATT&CK
 
-*MITRE ATT&CK is a globally accessible knowledge base of adversary tactics and techniques based on real-world observations, organised into a matrix that maps the techniques attackers use across the phases of an attack lifecycle, maintained by the MITRE Corporation as an open framework that defenders use for threat modelling, gap analysis, and detection engineering.*
+_MITRE ATT&CK is a globally accessible knowledge base of adversary tactics and techniques based on real-world observations, organised into a matrix that maps the techniques attackers use across the phases of an attack lifecycle, maintained by the MITRE Corporation as an open framework that defenders use for threat modelling, gap analysis, and detection engineering._
 
 ATT&CK has become the dominant taxonomy for talking about attacker behaviour. The current version (v17 as of 2026) covers enterprise environments (Windows, macOS, Linux, cloud, network, containers), mobile (iOS, Android), and industrial control systems.
 
@@ -103,7 +102,7 @@ Together, STIX/TAXII let organisations share intelligence automatically. Informa
 
 ### Threat hunting
 
-*Threat hunting is the proactive process of searching through environments for adversary activity that has evaded existing detections, based on hypotheses about what attackers might be doing, performed by skilled analysts rather than triggered by alerts.*
+_Threat hunting is the proactive process of searching through environments for adversary activity that has evaded existing detections, based on hypotheses about what attackers might be doing, performed by skilled analysts rather than triggered by alerts._
 
 Hunting is the human-driven counterpart to automated detection. The hunter forms a hypothesis ("attackers using technique X would leave residue Y in our environment"), queries logs and telemetry to test the hypothesis, and either confirms compromise, eliminates the hypothesis, or develops the finding into a new detection rule.
 
@@ -135,7 +134,7 @@ The current landscape:
 
 ## 7.2 Quantum, post-quantum, and quantum-safe cryptography
 
-*Quantum cryptography is the broad field encompassing both quantum-key-distribution (QKD) systems that use quantum physics to detect eavesdropping on key exchange, and post-quantum cryptography (PQC) — classical algorithms designed to resist attacks by quantum computers — with the practical urgency driven by the threat that a sufficiently large quantum computer would break the public-key algorithms (RSA, ECC, classical Diffie-Hellman) on which most modern Internet security depends.*
+_Quantum cryptography is the broad field encompassing both quantum-key-distribution (QKD) systems that use quantum physics to detect eavesdropping on key exchange, and post-quantum cryptography (PQC) — classical algorithms designed to resist attacks by quantum computers — with the practical urgency driven by the threat that a sufficiently large quantum computer would break the public-key algorithms (RSA, ECC, classical Diffie-Hellman) on which most modern Internet security depends._
 
 This section was previewed in the Next Generation Networks subject (Chapter 6) and partially covered in this subject's earlier chapters. Here we treat it as a comprehensive topic.
 
@@ -208,6 +207,7 @@ The dramatic breaks during standardisation underscore that post-quantum algorith
 Real-world deployments have begun, in 2024–25, primarily in **hybrid modes** — combining a classical algorithm with a post-quantum algorithm so that the combination is secure if either remains unbroken.
 
 **TLS hybrid key exchange.**
+
 - Google has deployed X25519+ML-KEM-768 in Chrome and on Google services since 2024.
 - Cloudflare has deployed X25519+ML-KEM-768 for connections to its edge.
 - AWS has deployed hybrid KEM in s2n-tls.
@@ -228,6 +228,7 @@ Real-world deployments have begun, in 2024–25, primarily in **hybrid modes** �
 A different approach. QKD uses quantum physics (typically polarised photons over fibre or free-space links) to distribute key material in a way that detects eavesdropping. Eavesdropping necessarily perturbs the quantum state and is therefore detectable.
 
 QKD offers information-theoretic security for the key-distribution problem but has practical limitations:
+
 - **Distance.** Fibre-based QKD is limited to about 100 km without trusted-node relays.
 - **Cost.** Specialised hardware on both ends.
 - **Throughput.** Key rates are modest (kilobits per second over typical links).
@@ -251,7 +252,7 @@ Most expert estimates suggest full transition through the early 2030s, with hybr
 
 ## 7.3 Homomorphic encryption
 
-*Homomorphic encryption is a class of encryption schemes that allow computations to be performed on ciphertexts such that the decrypted result equals the result of equivalent computations performed on the plaintexts, enabling computation on encrypted data without revealing the data to the computing party.*
+_Homomorphic encryption is a class of encryption schemes that allow computations to be performed on ciphertexts such that the decrypted result equals the result of equivalent computations performed on the plaintexts, enabling computation on encrypted data without revealing the data to the computing party._
 
 The idea is striking: a cloud server can compute on a customer's data without ever seeing the plaintext. The customer encrypts the data, sends it to the cloud, the cloud computes (on ciphertext), and the customer decrypts to get the answer. Privacy and utility coexist.
 
@@ -262,6 +263,7 @@ Long considered theoretically interesting but practically impossible — Craig G
 Homomorphic encryption schemes are classified by the operations they support:
 
 **Partially Homomorphic Encryption (PHE).** Supports unlimited evaluation of one operation type. Examples:
+
 - RSA without padding is multiplicatively homomorphic: $E(m_1) \cdot E(m_2) = E(m_1 \cdot m_2)$.
 - ElGamal is multiplicatively homomorphic.
 - Paillier (1999) is additively homomorphic.
@@ -338,7 +340,7 @@ The right choice depends on the threat model, performance requirements, and trus
 
 ## 7.4 Supply-chain security
 
-*Supply-chain security is the discipline of securing the software, hardware, and services that an organisation depends on but does not build itself, recognising that a compromise in any upstream component can affect every downstream consumer.*
+_Supply-chain security is the discipline of securing the software, hardware, and services that an organisation depends on but does not build itself, recognising that a compromise in any upstream component can affect every downstream consumer._
 
 A decade of incidents has made this discipline an industry priority. The pattern: attackers compromise a vendor, the vendor's product or service is widely deployed, and the compromise propagates to thousands of downstream organisations simultaneously.
 
@@ -358,20 +360,21 @@ A decade of incidents has made this discipline an industry priority. The pattern
 
 ### Software Bill of Materials (SBOM)
 
-*A Software Bill of Materials is a formal, machine-readable inventory of the software components — libraries, modules, dependencies — that compose a software product, including their versions, licences, and supplier information.*
+_A Software Bill of Materials is a formal, machine-readable inventory of the software components — libraries, modules, dependencies — that compose a software product, including their versions, licences, and supplier information._
 
 SBOMs let downstream consumers know exactly what is in the software they use. When a vulnerability is disclosed in a specific library (Log4j in December 2021 being the canonical example), every consumer needs to determine whether their software is affected. SBOMs make this answerable.
 
 US Executive Order 14028 (May 2021) and subsequent implementation requirements mandated SBOMs for federal software acquisitions. The EU Cyber Resilience Act (CRA), in force from 2024 with full obligations from 2027, requires SBOMs for many products.
 
 **Standard SBOM formats:**
+
 - **SPDX (Software Package Data eXchange).** Linux Foundation. ISO standard.
 - **CycloneDX.** OWASP-led. Widely used in security tools.
 - **SWID (Software Identification).** NIST format, less common.
 
 ### SLSA — Supply-chain Levels for Software Artifacts
 
-*SLSA (pronounced "salsa") is a Google-led framework that defines progressive levels of supply-chain integrity controls for software artifacts, from source-code provenance through build-process integrity through hermetic builds, providing a maturity model for organisations to assess and improve their supply-chain security.*
+_SLSA (pronounced "salsa") is a Google-led framework that defines progressive levels of supply-chain integrity controls for software artifacts, from source-code provenance through build-process integrity through hermetic builds, providing a maturity model for organisations to assess and improve their supply-chain security._
 
 SLSA defines four levels (the current version 1.0 of 2023; an earlier 0.1 version had levels 1-4):
 
@@ -383,7 +386,7 @@ Higher levels target reproducible builds, two-person reviews, and hermetic isola
 
 ### Reproducible builds
 
-*A reproducible build is a build process in which, given the same source code, build environment, and instructions, anyone can produce an identical (bit-for-bit) output, enabling independent verification that a binary corresponds to its claimed source.*
+_A reproducible build is a build process in which, given the same source code, build environment, and instructions, anyone can produce an identical (bit-for-bit) output, enabling independent verification that a binary corresponds to its claimed source._
 
 Reproducibility is the strongest defence against build-system compromise — an attacker who inserts malicious code at build time produces a binary that does not match the reproducible result, and anyone rebuilding can detect the discrepancy.
 
@@ -426,7 +429,7 @@ For organisations producing software:
 
 ## 7.5 Security in federated learning
 
-*Federated learning is a distributed machine-learning approach in which a model is trained across many clients (devices or organisations) holding local data, with each client computing updates locally and a central server aggregating those updates into a global model, so that the raw training data never leaves the clients.*
+_Federated learning is a distributed machine-learning approach in which a model is trained across many clients (devices or organisations) holding local data, with each client computing updates locally and a central server aggregating those updates into a global model, so that the raw training data never leaves the clients._
 
 Federated learning emerged from Google's research in 2016, motivated by the goal of training language models on mobile-device data (keyboard suggestions, smart-reply) without sending the data to Google's servers. It has since become a major paradigm for privacy-preserving ML.
 
@@ -622,6 +625,7 @@ Already touched in Chapter 5. The use of hardware TEEs to protect data in use is
 ### Decentralised identity
 
 Self-sovereign identity (SSI) — where individuals control their own credentials without depending on centralised authorities — has been a long-standing aspiration. W3C standards (Decentralized Identifiers, Verifiable Credentials) are now stable. Real deployments are starting:
+
 - EU Digital Identity Wallet (EUDIW) — rolling out from 2024 through 2027 under eIDAS 2.0.
 - Apple Wallet driver's license — selective disclosure of identity attributes.
 - Government-issued credentials with privacy-preserving presentation.
@@ -631,6 +635,7 @@ The privacy benefit is selective disclosure — proving "over 21" without reveal
 ### Regulatory convergence
 
 The regulatory landscape is converging across jurisdictions:
+
 - GDPR as the global baseline.
 - US state laws building toward something like a federal privacy law.
 - Asia-Pacific frameworks (PDPA Singapore, APPI Japan, PIPL China, India DPDP Act) sharing concepts.
@@ -641,6 +646,7 @@ The compliance challenge is moving from "comply with the home country law" to "c
 ### AI governance
 
 The EU AI Act (in force from 2024, full obligations through 2027) is the most comprehensive AI regulation. Risk-based classification:
+
 - Unacceptable risk (social scoring, exploitative AI) — prohibited.
 - High risk (employment, education, law enforcement, infrastructure) — extensive obligations.
 - Limited risk (chatbots, deepfakes) — transparency obligations.
@@ -649,6 +655,7 @@ The EU AI Act (in force from 2024, full obligations through 2027) is the most co
 Other jurisdictions are following with their own frameworks. NIST AI Risk Management Framework provides a US-focused alternative. ISO/IEC 42001 is the AI management system standard.
 
 The intersection of AI governance with security is rich:
+
 - Security requirements for high-risk AI systems.
 - Documentation requirements (model cards, data sheets).
 - Bias assessment and mitigation.
@@ -661,6 +668,7 @@ Already discussed briefly. QKD deployments continue in narrow niches; broader qu
 ### Cybersecurity workforce
 
 The persistent gap between cybersecurity demand and qualified personnel. Estimates suggest 3-4 million unfilled cybersecurity positions globally. Initiatives:
+
 - Government training programmes.
 - University curricula expansion.
 - Industry certification ecosystem (SANS, ISC2, ISACA, vendor-specific).
@@ -671,6 +679,7 @@ The workforce challenge is particularly acute in countries like Nepal where the 
 ### Resilience and continuity
 
 A shift in emphasis from "prevent breaches" to "be resilient to breaches." The recognition that determined attackers will eventually succeed leads to focus on:
+
 - Detection time (mean-time-to-detect).
 - Response time (mean-time-to-respond).
 - Recovery time (mean-time-to-recover).
@@ -682,6 +691,7 @@ The increasing prevalence of ransomware has made backup integrity and rapid reco
 ### Privacy-enhancing computation as commodity
 
 Several PETs are crossing from research to production:
+
 - Differential privacy in commercial analytics (Apple, Google, Census).
 - MPC in fraud-sharing among banks.
 - FHE in limited ML inference.
@@ -696,6 +706,7 @@ The old separation between cyber security (digital), physical security (locks, g
 ### What is not changing
 
 Some things will not change:
+
 - Confidentiality, integrity, availability — the CIA triad endures.
 - Defence in depth — no single control is enough.
 - People remain the largest factor in security outcomes — for good and ill.

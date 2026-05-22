@@ -15,11 +15,7 @@ import { useBundle, bundleStore } from './store';
 import styles from './styles.module.css';
 
 export default function BundleBuilder() {
-  return (
-    <BrowserOnly fallback={<Skeleton />}>
-      {() => <BundleBuilderClient />}
-    </BrowserOnly>
-  );
+  return <BrowserOnly fallback={<Skeleton />}>{() => <BundleBuilderClient />}</BrowserOnly>;
 }
 
 function Skeleton() {
@@ -36,11 +32,11 @@ function BundleBuilderClient() {
   const manifestUrl = useBaseUrl('/_bundle/manifest.json');
 
   const [manifest, setManifest] = React.useState(null);
-  const [error, setError]       = React.useState(null);
-  const [query, setQuery]       = React.useState('');
+  const [error, setError] = React.useState(null);
+  const [query, setQuery] = React.useState('');
   const [filterTag, setFilterTag] = React.useState(null);
-  const [busy, setBusy]         = React.useState(false);
-  const [busyMsg, setBusyMsg]   = React.useState('');
+  const [busy, setBusy] = React.useState(false);
+  const [busyMsg, setBusyMsg] = React.useState('');
 
   const { selection, set, clear, toggle, count } = useBundle();
 
@@ -49,10 +45,19 @@ function BundleBuilderClient() {
     if (!enabled) return;
     let cancelled = false;
     fetch(manifestUrl, { cache: 'no-cache' })
-      .then((r) => { if (!r.ok) throw new Error(`Manifest fetch failed (HTTP ${r.status})`); return r.json(); })
-      .then((data) => { if (!cancelled) setManifest(data); })
-      .catch((e)  => { if (!cancelled) setError(e.message); });
-    return () => { cancelled = true; };
+      .then((r) => {
+        if (!r.ok) throw new Error(`Manifest fetch failed (HTTP ${r.status})`);
+        return r.json();
+      })
+      .then((data) => {
+        if (!cancelled) setManifest(data);
+      })
+      .catch((e) => {
+        if (!cancelled) setError(e.message);
+      });
+    return () => {
+      cancelled = true;
+    };
   }, [enabled, manifestUrl]);
 
   // Index manifest into a tree { institution → program → level → subject → chapters[] }
@@ -62,8 +67,11 @@ function BundleBuilderClient() {
   const allTags = React.useMemo(() => {
     if (!manifest) return [];
     const counts = new Map();
-    for (const d of manifest.documents) for (const t of d.tags || []) counts.set(t, (counts.get(t) || 0) + 1);
-    return Array.from(counts.entries()).sort((a, b) => b[1] - a[1]).slice(0, 12);
+    for (const d of manifest.documents)
+      for (const t of d.tags || []) counts.set(t, (counts.get(t) || 0) + 1);
+    return Array.from(counts.entries())
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 12);
   }, [manifest]);
 
   // Filtered list (search + tag).
@@ -87,7 +95,7 @@ function BundleBuilderClient() {
     if (!manifest) return { totalWords: 0, totalMinutes: 0 };
     const chosen = manifest.documents.filter((d) => selection.includes(d.slug));
     return {
-      totalWords:   chosen.reduce((acc, d) => acc + (d.wordCount || 0), 0),
+      totalWords: chosen.reduce((acc, d) => acc + (d.wordCount || 0), 0),
       totalMinutes: chosen.reduce((acc, d) => acc + (d.minutes || 0), 0),
     };
   }, [manifest, selection]);
@@ -96,16 +104,24 @@ function BundleBuilderClient() {
     return (
       <div className={styles.shell}>
         <h1 className={styles.title}>Bundle Builder is disabled</h1>
-        <p>This site has set <code>customFields.features.bundleBuilder = false</code>.</p>
+        <p>
+          This site has set <code>customFields.features.bundleBuilder = false</code>.
+        </p>
       </div>
     );
   }
-  if (error)   return <div className={styles.shell}><p className={styles.err}>Could not load the bundle manifest: {error}</p></div>;
+  if (error)
+    return (
+      <div className={styles.shell}>
+        <p className={styles.err}>Could not load the bundle manifest: {error}</p>
+      </div>
+    );
   if (!manifest) return <Skeleton />;
 
   // ── Selection helpers ────────────────────────────────────────────────────
-  const selectAll      = () => set(docsFiltered.map((d) => d.slug));
-  const selectFiltered = () => set([...new Set([...selection, ...docsFiltered.map((d) => d.slug)])]);
+  const selectAll = () => set(docsFiltered.map((d) => d.slug));
+  const selectFiltered = () =>
+    set([...new Set([...selection, ...docsFiltered.map((d) => d.slug)])]);
   const invertSelection = () => {
     const all = manifest.documents.map((d) => d.slug);
     const cur = new Set(selection);
@@ -114,37 +130,50 @@ function BundleBuilderClient() {
 
   // ── Exporters ────────────────────────────────────────────────────────────
   const chosenDocs = () =>
-    selection
-      .map((slug) => manifest.documents.find((d) => d.slug === slug))
-      .filter(Boolean);
+    selection.map((slug) => manifest.documents.find((d) => d.slug === slug)).filter(Boolean);
 
   const exportMarkdown = async () => {
     const docs = chosenDocs();
     if (docs.length === 0) return;
-    setBusy(true); setBusyMsg('Stitching Markdown…');
+    setBusy(true);
+    setBusyMsg('Stitching Markdown…');
     try {
       const md = buildCombinedMarkdown(docs);
-      downloadBlob(new Blob([md], { type: 'text/markdown;charset=utf-8' }), `eduhub-bundle-${stamp()}.md`);
-    } finally { setBusy(false); setBusyMsg(''); }
+      downloadBlob(
+        new Blob([md], { type: 'text/markdown;charset=utf-8' }),
+        `eduhub-bundle-${stamp()}.md`,
+      );
+    } finally {
+      setBusy(false);
+      setBusyMsg('');
+    }
   };
 
   const exportZip = async () => {
     const docs = chosenDocs();
     if (docs.length === 0) return;
-    setBusy(true); setBusyMsg('Building ZIP archive…');
+    setBusy(true);
+    setBusyMsg('Building ZIP archive…');
     try {
       const { default: JSZip } = await import('jszip');
       const zip = new JSZip();
       const root = zip.folder(`eduhub-bundle-${stamp()}`);
       root.file('README.md', buildBundleReadme(docs));
-      root.file('TOC.md',    buildTOC(docs));
+      root.file('TOC.md', buildTOC(docs));
       docs.forEach((d) => {
         const safe = safePath(d.path);
         root.file(safe, prependFrontmatter(d));
       });
-      const blob = await zip.generateAsync({ type: 'blob', compression: 'DEFLATE', compressionOptions: { level: 6 } });
+      const blob = await zip.generateAsync({
+        type: 'blob',
+        compression: 'DEFLATE',
+        compressionOptions: { level: 6 },
+      });
       downloadBlob(blob, `eduhub-bundle-${stamp()}.zip`);
-    } finally { setBusy(false); setBusyMsg(''); }
+    } finally {
+      setBusy(false);
+      setBusyMsg('');
+    }
   };
 
   const openPrintable = () => {
@@ -152,8 +181,13 @@ function BundleBuilderClient() {
     if (docs.length === 0) return;
     const html = buildPrintableHtml(docs);
     const w = window.open('', '_blank');
-    if (!w) { alert('Pop-up blocked. Allow pop-ups for eduhub.khanalrajesh.com.np to use printable view.'); return; }
-    w.document.open(); w.document.write(html); w.document.close();
+    if (!w) {
+      alert('Pop-up blocked. Allow pop-ups for eduhub.khanalrajesh.com.np to use printable view.');
+      return;
+    }
+    w.document.open();
+    w.document.write(html);
+    w.document.close();
   };
 
   return (
@@ -162,9 +196,9 @@ function BundleBuilderClient() {
         <p className={styles.eyebrow}>Bundle Builder · v1</p>
         <h1 className={styles.title}>Pick what to take with you.</h1>
         <p className={styles.lede}>
-          Combine any chapters across any curriculum into a single Markdown file,
-          a tidy ZIP archive, or a printable view (use your browser's <em>Save as PDF</em>).
-          Selection persists across pages until you close the tab.
+          Combine any chapters across any curriculum into a single Markdown file, a tidy ZIP
+          archive, or a printable view (use your browser's <em>Save as PDF</em>). Selection persists
+          across pages until you close the tab.
         </p>
       </header>
 
@@ -178,7 +212,9 @@ function BundleBuilderClient() {
             className={styles.search}
             aria-label="Filter the document list"
           />
-          <span className={styles.meta}>{docsFiltered.length} of {manifest.count} match</span>
+          <span className={styles.meta}>
+            {docsFiltered.length} of {manifest.count} match
+          </span>
         </div>
 
         {allTags.length > 0 && (
@@ -187,54 +223,79 @@ function BundleBuilderClient() {
               type="button"
               onClick={() => setFilterTag(null)}
               className={clsx(styles.chip, !filterTag && styles.chipOn)}
-            >All</button>
+            >
+              All
+            </button>
             {allTags.map(([t, n]) => (
               <button
                 key={t}
                 type="button"
                 onClick={() => setFilterTag(filterTag === t ? null : t)}
                 className={clsx(styles.chip, filterTag === t && styles.chipOn)}
-              >{t} <span className={styles.chipCount}>{n}</span></button>
+              >
+                {t} <span className={styles.chipCount}>{n}</span>
+              </button>
             ))}
           </div>
         )}
 
         <div className={styles.selectRow}>
-          <button type="button" onClick={selectAll}      className={styles.linkBtn}>Select all (filtered)</button>
+          <button type="button" onClick={selectAll} className={styles.linkBtn}>
+            Select all (filtered)
+          </button>
           <span className={styles.sep}>·</span>
-          <button type="button" onClick={selectFiltered} className={styles.linkBtn}>Add filtered to selection</button>
+          <button type="button" onClick={selectFiltered} className={styles.linkBtn}>
+            Add filtered to selection
+          </button>
           <span className={styles.sep}>·</span>
-          <button type="button" onClick={invertSelection} className={styles.linkBtn}>Invert</button>
+          <button type="button" onClick={invertSelection} className={styles.linkBtn}>
+            Invert
+          </button>
           <span className={styles.sep}>·</span>
-          <button type="button" onClick={clear}          className={styles.linkBtn}>Clear</button>
+          <button type="button" onClick={clear} className={styles.linkBtn}>
+            Clear
+          </button>
         </div>
       </section>
 
       <section className={styles.grid}>
         <div className={styles.tree}>
           {tree && <Tree node={tree} depth={0} selection={selection} toggle={toggle} />}
-          {docsFiltered.length === 0 && <p className={styles.empty}>No documents match your filter.</p>}
+          {docsFiltered.length === 0 && (
+            <p className={styles.empty}>No documents match your filter.</p>
+          )}
         </div>
 
         <aside className={styles.aside}>
           <div className={styles.summary}>
             <h3 className={styles.h3}>Your bundle</h3>
             <p className={styles.summaryStats}>
-              <strong>{count}</strong> pages ·{' '}
-              <strong>{stats.totalWords.toLocaleString()}</strong> words ·{' '}
-              ~<strong>{stats.totalMinutes}</strong> min read
+              <strong>{count}</strong> pages · <strong>{stats.totalWords.toLocaleString()}</strong>{' '}
+              words · ~<strong>{stats.totalMinutes}</strong> min read
             </p>
 
             {count === 0 ? (
-              <p className={styles.hint}>Start adding pages from the tree on the left, or use the <strong>Add to bundle</strong> chip on any chapter page.</p>
+              <p className={styles.hint}>
+                Start adding pages from the tree on the left, or use the{' '}
+                <strong>Add to bundle</strong> chip on any chapter page.
+              </p>
             ) : (
               <ul className={styles.chosenList}>
-                {chosenDocs().slice(0, 8).map((d) => (
-                  <li key={d.slug}>
-                    <span title={d.slug}>{d.title}</span>
-                    <button type="button" onClick={() => toggle(d.slug)} className={styles.removeX} aria-label={`Remove ${d.title}`}>×</button>
-                  </li>
-                ))}
+                {chosenDocs()
+                  .slice(0, 8)
+                  .map((d) => (
+                    <li key={d.slug}>
+                      <span title={d.slug}>{d.title}</span>
+                      <button
+                        type="button"
+                        onClick={() => toggle(d.slug)}
+                        className={styles.removeX}
+                        aria-label={`Remove ${d.title}`}
+                      >
+                        ×
+                      </button>
+                    </li>
+                  ))}
                 {count > 8 && <li className={styles.more}>and {count - 8} more…</li>}
               </ul>
             )}
@@ -242,17 +303,34 @@ function BundleBuilderClient() {
 
           <div className={styles.exports}>
             <h3 className={styles.h3}>Export</h3>
-            <button type="button" onClick={exportMarkdown} disabled={count === 0 || busy} className={clsx(styles.btn, styles.btnPrimary)}>
+            <button
+              type="button"
+              onClick={exportMarkdown}
+              disabled={count === 0 || busy}
+              className={clsx(styles.btn, styles.btnPrimary)}
+            >
               <span>↓ Combined Markdown</span>
               <em>One .md file with a TOC</em>
             </button>
-            <button type="button" onClick={exportZip} disabled={count === 0 || busy} className={clsx(styles.btn, styles.btnGhost)}>
+            <button
+              type="button"
+              onClick={exportZip}
+              disabled={count === 0 || busy}
+              className={clsx(styles.btn, styles.btnGhost)}
+            >
               <span>↓ ZIP archive</span>
               <em>Each chapter as its own .mdx + TOC</em>
             </button>
-            <button type="button" onClick={openPrintable} disabled={count === 0 || busy} className={clsx(styles.btn, styles.btnGhost)}>
+            <button
+              type="button"
+              onClick={openPrintable}
+              disabled={count === 0 || busy}
+              className={clsx(styles.btn, styles.btnGhost)}
+            >
               <span>↗ Printable view</span>
-              <em>Opens a print-styled page; use browser <code>Save as PDF</code></em>
+              <em>
+                Opens a print-styled page; use browser <code>Save as PDF</code>
+              </em>
             </button>
             {busy && <p className={styles.busy}>{busyMsg || 'Working…'}</p>}
           </div>
@@ -260,8 +338,13 @@ function BundleBuilderClient() {
           <div className={styles.notes}>
             <h4 className={styles.h4}>Notes</h4>
             <ul>
-              <li>The Markdown export keeps original formatting; KaTeX <code>$…$</code> stays intact.</li>
-              <li>Custom MDX components (<code>&lt;ResourceCard&gt;</code> etc.) are stripped to plain text in Markdown / ZIP — they render in <em>Printable view</em>.</li>
+              <li>
+                The Markdown export keeps original formatting; KaTeX <code>$…$</code> stays intact.
+              </li>
+              <li>
+                Custom MDX components (<code>&lt;ResourceCard&gt;</code> etc.) are stripped to plain
+                text in Markdown / ZIP — they render in <em>Printable view</em>.
+              </li>
               <li>Selection is per browser-tab; close the tab and it clears.</li>
             </ul>
           </div>
@@ -285,7 +368,9 @@ function Tree({ node, depth, selection, toggle }) {
         <label>
           <input type="checkbox" checked={checked} onChange={() => toggle(node.doc.slug)} />
           <span className={styles.leafTitle}>{node.doc.title}</span>
-          <span className={styles.leafMeta}>{node.doc.minutes} min · {node.doc.wordCount.toLocaleString()} w</span>
+          <span className={styles.leafMeta}>
+            {node.doc.minutes} min · {node.doc.wordCount.toLocaleString()} w
+          </span>
         </label>
       </li>
     );
@@ -293,7 +378,7 @@ function Tree({ node, depth, selection, toggle }) {
 
   const total = countLeaves(node);
   const selected = countSelected(node, selection);
-  const allOn  = total > 0 && selected === total;
+  const allOn = total > 0 && selected === total;
   const someOn = selected > 0 && !allOn;
 
   // Batch all branch slugs into a single store.set() so listeners fire once,
@@ -301,8 +386,8 @@ function Tree({ node, depth, selection, toggle }) {
   const toggleBranch = () => {
     const slugs = collectSlugs(node);
     const cur = new Set(bundleStore.get());
-    if (allOn)  slugs.forEach((s) => cur.delete(s));
-    else        slugs.forEach((s) => cur.add(s));
+    if (allOn) slugs.forEach((s) => cur.delete(s));
+    else slugs.forEach((s) => cur.add(s));
     bundleStore.set(Array.from(cur));
   };
 
@@ -316,25 +401,40 @@ function Tree({ node, depth, selection, toggle }) {
           aria-expanded={open}
           aria-label={open ? 'Collapse' : 'Expand'}
         >
-          <svg width="10" height="10" viewBox="0 0 10 10" style={{ transform: open ? 'rotate(90deg)' : 'rotate(0deg)' }}>
-            <path d="M2 1 L8 5 L2 9 Z" fill="currentColor"/>
+          <svg
+            width="10"
+            height="10"
+            viewBox="0 0 10 10"
+            style={{ transform: open ? 'rotate(90deg)' : 'rotate(0deg)' }}
+          >
+            <path d="M2 1 L8 5 L2 9 Z" fill="currentColor" />
           </svg>
         </button>
         <label className={styles.branchLabel}>
           <input
             type="checkbox"
             checked={allOn}
-            ref={(el) => { if (el) el.indeterminate = someOn; }}
+            ref={(el) => {
+              if (el) el.indeterminate = someOn;
+            }}
             onChange={toggleBranch}
           />
           <span className={styles.branchTitle}>{prettifySegment(node.name)}</span>
-          <span className={styles.branchCount}>{selected}/{total}</span>
+          <span className={styles.branchCount}>
+            {selected}/{total}
+          </span>
         </label>
       </div>
       {open && node.children?.length > 0 && (
         <ul className={styles.list}>
           {node.children.map((c, i) => (
-            <Tree key={c.name + i} node={c} depth={depth + 1} selection={selection} toggle={toggle} />
+            <Tree
+              key={c.name + i}
+              node={c}
+              depth={depth + 1}
+              selection={selection}
+              toggle={toggle}
+            />
           ))}
         </ul>
       )}
@@ -356,7 +456,10 @@ function buildTree(docs) {
     for (let i = 0; i < parts.length - 1; i++) {
       const seg = parts[i];
       let child = node.children.find((c) => c.name === seg);
-      if (!child) { child = { name: seg, children: [] }; node.children.push(child); }
+      if (!child) {
+        child = { name: seg, children: [] };
+        node.children.push(child);
+      }
       node = child;
     }
     node.children.push({ name: fileName, doc });
@@ -365,7 +468,8 @@ function buildTree(docs) {
   function sort(n) {
     if (!n.children) return;
     n.children.sort((a, b) => {
-      const al = !!a.doc, bl = !!b.doc;
+      const al = !!a.doc,
+        bl = !!b.doc;
       if (al !== bl) return al ? 1 : -1;
       const ap = a.doc?.sidebarPosition ?? 999;
       const bp = b.doc?.sidebarPosition ?? 999;
@@ -395,8 +499,14 @@ function collectSlugs(node, acc = []) {
 
 function prettifySegment(name) {
   const map = {
-    ioe: 'IOE', ctevt: 'CTEVT', tu: 'TU', msncs: 'MSNCS',
-    bct: 'BCT', bce: 'BCE', bex: 'BEX', bel: 'BEL',
+    ioe: 'IOE',
+    ctevt: 'CTEVT',
+    tu: 'TU',
+    msncs: 'MSNCS',
+    bct: 'BCT',
+    bce: 'BCE',
+    bex: 'BEX',
+    bel: 'BEL',
   };
   if (map[name]) return map[name];
   return name
@@ -424,18 +534,22 @@ function buildCombinedMarkdown(docs) {
     '',
   ].join('\n');
 
-  const body = docs.map((d, i) => {
-    return [
-      `\n\n<!-- ─── ${i + 1}. ${d.slug} ─────────────────────────────────────────── -->`,
-      `# ${escMd(d.title)}`,
-      d.description ? `> ${escMd(d.description)}` : '',
-      `> Source: \`${d.slug}\` · ${d.minutes} min · ${d.wordCount} words`,
-      '',
-      stripMdxImports(d.markdown),
-      '',
-      '---',
-    ].filter(Boolean).join('\n');
-  }).join('\n');
+  const body = docs
+    .map((d, i) => {
+      return [
+        `\n\n<!-- ─── ${i + 1}. ${d.slug} ─────────────────────────────────────────── -->`,
+        `# ${escMd(d.title)}`,
+        d.description ? `> ${escMd(d.description)}` : '',
+        `> Source: \`${d.slug}\` · ${d.minutes} min · ${d.wordCount} words`,
+        '',
+        stripMdxImports(d.markdown),
+        '',
+        '---',
+      ]
+        .filter(Boolean)
+        .join('\n');
+    })
+    .join('\n');
 
   return head + body + '\n';
 }
@@ -452,14 +566,18 @@ function buildBundleReadme(docs) {
     '',
     '- `TOC.md` lists every file in this bundle with its slug.',
     '- Original site: https://eduhub.khanalrajesh.com.np',
-    '- Source: https://github.com/raazkhnl/eduhub',
+    '- Source: https://github.com/raazkhnl/EduHub',
     '- Licence: CC BY 4.0 — attribute to "EduHub contributors".',
     '',
   ].join('\n');
 }
 
 function buildTOC(docs) {
-  return ['# Table of contents', '', ...docs.map((d, i) => `${i + 1}. **${escMd(d.title)}** — \`${d.path}\``)].join('\n');
+  return [
+    '# Table of contents',
+    '',
+    ...docs.map((d, i) => `${i + 1}. **${escMd(d.title)}** — \`${d.path}\``),
+  ].join('\n');
 }
 
 function prependFrontmatter(d) {
@@ -471,12 +589,15 @@ function prependFrontmatter(d) {
     `bundled_at: ${new Date().toISOString()}`,
     '---',
     '',
-  ].filter(Boolean).join('\n');
+  ]
+    .filter(Boolean)
+    .join('\n');
   return fm + d.markdown;
 }
 
 function buildPrintableHtml(docs) {
-  const esc = (s) => String(s).replace(/[&<>]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]));
+  const esc = (s) =>
+    String(s).replace(/[&<>]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' })[c]);
   const css = `
     @page { size: A4; margin: 22mm 18mm; }
     html, body { background: #fff; color: #1A1B1F; }
@@ -498,15 +619,17 @@ function buildPrintableHtml(docs) {
     @media print { .no-print { display: none !important; } }
     .no-print button { font-family: 'Inter', sans-serif; padding: 0.5em 1em; background: #0F766E; color: #fff; border: 0; border-radius: 6px; cursor: pointer; }
   `;
-  const body = docs.map((d) => {
-    return `
+  const body = docs
+    .map((d) => {
+      return `
       <article>
         <h1>${esc(d.title)}</h1>
         <p class="meta">Source: <a href="${esc(d.slug)}">${esc(d.slug)}</a> · ${esc(String(d.minutes))} min · ${esc(d.wordCount.toLocaleString())} words</p>
         ${mdToHtmlMinimal(d.markdown)}
       </article>
     `;
-  }).join('');
+    })
+    .join('');
   return `<!doctype html>
 <html><head><meta charset="utf-8"/>
 <title>EduHub — printable bundle</title>
@@ -532,16 +655,31 @@ ${body}
 // Tiny, conservative markdown → HTML converter (enough for the printable view).
 // Code blocks, headings, lists, blockquotes, paragraphs, inline code, links, bold/italic.
 function mdToHtmlMinimal(src) {
-  const esc = (s) => s.replace(/[&<>]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]));
+  const esc = (s) => s.replace(/[&<>]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' })[c]);
   src = stripMdxImports(src);
 
   const lines = src.split(/\r?\n/);
   const out = [];
-  let inCode = false, codeLang = '', codeBuf = [];
-  let inList = false, listOrdered = false;
-  let inQuote = false, quoteBuf = [];
-  const flushQuote = () => { if (inQuote) { out.push(`<blockquote>${inlines(quoteBuf.join('\n'))}</blockquote>`); quoteBuf = []; inQuote = false; } };
-  const flushList  = () => { if (inList)  { out.push(listOrdered ? '</ol>' : '</ul>'); inList = false; } };
+  let inCode = false,
+    codeLang = '',
+    codeBuf = [];
+  let inList = false,
+    listOrdered = false;
+  let inQuote = false,
+    quoteBuf = [];
+  const flushQuote = () => {
+    if (inQuote) {
+      out.push(`<blockquote>${inlines(quoteBuf.join('\n'))}</blockquote>`);
+      quoteBuf = [];
+      inQuote = false;
+    }
+  };
+  const flushList = () => {
+    if (inList) {
+      out.push(listOrdered ? '</ol>' : '</ul>');
+      inList = false;
+    }
+  };
 
   function inlines(s) {
     return esc(s)
@@ -555,37 +693,66 @@ function mdToHtmlMinimal(src) {
     if (line.startsWith('```')) {
       if (inCode) {
         out.push(`<pre><code class="lang-${codeLang}">${esc(codeBuf.join('\n'))}</code></pre>`);
-        codeBuf = []; codeLang = ''; inCode = false;
+        codeBuf = [];
+        codeLang = '';
+        inCode = false;
       } else {
-        flushQuote(); flushList();
-        inCode = true; codeLang = line.slice(3).trim();
+        flushQuote();
+        flushList();
+        inCode = true;
+        codeLang = line.slice(3).trim();
       }
       continue;
     }
-    if (inCode) { codeBuf.push(line); continue; }
+    if (inCode) {
+      codeBuf.push(line);
+      continue;
+    }
 
     const h = /^(#{1,6})\s+(.+)$/.exec(line);
-    if (h) { flushQuote(); flushList(); out.push(`<h${h[1].length}>${inlines(h[2])}</h${h[1].length}>`); continue; }
+    if (h) {
+      flushQuote();
+      flushList();
+      out.push(`<h${h[1].length}>${inlines(h[2])}</h${h[1].length}>`);
+      continue;
+    }
 
     const q = /^>\s?(.*)$/.exec(line);
-    if (q) { flushList(); inQuote = true; quoteBuf.push(q[1]); continue; } else flushQuote();
+    if (q) {
+      flushList();
+      inQuote = true;
+      quoteBuf.push(q[1]);
+      continue;
+    } else flushQuote();
 
     const ul = /^[-*+]\s+(.+)$/.exec(line);
     const ol = /^\d+\.\s+(.+)$/.exec(line);
     if (ul || ol) {
       const want = !!ol;
-      if (!inList || listOrdered !== want) { flushList(); out.push(want ? '<ol>' : '<ul>'); inList = true; listOrdered = want; }
+      if (!inList || listOrdered !== want) {
+        flushList();
+        out.push(want ? '<ol>' : '<ul>');
+        inList = true;
+        listOrdered = want;
+      }
       out.push(`<li>${inlines((ul || ol)[1])}</li>`);
       continue;
     } else flushList();
 
-    if (!line.trim()) { out.push(''); continue; }
+    if (!line.trim()) {
+      out.push('');
+      continue;
+    }
 
-    if (/^---+$/.test(line.trim())) { out.push('<hr/>'); continue; }
+    if (/^---+$/.test(line.trim())) {
+      out.push('<hr/>');
+      continue;
+    }
 
     out.push(`<p>${inlines(line)}</p>`);
   }
-  flushQuote(); flushList();
+  flushQuote();
+  flushList();
   if (inCode) out.push(`<pre><code>${esc(codeBuf.join('\n'))}</code></pre>`);
   return out.join('\n');
 }
@@ -599,9 +766,15 @@ function stripMdxImports(s) {
     .join('\n');
 }
 
-function escMd(s) { return String(s).replace(/[*_`[\]]/g, (c) => '\\' + c); }
-function escQ(s)  { return String(s).replace(/"/g, '\\"'); }
-function safePath(p) { return p.replace(/[^A-Za-z0-9_\-./]/g, '_'); }
+function escMd(s) {
+  return String(s).replace(/[*_`[\]]/g, (c) => '\\' + c);
+}
+function escQ(s) {
+  return String(s).replace(/"/g, '\\"');
+}
+function safePath(p) {
+  return p.replace(/[^A-Za-z0-9_\-./]/g, '_');
+}
 function stamp() {
   const d = new Date();
   const z = (n) => String(n).padStart(2, '0');
@@ -610,7 +783,10 @@ function stamp() {
 function downloadBlob(blob, filename) {
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
-  a.href = url; a.download = filename;
-  document.body.appendChild(a); a.click(); a.remove();
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
   setTimeout(() => URL.revokeObjectURL(url), 0);
 }

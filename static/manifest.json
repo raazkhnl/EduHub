@@ -10,10 +10,10 @@
   "background_color": "#FBF8F2",
   "lang": "en-NP",
   "icons": [
-    { "src": "/img/icons/icon-192.png",     "sizes": "192x192", "type": "image/png", "purpose": "any" },
-    { "src": "/img/icons/icon-512.png",     "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/img/icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/img/icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
     { "src": "/img/icons/maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" },
-    { "src": "/img/logo.svg",               "sizes": "any",     "type": "image/svg+xml", "purpose": "any" }
+    { "src": "/img/logo.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }
   ],
   "categories": ["education", "books", "productivity"],
   "prefer_related_applications": false

@@ -1,15 +1,14 @@
 ---
-title: "Chapter 4 — Software-Defined Networking"
-sidebar_label: "Ch 04 — Software-Defined Networking"
+title: 'Chapter 4 — Software-Defined Networking'
+sidebar_label: 'Ch 04 — Software-Defined Networking'
 sidebar_position: 4
-description: "Chapter 4 of Next Generation Network Technologies (ENCTNS501)."
+description: 'Chapter 4 of Next Generation Network Technologies (ENCTNS501).'
 slug: /ioe/msncs/year-1-part-1/next-gen-networks/notes/ch04
 tags: [msncs, year-1-part-1, enctns501, chapter, notes]
 last_update:
   date: 2026-05-21
   author: Rajesh Khanal
 ---
-
 
 For four decades the network was built out of standalone boxes — each router, switch, firewall, and load balancer running its own distributed control logic and reachable only through its own CLI. This model worked when networks were small enough to configure by hand and stable enough that the configuration did not change daily. By the late 2000s, hyperscale operators outgrew it. The response was **Software-Defined Networking (SDN)** — pull the control logic out of the boxes, run it centrally as software, and turn the boxes into commodity packet forwarders that take their instructions from above. This chapter covers SDN's architecture, its main protocol (OpenFlow), the API surfaces it exposes, the controller ecosystem, its application in telecom networks, the languages used to program data planes (P4, Frenetic), the closely related field of Network Function Virtualization (NFV), and the current direction of research.
 
@@ -99,7 +98,7 @@ Plus two horizontal interfaces — East and Westbound — between peer controlle
 
 ### Data plane
 
-*The SDN data plane is the set of switches and routers that forward packets according to forwarding tables installed by the controller, without making independent control-plane decisions about paths or policy.*
+_The SDN data plane is the set of switches and routers that forward packets according to forwarding tables installed by the controller, without making independent control-plane decisions about paths or policy._
 
 A modern OpenFlow switch maintains one or more **flow tables**, each containing **flow entries**. Each flow entry has:
 
@@ -120,7 +119,7 @@ Two important data-plane variants:
 
 ### Control plane
 
-*The SDN control plane is the centralised (logically) software component that maintains a global view of network state, runs network applications, and translates application-level decisions into device-level forwarding rules through southbound protocols.*
+_The SDN control plane is the centralised (logically) software component that maintains a global view of network state, runs network applications, and translates application-level decisions into device-level forwarding rules through southbound protocols._
 
 The controller maintains several core data structures:
 
@@ -135,7 +134,7 @@ The controller hosts applications. Each application (a routing computation, a tr
 
 ### Application plane
 
-*The SDN application plane is the layer where network applications run on top of the controller, using its northbound API to read the current network state and to express the forwarding behaviour they want the controller to realise.*
+_The SDN application plane is the layer where network applications run on top of the controller, using its northbound API to read the current network state and to express the forwarding behaviour they want the controller to realise._
 
 Examples of SDN applications:
 
@@ -172,20 +171,20 @@ Used between controllers — either between peer controllers in different admini
 
 ## 4.3 SDN Protocol Standards — OpenFlow
 
-*OpenFlow is the SDN southbound protocol, originally specified by Stanford in 2008 and now maintained by the Open Networking Foundation, that defines the message exchange between a controller and a switch — letting the controller install, modify, and remove flow entries in the switch's match-action tables, query state, and receive event notifications.*
+_OpenFlow is the SDN southbound protocol, originally specified by Stanford in 2008 and now maintained by the Open Networking Foundation, that defines the message exchange between a controller and a switch — letting the controller install, modify, and remove flow entries in the switch's match-action tables, query state, and receive event notifications._
 
 ### The OpenFlow versions
 
 OpenFlow has evolved through several versions:
 
-| Version | Year | Major additions |
-|---|---|---|
-| 1.0 | 2009 | Single flow table, 12-tuple match, basic actions |
-| 1.1 | 2011 | Multiple tables, group tables, MPLS, VLAN tagging |
-| 1.2 | 2011 | OXM (OpenFlow Extensible Match), IPv6 support |
-| 1.3 | 2012 | Meters (rate limiting), IPv6 extension headers, per-table miss control |
-| 1.4 | 2013 | Bundle messages, eviction, more group types |
-| 1.5 | 2015 | Egress tables, packet-type-aware pipeline, scheduled bundles |
+| Version | Year | Major additions                                                        |
+| ------- | ---- | ---------------------------------------------------------------------- |
+| 1.0     | 2009 | Single flow table, 12-tuple match, basic actions                       |
+| 1.1     | 2011 | Multiple tables, group tables, MPLS, VLAN tagging                      |
+| 1.2     | 2011 | OXM (OpenFlow Extensible Match), IPv6 support                          |
+| 1.3     | 2012 | Meters (rate limiting), IPv6 extension headers, per-table miss control |
+| 1.4     | 2013 | Bundle messages, eviction, more group types                            |
+| 1.5     | 2015 | Egress tables, packet-type-aware pipeline, scheduled bundles           |
 
 OpenFlow 1.3 is the de facto industry baseline; most production deployments use 1.3 or 1.5. OpenFlow 1.0 is sometimes still seen in teaching environments because of its simplicity.
 
@@ -260,7 +259,7 @@ The four "directions" name the four interfaces of an SDN controller. The names f
 
 ### Southbound API
 
-*The Southbound API is the interface between the SDN controller and the network devices it controls, carrying flow entries, configuration, and state-collection commands down to the data plane and event notifications back up.*
+_The Southbound API is the interface between the SDN controller and the network devices it controls, carrying flow entries, configuration, and state-collection commands down to the data plane and event notifications back up._
 
 Southbound is the most heavily standardised interface because it must work across multivendor hardware. OpenFlow is the canonical example, but modern controllers speak many protocols on the southbound:
 
@@ -278,7 +277,7 @@ A capable controller (OpenDaylight, ONOS) supports multiple southbound protocols
 
 ### Northbound API
 
-*The Northbound API is the interface between the SDN controller and the network applications running on top of it, exposing the controller's data model and policy primitives in a form applications can read and write.*
+_The Northbound API is the interface between the SDN controller and the network applications running on top of it, exposing the controller's data model and policy primitives in a form applications can read and write._
 
 Unlike southbound, the northbound is not standardised. Each major controller exposes its own API surface, typically:
 
@@ -291,7 +290,7 @@ The IETF and ONF have made attempts at standard northbound APIs (NEMO, Boulder, 
 
 ### Eastbound and Westbound API
 
-*Eastbound and Westbound APIs are the interfaces between SDN controllers — between nodes of a clustered controller (intra-cluster), between controllers in different administrative domains (inter-domain), or between an SDN controller and a non-SDN routing domain.*
+_Eastbound and Westbound APIs are the interfaces between SDN controllers — between nodes of a clustered controller (intra-cluster), between controllers in different administrative domains (inter-domain), or between an SDN controller and a non-SDN routing domain._
 
 The name asymmetry (east vs west) is administrative convention; the protocol does not care. Typical uses:
 
@@ -313,17 +312,17 @@ The performance asymmetry matters: the data plane processes every packet, often 
 
 Controllers have evolved through generations. Early controllers (2008–2012) were research artefacts built to demonstrate the SDN concept. Mid-period controllers (2012–2016) were production-quality single-controller deployments. The current generation (2016–present) is built for hyperscale clustering with high availability.
 
-**NOX (and POX).** *NOX is the original OpenFlow controller, developed at Nicira and Stanford, written in C++ with a Python event-handling shim, that served as the reference implementation during OpenFlow's early years.* POX is the pure-Python sibling. Both are now used almost exclusively for teaching — POX is the controller of choice in introductory SDN courses and labs because it is small, easy to read, and runs natively on the same machine as Mininet for student work. Production deployments do not use POX or NOX.
+**NOX (and POX).** _NOX is the original OpenFlow controller, developed at Nicira and Stanford, written in C++ with a Python event-handling shim, that served as the reference implementation during OpenFlow's early years._ POX is the pure-Python sibling. Both are now used almost exclusively for teaching — POX is the controller of choice in introductory SDN courses and labs because it is small, easy to read, and runs natively on the same machine as Mininet for student work. Production deployments do not use POX or NOX.
 
 **Beacon.** A Java-based controller from David Erickson at Stanford (2010–2013). Better performance than NOX, with a clean modular design. Spawned Floodlight as its commercial-friendly fork.
 
-**Floodlight.** *Floodlight is an Apache-licensed open-source Java-based OpenFlow controller, originally forked from Beacon and now maintained by Big Switch Networks and the broader community, designed for enterprise and academic use.* Floodlight became the most popular SDN controller for teaching and small-to-medium production deployments through the early 2010s. Its REST API and modular Java architecture made it easy to extend. As of the late 2020s Floodlight's community has slowed but the controller is still functional for OpenFlow networks.
+**Floodlight.** _Floodlight is an Apache-licensed open-source Java-based OpenFlow controller, originally forked from Beacon and now maintained by Big Switch Networks and the broader community, designed for enterprise and academic use._ Floodlight became the most popular SDN controller for teaching and small-to-medium production deployments through the early 2010s. Its REST API and modular Java architecture made it easy to extend. As of the late 2020s Floodlight's community has slowed but the controller is still functional for OpenFlow networks.
 
 **Ryu.** A Python-based controller from NTT Labs. Easier to learn than Java-based options, with extensive protocol support beyond OpenFlow (BGP, NETCONF, OF-Config). Popular for research and prototyping.
 
 **OpenDaylight (ODL).** A Linux Foundation project launched in 2013 with major vendor backing (Cisco, IBM, Red Hat, Brocade, others). Java-based, supports many southbound protocols, designed for service-provider scale. Widely deployed in telecom NFV and in some enterprise SDN. ODL has had multiple releases (Helium, Lithium, Beryllium, ..., Sulfur, Phosphorus, Chlorine, Argon, Potassium) — naming after chemical elements alphabetically.
 
-**ONOS (Open Network Operating System).** *ONOS is a Linux Foundation open-source SDN operating system, originally developed at ON.Lab and now under LF Networking, designed for service-provider and ISP-scale deployments with built-in clustering, high availability, and a strong focus on white-box switching and disaggregation.* ONOS is the platform behind the Open Compute Project's networking work, behind the disaggregated cell-site gateway used in many 5G deployments, and behind the optical-IP integration work in major operators. It is the closest thing to a reference SDN controller for the telecom industry.
+**ONOS (Open Network Operating System).** _ONOS is a Linux Foundation open-source SDN operating system, originally developed at ON.Lab and now under LF Networking, designed for service-provider and ISP-scale deployments with built-in clustering, high availability, and a strong focus on white-box switching and disaggregation._ ONOS is the platform behind the Open Compute Project's networking work, behind the disaggregated cell-site gateway used in many 5G deployments, and behind the optical-IP integration work in major operators. It is the closest thing to a reference SDN controller for the telecom industry.
 
 **Faucet and Allied Telesis SDN Controller.** Smaller, focused controllers — Faucet from Brad Cowie's group in New Zealand targets simple Layer-2 SDN deployments. Allied Telesis SDN Controller targets campus networks.
 
@@ -362,7 +361,7 @@ Performance points to watch:
 
 ### Mininet — the SDN learning platform
 
-*Mininet is a network emulator that runs a network of virtual switches and hosts inside a single Linux machine using lightweight virtualisation (network namespaces and process isolation), letting a developer prototype and test SDN designs without physical hardware.*
+_Mininet is a network emulator that runs a network of virtual switches and hosts inside a single Linux machine using lightweight virtualisation (network namespaces and process isolation), letting a developer prototype and test SDN designs without physical hardware._
 
 Mininet became the universal teaching tool because:
 
@@ -416,7 +415,7 @@ NPIX itself, the Nepal Internet Exchange, has been exploring SDN-controlled exch
 
 ### P4
 
-*P4 (Programming Protocol-independent Packet Processors) is a domain-specific language, currently at version P4_16, that lets a developer describe how a programmable network device should parse incoming packets, perform match-action processing through a pipeline of tables, and emit outgoing packets — making the device's behaviour fully software-defined rather than fixed by silicon.*
+_P4 (Programming Protocol-independent Packet Processors) is a domain-specific language, currently at version P4_16, that lets a developer describe how a programmable network device should parse incoming packets, perform match-action processing through a pipeline of tables, and emit outgoing packets — making the device's behaviour fully software-defined rather than fixed by silicon._
 
 P4 emerged from a 2014 SIGCOMM paper by Pat Bosshart and colleagues (Barefoot Networks, Stanford, Princeton, Google). It addresses what OpenFlow could not: programmability of the data plane itself, not just its forwarding table.
 
@@ -467,7 +466,7 @@ P4's challenges include the limited number of P4-target hardware platforms (Inte
 
 ### Frenetic
 
-*Frenetic is a family of high-level network programming languages from Cornell and Princeton — including Frenetic itself, NetKAT, Pyretic, and FlowLog — that let an operator express network behaviour as compositions of policies, with a compiler that produces the corresponding OpenFlow flow entries.*
+_Frenetic is a family of high-level network programming languages from Cornell and Princeton — including Frenetic itself, NetKAT, Pyretic, and FlowLog — that let an operator express network behaviour as compositions of policies, with a compiler that produces the corresponding OpenFlow flow entries._
 
 Where P4 lets the operator program what a switch does to a packet, Frenetic lets the operator program what the network as a whole should do, at a logical level, and leaves the compiler to figure out how to realise it across many switches.
 
@@ -477,7 +476,7 @@ Frenetic and its descendants are mostly research languages — they have not see
 
 ## 4.8 Network Function Virtualization — concepts and principles
 
-*NFV (Network Function Virtualization) is the architectural approach of implementing network functions — firewalls, load balancers, deep packet inspection, mobile-core gateways, broadband network gateways, session border controllers — as software running on standard server hardware in virtual machines or containers, rather than as dedicated proprietary appliances.*
+_NFV (Network Function Virtualization) is the architectural approach of implementing network functions — firewalls, load balancers, deep packet inspection, mobile-core gateways, broadband network gateways, session border controllers — as software running on standard server hardware in virtual machines or containers, rather than as dedicated proprietary appliances._
 
 ### Origin
 
@@ -523,6 +522,7 @@ The ETSI NFV reference architecture has three main domains:
 **VNFs (Virtual Network Functions).** Software implementations of network functions. A vBNG (virtual Broadband Network Gateway) replaces a hardware BNG that aggregates DSL or FTTH subscribers. A vEPC (virtual Evolved Packet Core) replaces the 4G mobile core gateways. A vRAN (virtual Radio Access Network) replaces the base-station baseband processing.
 
 **MANO (Management and Orchestration).** The control plane for VNF lifecycle. Three sub-components:
+
 - **NFVO (NFV Orchestrator)** — manages network services that span multiple VNFs.
 - **VNFM (VNF Manager)** — manages individual VNF instances (instantiate, scale, terminate).
 - **VIM (Virtualised Infrastructure Manager)** — manages the underlying NFVI; OpenStack is the most common VIM.
@@ -531,12 +531,12 @@ The ETSI NFV reference architecture has three main domains:
 
 The two are complementary but distinct:
 
-| | SDN | NFV |
-|---|---|---|
-| Focuses on | The forwarding plane | The function (firewall, router, etc.) |
-| Centralises | Control | Implementation (hardware → software) |
-| Key protocol | OpenFlow, P4Runtime | Not a single protocol — orchestration via TOSCA, YANG models |
-| Primary benefit | Programmability of paths | Cost reduction, agility for functions |
+|                 | SDN                      | NFV                                                          |
+| --------------- | ------------------------ | ------------------------------------------------------------ |
+| Focuses on      | The forwarding plane     | The function (firewall, router, etc.)                        |
+| Centralises     | Control                  | Implementation (hardware → software)                         |
+| Key protocol    | OpenFlow, P4Runtime      | Not a single protocol — orchestration via TOSCA, YANG models |
+| Primary benefit | Programmability of paths | Cost reduction, agility for functions                        |
 
 A modern telecom infrastructure uses both. SDN provides the programmable transport. NFV provides the functions (firewall, mobile-core, BRAS). The orchestration layer ties them together — when MANO instantiates a new VNF, it talks to the SDN controller to set up the connectivity that VNF needs.
 

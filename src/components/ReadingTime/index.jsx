@@ -31,11 +31,18 @@ function Impl({ wpm, className }) {
   const [minutes, setMinutes] = React.useState(null);
 
   React.useEffect(() => {
-    if (!enabled) { setMinutes(null); return undefined; }
+    if (!enabled) {
+      setMinutes(null);
+      return undefined;
+    }
     // Wait one frame so the new doc's article has rendered into the DOM.
     const id = requestAnimationFrame(() => {
-      const root = document.querySelector('.theme-doc-markdown') || document.querySelector('article');
-      if (!root) { setMinutes(null); return; }
+      const root =
+        document.querySelector('.theme-doc-markdown') || document.querySelector('article');
+      if (!root) {
+        setMinutes(null);
+        return;
+      }
       const text = root.innerText || root.textContent || '';
       const words = text.split(/\s+/).filter(Boolean).length;
       setMinutes(words === 0 ? null : Math.max(1, Math.round(words / wpm)));
@@ -44,5 +51,7 @@ function Impl({ wpm, className }) {
   }, [enabled, wpm, location.pathname]);
 
   if (!enabled || minutes == null) return null;
-  return <span className={[styles.tag, className].filter(Boolean).join(' ')}>· ~{minutes} min read</span>;
+  return (
+    <span className={[styles.tag, className].filter(Boolean).join(' ')}>· ~{minutes} min read</span>
+  );
 }

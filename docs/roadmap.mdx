@@ -14,27 +14,27 @@ else is best-effort framing.
 
 ## What's shipped
 
-| Feature                          | Where it lives                                                | Status   |
-| -------------------------------- | ------------------------------------------------------------- | -------- |
-| Scholarly-Minimalist theme       | `src/css/custom.css`                                          | ✅ Live  |
-| Lora + Inter + JetBrains Mono    | Loaded via Google Fonts in `custom.css`                       | ✅ Live  |
-| Dark mode                        | Auto-detected, manual toggle in navbar                        | ✅ Live  |
-| KaTeX math rendering             | `remark-math` + `rehype-katex` in `docusaurus.config.js`      | ✅ Live  |
-| Mermaid diagrams                 | `@docusaurus/theme-mermaid`                                   | ✅ Live  |
-| Full-text search (local)         | `@easyops-cn/docusaurus-search-local`                         | ✅ Live  |
-| Algolia DocSearch (when keyed)   | Activates when `ALGOLIA_*` env vars are present               | ✅ Live  |
-| Progressive Web App (offline)    | `@docusaurus/plugin-pwa`                                      | ✅ Live  |
-| `<ResourceCard>`                 | `src/components/ResourceCard/`                                | ✅ Live  |
-| `<SidebarItem>` / `<SidebarItemList>` | `src/components/SidebarItem/`                            | ✅ Live  |
-| `<ProgressTracker>` (LocalStorage) | `src/components/ProgressTracker/`                           | ✅ Live  |
-| Focus Mode (Shift+F)             | `src/components/FocusMode/`                                   | ✅ Live  |
-| `<RequestPortal>` (Tally embed)  | `src/components/RequestPortal/`                               | ✅ Live  |
-| Edit-on-GitHub on every page     | `editUrl` in `docusaurus.config.js`                           | ✅ Live  |
-| **Bundle Builder** (multi-chapter download) | `src/pages/bundle.jsx` + `plugins/bundle-manifest.js` | ✅ Live  |
-| Scroll progress bar              | `src/components/ScrollProgress/`                              | ✅ Live  |
-| Reading-time estimate            | `src/components/ReadingTime/`                                 | ✅ Live  |
-| Keyboard shortcut modal (`?`)    | `src/components/KeyboardHelp/`                                | ✅ Live  |
-| Completion sparkle on 100%       | `<ProgressTracker>` upgrade                                   | ✅ Live  |
+| Feature                                     | Where it lives                                           | Status  |
+| ------------------------------------------- | -------------------------------------------------------- | ------- |
+| Scholarly-Minimalist theme                  | `src/css/custom.css`                                     | ✅ Live |
+| Lora + Inter + JetBrains Mono               | Loaded via Google Fonts in `custom.css`                  | ✅ Live |
+| Dark mode                                   | Auto-detected, manual toggle in navbar                   | ✅ Live |
+| KaTeX math rendering                        | `remark-math` + `rehype-katex` in `docusaurus.config.js` | ✅ Live |
+| Mermaid diagrams                            | `@docusaurus/theme-mermaid`                              | ✅ Live |
+| Full-text search (local)                    | `@easyops-cn/docusaurus-search-local`                    | ✅ Live |
+| Algolia DocSearch (when keyed)              | Activates when `ALGOLIA_*` env vars are present          | ✅ Live |
+| Progressive Web App (offline)               | `@docusaurus/plugin-pwa`                                 | ✅ Live |
+| `<ResourceCard>`                            | `src/components/ResourceCard/`                           | ✅ Live |
+| `<SidebarItem>` / `<SidebarItemList>`       | `src/components/SidebarItem/`                            | ✅ Live |
+| `<ProgressTracker>` (LocalStorage)          | `src/components/ProgressTracker/`                        | ✅ Live |
+| Focus Mode (Shift+F)                        | `src/components/FocusMode/`                              | ✅ Live |
+| `<RequestPortal>` (Tally embed)             | `src/components/RequestPortal/`                          | ✅ Live |
+| Edit-on-GitHub on every page                | `editUrl` in `docusaurus.config.js`                      | ✅ Live |
+| **Bundle Builder** (multi-chapter download) | `src/pages/bundle.jsx` + `plugins/bundle-manifest.js`    | ✅ Live |
+| Scroll progress bar                         | `src/components/ScrollProgress/`                         | ✅ Live |
+| Reading-time estimate                       | `src/components/ReadingTime/`                            | ✅ Live |
+| Keyboard shortcut modal (`?`)               | `src/components/KeyboardHelp/`                           | ✅ Live |
+| Completion sparkle on 100%                  | `<ProgressTracker>` upgrade                              | ✅ Live |
 
 ## Coming next (prioritised)
 
@@ -50,6 +50,7 @@ The site's biggest gap is content, not code. The top targets:
 ### 2. Bookmarks & Continue Reading
 
 A lightweight LocalStorage layer that records:
+
 - The last 10 pages you read (Continue Reading on the homepage).
 - Pages you "star" (a 📑 icon next to the title; bookmarks page lists them).
 
@@ -65,7 +66,7 @@ is configured; the local-search plugin needs a wrapper.
 ### 4. Tag landing pages
 
 Docusaurus auto-generates tag pages for any frontmatter `tags:`. We need to
-*style* them and add a top-level `/tags` index so students can browse
+_style_ them and add a top-level `/tags` index so students can browse
 "everything tagged `past-paper`" or "everything tagged `ipv6`".
 
 ### 5. Glossary / index
@@ -89,12 +90,12 @@ without needing the browser print dialog).
 
 ## Won't do (and why)
 
-| Idea                                 | Why not                                                                                              |
-| ------------------------------------ | ---------------------------------------------------------------------------------------------------- |
-| User accounts / login                | Static site by design. Per-user state lives in LocalStorage; no backend to defend.                   |
-| Comments on every page               | High maintenance, low signal-to-noise. Use GitHub Issues for substantive feedback.                   |
-| Hosting copyrighted textbooks        | We link to legitimate sources only. Past papers (factual works) are different.                       |
-| Multi-language UI (i18n)             | Premature. Content is in English with Nepali context paragraphs where useful. Revisit at v1.0.       |
+| Idea                                 | Why not                                                                                             |
+| ------------------------------------ | --------------------------------------------------------------------------------------------------- |
+| User accounts / login                | Static site by design. Per-user state lives in LocalStorage; no backend to defend.                  |
+| Comments on every page               | High maintenance, low signal-to-noise. Use GitHub Issues for substantive feedback.                  |
+| Hosting copyrighted textbooks        | We link to legitimate sources only. Past papers (factual works) are different.                      |
+| Multi-language UI (i18n)             | Premature. Content is in English with Nepali context paragraphs where useful. Revisit at v1.0.      |
 | AI chat / "ask my notes" widget      | Out of scope for a single maintainer. A static export of notes is enough for any user's own LLM.    |
 | Heavy gamification (badges, streaks) | Boundary with "Scholarly Minimalist" gets thin fast. Light touches (completion sparkle) are enough. |
 
@@ -112,7 +113,7 @@ A feature is "done" when:
 
 ## How to suggest a feature
 
-Open a [GitHub issue](https://github.com/raazkhnl/eduhub/issues/new) with
+Open a [GitHub issue](https://github.com/raazkhnl/EduHub/issues/new) with
 the prefix `feature:`. Describe the problem first, the proposed solution
 second. PRs welcome but please discuss large additions in an issue before
 writing code.

@@ -1,8 +1,8 @@
 ---
-title: "Chapter 6 — Cyber Security and Data Privacy"
-sidebar_label: "Ch 06 — Cyber Security and Data Privacy"
+title: 'Chapter 6 — Cyber Security and Data Privacy'
+sidebar_label: 'Ch 06 — Cyber Security and Data Privacy'
 sidebar_position: 6
-description: "Chapter 6 of Cryptography and Data Security (ENCTNS502)."
+description: 'Chapter 6 of Cryptography and Data Security (ENCTNS502).'
 slug: /ioe/msncs/year-1-part-1/cryptography/notes/ch06
 tags: [msncs, year-1-part-1, enctns502, chapter, notes]
 last_update:
@@ -10,20 +10,19 @@ last_update:
   author: Rajesh Khanal
 ---
 
-
 This chapter is the broadest in the syllabus and the one that ties together everything before it. Cybersecurity is the operational discipline of defending information systems against attack; data privacy is the parallel discipline of governing how personal data is collected, used, and protected from harm to the individuals it describes. The two are distinct — a system can be secure but privacy-invasive (a well-defended surveillance database), or privacy-respecting but insecure (a properly minimised system that nonetheless leaks). A mature programme handles both. This chapter covers cybersecurity foundations and the major threat categories, the network controls (firewalls and IDS) that defend against them, the evolution of data-privacy norms in an era of social media and big data, the legal and regulatory frameworks that now govern personal data, the consent and erasure principles that anchor those frameworks, the governance practices organisations use to comply, the intersection with cyber-physical systems, the analytical tools used in modern defence (user behaviour analytics), and the specific categories of data — PII and PHI — that demand the most stringent protection.
 
 ## 6.1 Overview of cybersecurity and data privacy
 
 ### Cybersecurity defined
 
-*Cybersecurity is the practice of protecting computer systems, networks, programs, and data from digital attacks, unauthorised access, damage, or disruption, encompassing technical controls, operational procedures, governance, and the human practices that surround them.*
+_Cybersecurity is the practice of protecting computer systems, networks, programs, and data from digital attacks, unauthorised access, damage, or disruption, encompassing technical controls, operational procedures, governance, and the human practices that surround them._
 
 The discipline goes by several names — information security, IT security, computer security, cybersecurity. The terms are largely interchangeable in current usage, though "cybersecurity" has become the dominant label since around 2015. The scope has expanded with each iteration of computing: from securing single mainframes, to securing local networks, to securing the Internet, to securing the cloud and IoT and now AI systems.
 
 ### Data privacy defined
 
-*Data privacy is the discipline concerned with ensuring that the collection, processing, use, sharing, and storage of personal data respects the rights of the individuals to whom the data relates and complies with applicable laws and ethical norms.*
+_Data privacy is the discipline concerned with ensuring that the collection, processing, use, sharing, and storage of personal data respects the rights of the individuals to whom the data relates and complies with applicable laws and ethical norms._
 
 Privacy is broader than security. A perfectly secure system may still be privacy-invasive — it may collect more data than necessary, retain it longer than necessary, use it for purposes the data subjects never authorised, or share it with parties the data subjects do not know about. Privacy asks not just "is the data safe?" but "should we have it at all? for how long? for what purposes?"
 
@@ -31,13 +30,13 @@ Privacy is broader than security. A perfectly secure system may still be privacy
 
 Security and privacy share controls but pursue different goals.
 
-| | Security goal | Privacy goal |
-|---|---|---|
-| Encryption | Confidentiality | Limit who can see personal data |
-| Access control | Authorisation | Limit who within the organisation can access |
-| Audit logging | Detection, accountability | Document compliance with purpose limitation |
-| Data minimisation | Reduces breach impact | Core privacy principle (don't collect what you don't need) |
-| Retention limits | Reduces stored attack surface | Core privacy principle (delete when no longer needed) |
+|                   | Security goal                 | Privacy goal                                               |
+| ----------------- | ----------------------------- | ---------------------------------------------------------- |
+| Encryption        | Confidentiality               | Limit who can see personal data                            |
+| Access control    | Authorisation                 | Limit who within the organisation can access               |
+| Audit logging     | Detection, accountability     | Document compliance with purpose limitation                |
+| Data minimisation | Reduces breach impact         | Core privacy principle (don't collect what you don't need) |
+| Retention limits  | Reduces stored attack surface | Core privacy principle (delete when no longer needed)      |
 
 Privacy frameworks (GDPR, CCPA, Nepal's Individual Privacy Act 2075) require security as one of several conditions for lawful processing. Security frameworks (ISO 27001, NIST CSF) increasingly include privacy controls.
 
@@ -110,44 +109,48 @@ Discussed in Chapter 5. Briefly:
 **Phishing and its variants.** Email-based deception remains the largest single category of initial access. Spear-phishing (targeted), whaling (executive-targeted), smishing (SMS-based), vishing (voice-based), QR-code phishing (quishing — emerging in 2023-25).
 
 Modern phishing has become sophisticated:
+
 - LLM-generated messages with native-quality language.
 - Voice cloning for vishing calls.
 - Deepfake video for executive impersonation (the 2024 Hong Kong deepfake CFO incident moved USD 25 million).
 - Multi-stage campaigns where the initial contact builds trust over weeks before the actual ask.
 
 **Malware.** Categories:
-- *Viruses* — self-replicating code that attaches to other programs.
-- *Worms* — self-propagating code that spreads over networks without human action.
-- *Trojans* — disguised as legitimate software.
-- *Rootkits* — hide their presence by modifying the operating system.
-- *Ransomware* — encrypts files and demands payment.
-- *Spyware* — covertly observes the user.
-- *Banking trojans* — specifically target financial app credentials.
-- *Cryptojackers* — use the victim's CPU/GPU to mine cryptocurrency.
-- *Botnets* — networks of compromised devices controlled centrally.
-- *Wipers* — destructive malware that erases data without ransom.
+
+- _Viruses_ — self-replicating code that attaches to other programs.
+- _Worms_ — self-propagating code that spreads over networks without human action.
+- _Trojans_ — disguised as legitimate software.
+- _Rootkits_ — hide their presence by modifying the operating system.
+- _Ransomware_ — encrypts files and demands payment.
+- _Spyware_ — covertly observes the user.
+- _Banking trojans_ — specifically target financial app credentials.
+- _Cryptojackers_ — use the victim's CPU/GPU to mine cryptocurrency.
+- _Botnets_ — networks of compromised devices controlled centrally.
+- _Wipers_ — destructive malware that erases data without ransom.
 
 The 2025 banking-trojan wave in Nepal — APKs disguised as legitimate eSewa, Khalti, IME Pay, and bank apps, distributed through Facebook Messenger and Telegram — illustrates that mass-market malware remains effective.
 
 **Network attacks.**
-- *DDoS* — overwhelming a target with traffic. The 2024 Nepal GIDC DDoS is the local example.
-- *Man-in-the-middle* — already covered.
-- *DNS spoofing and DNS cache poisoning* — redirecting traffic by feeding wrong DNS answers.
-- *ARP spoofing* — LAN-level redirection.
-- *BGP hijacks* — redirecting Internet routes.
-- *Wi-Fi attacks* — Evil-twin access points, KRACK (2017) and FragAttacks (2021) against WPA2.
+
+- _DDoS_ — overwhelming a target with traffic. The 2024 Nepal GIDC DDoS is the local example.
+- _Man-in-the-middle_ — already covered.
+- _DNS spoofing and DNS cache poisoning_ — redirecting traffic by feeding wrong DNS answers.
+- _ARP spoofing_ — LAN-level redirection.
+- _BGP hijacks_ — redirecting Internet routes.
+- _Wi-Fi attacks_ — Evil-twin access points, KRACK (2017) and FragAttacks (2021) against WPA2.
 
 **Web application attacks.** The OWASP Top 10 names the most common:
-1. *Broken Access Control* — most common in 2021 and 2024 lists.
-2. *Cryptographic Failures* — weak ciphers, missing TLS, plaintext storage.
-3. *Injection* — SQL injection, command injection, NoSQL injection.
-4. *Insecure Design.*
-5. *Security Misconfiguration.*
-6. *Vulnerable and Outdated Components.*
-7. *Identification and Authentication Failures.*
-8. *Software and Data Integrity Failures.*
-9. *Security Logging and Monitoring Failures.*
-10. *Server-Side Request Forgery (SSRF).*
+
+1. _Broken Access Control_ — most common in 2021 and 2024 lists.
+2. _Cryptographic Failures_ — weak ciphers, missing TLS, plaintext storage.
+3. _Injection_ — SQL injection, command injection, NoSQL injection.
+4. _Insecure Design._
+5. _Security Misconfiguration._
+6. _Vulnerable and Outdated Components._
+7. _Identification and Authentication Failures._
+8. _Software and Data Integrity Failures._
+9. _Security Logging and Monitoring Failures._
+10. _Server-Side Request Forgery (SSRF)._
 
 The Foodmandu and Vianet breaches in Nepal both appear to fall in OWASP categories — likely injection or broken access control.
 
@@ -199,7 +202,7 @@ The two foundational network-defence technologies. Both have evolved substantial
 
 ### Firewalls
 
-*A firewall is a network security control that examines traffic passing through it and applies a configured policy to permit, deny, or otherwise act on each packet or connection, separating network zones with different trust levels.*
+_A firewall is a network security control that examines traffic passing through it and applies a configured policy to permit, deny, or otherwise act on each packet or connection, separating network zones with different trust levels._
 
 The first firewalls (DEC SEAL in 1989, the original Cisco PIX in 1995) were simple packet filters. They have evolved through several generations.
 
@@ -210,12 +213,13 @@ The first firewalls (DEC SEAL in 1989, the original Cisco PIX in 1995) were simp
 **Application-layer (proxy) firewalls.** Understand specific application protocols (HTTP, SMTP, FTP). Can inspect payload, enforce protocol correctness, hide internal addresses. More processing per connection but better security for known protocols.
 
 **Next-Generation Firewalls (NGFW).** The current standard for enterprise deployments. Combine stateful inspection with:
-- *Deep Packet Inspection (DPI)* — looking inside the payload, not just the headers.
-- *TLS decryption* — with an installed certificate authority on managed clients, the firewall can decrypt and inspect HTTPS.
-- *Application identification* — recognising not just the port but the actual application (distinguishing browser HTTPS from VPN-over-HTTPS, recognising specific cloud applications).
-- *User identity integration* — applying rules per user/group, not just per IP.
-- *Threat intelligence integration* — checking destinations and downloads against feeds of known-bad addresses and files.
-- *Sandboxing* — detonating suspicious attachments in isolated environments before delivery.
+
+- _Deep Packet Inspection (DPI)_ — looking inside the payload, not just the headers.
+- _TLS decryption_ — with an installed certificate authority on managed clients, the firewall can decrypt and inspect HTTPS.
+- _Application identification_ — recognising not just the port but the actual application (distinguishing browser HTTPS from VPN-over-HTTPS, recognising specific cloud applications).
+- _User identity integration_ — applying rules per user/group, not just per IP.
+- _Threat intelligence integration_ — checking destinations and downloads against feeds of known-bad addresses and files.
+- _Sandboxing_ — detonating suspicious attachments in isolated environments before delivery.
 
 Major NGFW vendors: Palo Alto Networks, Fortinet, Check Point, Cisco, Forcepoint. Cloud-native variants are now standard (AWS Network Firewall, Azure Firewall, GCP Cloud Armor).
 
@@ -257,7 +261,7 @@ Firewalls are necessary but not sufficient. They are part of a defence-in-depth 
 
 ### Intrusion Detection Systems (IDS)
 
-*An Intrusion Detection System is a security control that monitors network traffic, system activity, or both, looking for evidence of malicious or anomalous behaviour, and generates alerts when potential intrusions are detected, without (in the classical IDS) intervening to block them.*
+_An Intrusion Detection System is a security control that monitors network traffic, system activity, or both, looking for evidence of malicious or anomalous behaviour, and generates alerts when potential intrusions are detected, without (in the classical IDS) intervening to block them._
 
 **IDS vs IPS.** An **IDS** detects and alerts. An **IPS (Intrusion Prevention System)** detects and blocks. The same product can operate in either mode; the choice depends on the risk tolerance for false-positive blocking versus letting an actual attack proceed while a human investigates.
 
@@ -372,6 +376,7 @@ The other half of the lifecycle's bookends. Modern privacy frameworks include ex
 - **Nepal Individual Privacy Act 2075, Section 11.** Provides for the right to update personal information; deletion rights are weaker than under GDPR.
 
 Operational challenges:
+
 - **Distributed storage.** Personal data may exist in production databases, backups, archives, third-party processors, log files, ML training datasets. Comprehensive deletion is a hard engineering problem.
 - **Aggregation and inference.** If data has been used to train an ML model, deleting the source data does not remove its influence on the model. "Machine unlearning" is an active research area.
 - **Legal hold.** Some data must be retained for legal or regulatory reasons even when the data subject requests deletion.
@@ -468,7 +473,7 @@ The legal landscape governing personal data has expanded enormously in the last 
 
 ### GDPR — General Data Protection Regulation (EU)
 
-*The General Data Protection Regulation (Regulation EU 2016/679) is the European Union law in force since 25 May 2018 that governs the processing of personal data of EU residents by any organisation worldwide, establishing seven processing principles, six lawful bases, eight individual rights, and administrative fines up to 4% of global annual turnover or €20 million whichever is higher.*
+_The General Data Protection Regulation (Regulation EU 2016/679) is the European Union law in force since 25 May 2018 that governs the processing of personal data of EU residents by any organisation worldwide, establishing seven processing principles, six lawful bases, eight individual rights, and administrative fines up to 4% of global annual turnover or €20 million whichever is higher._
 
 GDPR is the global reference point. Even organisations not subject to it model their compliance after it because it sets the highest enforced baseline.
 
@@ -510,7 +515,7 @@ GDPR is the global reference point. Even organisations not subject to it model t
 
 ### CCPA and CPRA — California Consumer Privacy Act
 
-*The California Consumer Privacy Act (effective 2020) and its successor the California Privacy Rights Act (effective 2023) are US state-level privacy laws that grant California residents rights over their personal information held by businesses meeting size thresholds, including rights to know, delete, correct, opt out of sale, and limit the use of sensitive personal information.*
+_The California Consumer Privacy Act (effective 2020) and its successor the California Privacy Rights Act (effective 2023) are US state-level privacy laws that grant California residents rights over their personal information held by businesses meeting size thresholds, including rights to know, delete, correct, opt out of sale, and limit the use of sensitive personal information._
 
 CCPA and CPRA brought GDPR-style rights to the US. They are weaker than GDPR in some ways (consent is not generally required; opt-out rather than opt-in) but introduce specific concepts like the right to opt out of the "sale" of personal information.
 
@@ -518,13 +523,13 @@ The CPRA created the **California Privacy Protection Agency** — the first dedi
 
 ### HIPAA — Health Insurance Portability and Accountability Act (US)
 
-*HIPAA (1996, with substantial amendments through HITECH in 2009) is the US federal law that establishes national standards for the privacy and security of Protected Health Information held by health-care providers, health plans, and their business associates.*
+_HIPAA (1996, with substantial amendments through HITECH in 2009) is the US federal law that establishes national standards for the privacy and security of Protected Health Information held by health-care providers, health plans, and their business associates._
 
 HIPAA's Privacy Rule and Security Rule are the operational standards. The Breach Notification Rule requires notification to affected individuals, HHS, and (for breaches over 500 individuals) the media. HIPAA has both civil and criminal penalties. Section 6.11 discusses PHI in more detail.
 
 ### PCI-DSS — Payment Card Industry Data Security Standard
 
-*PCI-DSS is the contractual security standard required by the major payment card brands (Visa, Mastercard, American Express, Discover, JCB) of any entity that handles cardholder data, currently at version 4.0.1 (released 2024).*
+_PCI-DSS is the contractual security standard required by the major payment card brands (Visa, Mastercard, American Express, Discover, JCB) of any entity that handles cardholder data, currently at version 4.0.1 (released 2024)._
 
 Not a government regulation but enforced contractually. Twelve requirements covering network security, access control, encryption, monitoring, vulnerability management, and policy. Non-compliance can result in fines and loss of payment-processing privileges.
 
@@ -545,6 +550,7 @@ Not a government regulation but enforced contractually. Twelve requirements cove
 The current legal landscape in Nepal:
 
 **Individual Privacy Act 2075 (2018).** Establishes the right to privacy. Sections relevant to data:
+
 - Restricts collection and use of personal information without consent.
 - Grants the right to update personal information.
 - Establishes confidentiality of personal information held by public bodies.
@@ -655,7 +661,7 @@ The organisational practices that turn privacy principles into operational reali
 
 ### Data governance
 
-*Data governance is the organisational framework — policies, roles, processes, and tools — that defines how an organisation manages its data assets, including who is accountable for what data, what quality standards apply, who can access what, how long it is retained, and how it is protected.*
+_Data governance is the organisational framework — policies, roles, processes, and tools — that defines how an organisation manages its data assets, including who is accountable for what data, what quality standards apply, who can access what, how long it is retained, and how it is protected._
 
 A data-governance programme provides the structure within which privacy compliance operates. Without governance, privacy compliance is ad-hoc and inconsistent.
 
@@ -678,7 +684,7 @@ A data-governance programme provides the structure within which privacy complian
 
 ### Privacy Impact Assessments (PIA) / Data Protection Impact Assessments (DPIA)
 
-*A Data Protection Impact Assessment is a structured process to identify and minimise the privacy risks of a processing activity, required under GDPR Article 35 for processing likely to result in high risk to the rights and freedoms of natural persons.*
+_A Data Protection Impact Assessment is a structured process to identify and minimise the privacy risks of a processing activity, required under GDPR Article 35 for processing likely to result in high risk to the rights and freedoms of natural persons._
 
 DPIAs are the privacy-equivalent of risk assessments. They examine a planned (or existing) processing activity systematically before deployment.
 
@@ -760,7 +766,7 @@ AI governance frameworks are emerging — NIST AI Risk Management Framework (202
 
 ## 6.9 Introduction to Cyber-Physical Systems
 
-*A Cyber-Physical System (CPS) is an engineered system in which physical processes and computational processes are tightly integrated, with embedded computers and networks monitoring and controlling physical components, typically through sensors that observe the physical world and actuators that change it, mediated by software that runs feedback loops between them.*
+_A Cyber-Physical System (CPS) is an engineered system in which physical processes and computational processes are tightly integrated, with embedded computers and networks monitoring and controlling physical components, typically through sensors that observe the physical world and actuators that change it, mediated by software that runs feedback loops between them._
 
 Already introduced in the Next Generation Networks chapter (Subject 1, Chapter 5). This chapter focuses on the cybersecurity and privacy implications.
 
@@ -824,13 +830,14 @@ The 2024 government-data-centre DDoS and the broader pattern of incidents sugges
 
 ## 6.10 User Behavior Analytics
 
-*User Behavior Analytics (UBA), often expanded to User and Entity Behavior Analytics (UEBA), is the cybersecurity discipline that uses machine learning and statistical methods to build baselines of normal behaviour for users and entities (devices, applications, services) and detects deviations from those baselines as potential indicators of compromise or insider threat.*
+_User Behavior Analytics (UBA), often expanded to User and Entity Behavior Analytics (UEBA), is the cybersecurity discipline that uses machine learning and statistical methods to build baselines of normal behaviour for users and entities (devices, applications, services) and detects deviations from those baselines as potential indicators of compromise or insider threat._
 
 UBA emerged in the mid-2010s as a complement to signature-based detection. Where signature detection asks "does this match a known attack?", UBA asks "is this different from what this user normally does?"
 
 ### The motivation
 
 Signature-based detection has known limitations:
+
 - It misses novel attacks.
 - It misses attacks using legitimate tools (the "living off the land" pattern).
 - It misses insider threats that look like legitimate work.
@@ -842,6 +849,7 @@ UBA addresses these gaps. An attacker who has stolen valid credentials looks leg
 UBA platforms collect and model many signals:
 
 **Authentication behaviour.**
+
 - Time of day and day of week of logins.
 - Source IP addresses and geographic locations.
 - Devices and browsers used.
@@ -849,22 +857,26 @@ UBA platforms collect and model many signals:
 - Velocity of authentication (one login Kathmandu, next login London 30 minutes later is impossible travel).
 
 **Access patterns.**
+
 - Which systems and applications a user accesses.
 - Which files, records, or queries they touch.
 - Volume of data accessed.
 - Patterns of access across time.
 
 **Application behaviour.**
+
 - Which features of an application are used.
 - Frequency and timing of feature use.
 - Error rates and unusual responses.
 
 **Network behaviour.**
+
 - Communication patterns with other internal systems.
 - External connections and destinations.
 - Data volumes uploaded and downloaded.
 
 **Endpoint behaviour.**
+
 - Processes launched.
 - Files created and modified.
 - USB and removable-media activity.
@@ -936,7 +948,7 @@ The two most-regulated categories of personal data. Both deserve specific treatm
 
 ### Personally Identifiable Information (PII)
 
-*Personally Identifiable Information is the category of data that, alone or in combination, identifies a specific individual or could reasonably be used to identify them, including direct identifiers (name, government ID number, biometrics) and indirect identifiers (combinations of demographic and behavioural attributes that uniquely characterise an individual).*
+_Personally Identifiable Information is the category of data that, alone or in combination, identifies a specific individual or could reasonably be used to identify them, including direct identifiers (name, government ID number, biometrics) and indirect identifiers (combinations of demographic and behavioural attributes that uniquely characterise an individual)._
 
 The definition is intentionally broad. Modern privacy law (GDPR's "personal data" definition is functionally equivalent and broader than the US "PII") treats anything that can be linked to an individual as PII.
 
@@ -991,7 +1003,7 @@ GDPR Article 9 enumerates "special categories" that overlap with this list and r
 
 ### Protected Health Information (PHI)
 
-*Protected Health Information is the HIPAA-defined subset of PII that relates to an individual's past, present, or future physical or mental health, the provision of health care to the individual, or the payment for that health care, when transmitted or maintained in any form by a covered entity or business associate.*
+_Protected Health Information is the HIPAA-defined subset of PII that relates to an individual's past, present, or future physical or mental health, the provision of health care to the individual, or the payment for that health care, when transmitted or maintained in any form by a covered entity or business associate._
 
 PHI gets special protection because health data is especially sensitive — it can affect insurance, employment, relationships, and personal autonomy.
 

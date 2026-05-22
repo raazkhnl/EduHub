@@ -1,1 +1,6 @@
-{ "label": "B.E. — Electrical (BEL)", "position": 12, "collapsed": true, "link": { "type": "doc", "id": "ioe/bel/index" } }
+{
+  "label": "B.E. — Electrical (BEL)",
+  "position": 12,
+  "collapsed": true,
+  "link": { "type": "doc", "id": "ioe/bel/index" }
+}

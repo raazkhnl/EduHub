@@ -15,19 +15,32 @@
   border: 1px solid var(--ah-rule);
   border-radius: 999px;
   cursor: pointer;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
-  transition: color var(--ah-dur-fast), border-color var(--ah-dur-fast),
-              background-color var(--ah-dur-fast), transform var(--ah-dur-fast);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  transition:
+    color var(--ah-dur-fast),
+    border-color var(--ah-dur-fast),
+    background-color var(--ah-dur-fast),
+    transform var(--ah-dur-fast);
 }
-.fab:hover { color: var(--ah-accent); border-color: var(--ah-accent); transform: translateY(-1px); }
+.fab:hover {
+  color: var(--ah-accent);
+  border-color: var(--ah-accent);
+  transform: translateY(-1px);
+}
 .fab[data-on='true'] {
   background: var(--ah-accent);
   color: #fff;
   border-color: var(--ah-accent);
 }
-.label { font-feature-settings: 'tnum'; }
+.label {
+  font-feature-settings: 'tnum';
+}
 
 @media (max-width: 560px) {
-  .label { display: none; }
-  .fab { padding: 0.55em; }
+  .label {
+    display: none;
+  }
+  .fab {
+    padding: 0.55em;
+  }
 }

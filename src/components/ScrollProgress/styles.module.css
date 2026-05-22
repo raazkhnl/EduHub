@@ -1,7 +1,8 @@
 .bar {
   position: fixed;
   top: var(--ifm-navbar-height, 60px);
-  left: 0; right: 0;
+  left: 0;
+  right: 0;
   height: 2px;
   background: transparent;
   z-index: 40;
@@ -15,5 +16,11 @@
   transition: transform 80ms linear;
   border-radius: 0 1px 1px 0;
 }
-@media print { .bar { display: none !important; } }
-html.focus-mode .bar { display: none !important; }
+@media print {
+  .bar {
+    display: none !important;
+  }
+}
+html.focus-mode .bar {
+  display: none !important;
+}
