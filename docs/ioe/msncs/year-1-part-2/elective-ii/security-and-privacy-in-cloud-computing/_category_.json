@@ -2,5 +2,10 @@
   "label": "Security and Privacy in Cloud Computing",
   "position": 1,
   "collapsed": true,
-  "link": { "type": "doc", "id": "ioe/msncs/year-1-part-2/elective-ii/security-and-privacy-in-cloud-computing/index" }
+  "link": {
+    "type": "generated-index",
+    "title": "Security and Privacy in Cloud Computing",
+    "description": "Syllabus and chapter notes for Security and Privacy in Cloud Computing.",
+    "slug": "/ioe/msncs/year-1-part-2/elective-ii/security-and-privacy-in-cloud-computing"
+  }
 }

@@ -2,5 +2,10 @@
   "label": "Machine Learning & Data Analytics",
   "position": 3,
   "collapsed": true,
-  "link": { "type": "doc", "id": "ioe/msncs/year-1-part-1/machine-learning-data-analytics/index" }
+  "link": {
+    "type": "generated-index",
+    "title": "Machine Learning & Data Analytics",
+    "description": "Syllabus and chapter notes for Machine Learning & Data Analytics.",
+    "slug": "/ioe/msncs/year-1-part-1/machine-learning-data-analytics"
+  }
 }

@@ -2,5 +2,10 @@
   "label": "Generative AI and Security",
   "position": 5,
   "collapsed": true,
-  "link": { "type": "doc", "id": "ioe/msncs/year-2-part-1/elective-iii/generative-ai-and-security/index" }
+  "link": {
+    "type": "generated-index",
+    "title": "Generative AI and Security",
+    "description": "Syllabus and chapter notes for Generative AI and Security.",
+    "slug": "/ioe/msncs/year-2-part-1/elective-iii/generative-ai-and-security"
+  }
 }

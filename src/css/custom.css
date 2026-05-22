@@ -388,6 +388,14 @@ pre {
 .menu__list-item-collapsible {
   border-radius: var(--ah-radius-sm);
 }
+
+/* Hide redundant "Overview" sidebar entries that Docusaurus auto-creates
+   for category-linked index docs. The category itself is already clickable
+   to the landing — a child "Overview" item would be visually duplicate. */
+.menu__link.sidebar-overview-hidden,
+.theme-doc-sidebar-item-link:has(> .menu__link.sidebar-overview-hidden) {
+  display: none !important;
+}
 .theme-doc-sidebar-item-category > .menu__list-item-collapsible .menu__link {
   font-family: var(--ah-font-serif);
   font-weight: 600;
@@ -603,28 +611,165 @@ html.focus-mode article {
   margin: 0 auto;
 }
 
-/* Print — clean academic handout */
+/* ────────────────────────────────────────────────────────────────────────────
+ * Print — clean academic handout on A4
+ * ──────────────────────────────────────────────────────────────────────────── */
+@page {
+  size: A4;
+  margin: 20mm 18mm 22mm 18mm;
+}
+@page :first {
+  margin-top: 26mm;
+}
+
 @media print {
+  /* Hide chrome */
   .navbar,
   .theme-doc-sidebar-container,
   .footer,
   .pagination-nav,
   .theme-doc-footer,
+  .theme-doc-breadcrumbs,
+  .theme-doc-toc-desktop,
+  .theme-doc-toc-mobile,
   div[class*='announcementBar'],
-  .theme-doc-toc-desktop {
+  div[class*='backToTopButton'],
+  .eh-credit,
+  /* Reader-facing affordances we don't want in print */
+  [class*='ScrollProgress'],
+  [class*='BundleFab'],
+  [class*='KeyboardHelp'] {
     display: none !important;
   }
-  body {
-    background: #fff;
-    color: #000;
+
+  body,
+  html {
+    background: #fff !important;
+    color: #000 !important;
+    font-size: 10.5pt;
   }
-  a {
-    color: #000;
-    text-decoration: underline;
+
+  /* The doc body fills the print area */
+  .main-wrapper,
+  main,
+  article {
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
   }
+
+  /* Every chapter starts on a fresh A4 page — and the H1 of each chapter
+     should never sit alone at the bottom of a page. */
+  article h1 {
+    page-break-before: always;
+    break-before: page;
+    page-break-after: avoid;
+    break-after: avoid;
+  }
+  /* Don't push a blank first page. */
+  article > h1:first-child,
+  article > header > h1,
+  .markdown > h1:first-child {
+    page-break-before: auto;
+    break-before: auto;
+  }
+
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    page-break-after: avoid;
+    break-after: avoid;
+  }
+  p {
+    orphans: 3;
+    widows: 3;
+  }
+
+  /* Tables — never slice rows */
+  table {
+    page-break-inside: avoid;
+    break-inside: avoid;
+    border-collapse: collapse;
+    width: 100%;
+  }
+  tr {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+  th,
+  td {
+    border: 1px solid #666 !important;
+    padding: 0.4em 0.6em;
+  }
+  th {
+    background: #eee !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  /* Code & pre — keep together, wrap long lines */
   pre,
+  pre code {
+    page-break-inside: avoid;
+    break-inside: avoid;
+    white-space: pre-wrap !important;
+    word-break: break-word !important;
+  }
+  pre {
+    border: 1px solid #ccc !important;
+    background: #f5f0e6 !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
   code {
-    border: 1px solid #ccc;
+    border: 1px solid #ddd;
+    padding: 0 0.3em;
+  }
+
+  /* Math */
+  .katex,
+  .katex-display {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+  .katex-display {
+    overflow: visible !important;
+  }
+
+  /* Diagrams — most Mermaid renders as SVG; keep intact */
+  .docusaurus-mermaid-container,
+  svg,
+  img,
+  figure {
+    page-break-inside: avoid;
+    break-inside: avoid;
+    max-width: 100% !important;
+    height: auto !important;
+  }
+
+  blockquote {
+    page-break-inside: avoid;
+    break-inside: avoid;
+    border-left: 2px solid #555;
+    padding-left: 0.8em;
+  }
+
+  /* Links — show URL for external links so the print is self-contained */
+  a {
+    color: #000 !important;
+    text-decoration: underline !important;
+  }
+  a[href^='http']::after {
+    content: ' (' attr(href) ')';
+    font-size: 0.78em;
+    color: #555;
+  }
+  /* But not for in-site links (they'd just clutter) */
+  a[href^='/']::after,
+  a[href^='#']::after {
+    content: '';
   }
 }
 

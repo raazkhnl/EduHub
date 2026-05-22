@@ -2,5 +2,10 @@
   "label": "Research Methods",
   "position": 4,
   "collapsed": true,
-  "link": { "type": "doc", "id": "ioe/msncs/year-1-part-1/research-methods/index" }
+  "link": {
+    "type": "generated-index",
+    "title": "Research Methods",
+    "description": "Syllabus and chapter notes for Research Methods.",
+    "slug": "/ioe/msncs/year-1-part-1/research-methods"
+  }
 }

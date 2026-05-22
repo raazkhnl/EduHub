@@ -176,18 +176,31 @@ function BundleBuilderClient() {
     }
   };
 
-  const openPrintable = () => {
+  const openPrintable = async () => {
     const docs = chosenDocs();
     if (docs.length === 0) return;
-    const html = buildPrintableHtml(docs);
-    const w = window.open('', '_blank');
-    if (!w) {
-      alert('Pop-up blocked. Allow pop-ups for eduhub.khanalrajesh.com.np to use printable view.');
-      return;
+    setBusy(true);
+    setBusyMsg('Rendering chapters…');
+    try {
+      // Dynamic-import the renderers to keep the main bundle slim. Both ship
+      // as ESM; their default exports are the API surface.
+      const [{ marked }, katexMod] = await Promise.all([import('marked'), import('katex')]);
+      const katex = katexMod.default || katexMod;
+      const html = buildPrintableHtml(docs, marked, katex);
+      const w = window.open('', '_blank');
+      if (!w) {
+        alert(
+          'Pop-up blocked. Allow pop-ups for eduhub.khanalrajesh.com.np to use printable view.',
+        );
+        return;
+      }
+      w.document.open();
+      w.document.write(html);
+      w.document.close();
+    } finally {
+      setBusy(false);
+      setBusyMsg('');
     }
-    w.document.open();
-    w.document.write(html);
-    w.document.close();
   };
 
   return (
@@ -595,166 +608,259 @@ function prependFrontmatter(d) {
   return fm + d.markdown;
 }
 
-function buildPrintableHtml(docs) {
+function buildPrintableHtml(docs, marked, katex) {
   const esc = (s) =>
     String(s).replace(/[&<>]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' })[c]);
+
+  // A4 print sheet sized for academic handouts. Aggressive page-break rules
+  // keep tables, code blocks and figures from being sliced mid-row.
   const css = `
-    @page { size: A4; margin: 22mm 18mm; }
+    @page { size: A4; margin: 20mm 18mm 22mm 18mm; }
+    @page :first { margin-top: 26mm; }
     html, body { background: #fff; color: #1A1B1F; }
-    body { font-family: 'Lora', Georgia, serif; line-height: 1.6; max-width: 720px; margin: 0 auto; padding: 24px; }
-    h1, h2, h3 { font-family: 'Lora', Georgia, serif; }
-    h1 { font-size: 1.8rem; border-bottom: 1px solid #E5DFD2; padding-bottom: 0.3em; page-break-before: always; }
-    h1:first-of-type { page-break-before: auto; }
-    h2 { font-size: 1.3rem; margin-top: 1.8em; }
-    pre, code { font-family: 'JetBrains Mono', Menlo, monospace; }
-    pre { background: #F3EFE6; padding: 0.8em 1em; border-radius: 6px; border: 1px solid #E5DFD2; overflow-x: auto; }
-    blockquote { border-left: 3px solid #0F766E; padding-left: 1em; color: #3F4147; font-style: italic; }
-    .meta { color: #6B6D75; font-size: 0.85em; margin-bottom: 1em; }
-    .cover { padding: 4em 0; text-align: center; page-break-after: always; }
-    .cover h1 { border: 0; font-size: 2.4rem; }
-    .cover small { color: #6B6D75; font-family: 'Inter', sans-serif; }
-    .toc { page-break-after: always; }
-    .toc ol { line-height: 2; }
-    a { color: #0F766E; }
-    @media print { .no-print { display: none !important; } }
-    .no-print button { font-family: 'Inter', sans-serif; padding: 0.5em 1em; background: #0F766E; color: #fff; border: 0; border-radius: 6px; cursor: pointer; }
+    body {
+      font-family: 'Lora', Georgia, serif;
+      font-size: 11pt;
+      line-height: 1.55;
+      max-width: 100%;
+      margin: 0;
+      padding: 0;
+    }
+    article { max-width: 100%; }
+
+    /* Headings */
+    h1, h2, h3, h4, h5, h6 { font-family: 'Lora', Georgia, serif; page-break-after: avoid; }
+    h1 {
+      font-size: 1.7rem;
+      font-weight: 600;
+      border-bottom: 1px solid #C7BFAE;
+      padding-bottom: 0.35em;
+      margin: 0 0 0.9em;
+      /* Every chapter starts on a fresh A4 sheet. */
+      page-break-before: always;
+      break-before: page;
+    }
+    /* Cover + TOC h1s shouldn't push a new page before them. */
+    .cover h1, .toc-only h1, article:first-of-type h1 { page-break-before: auto; break-before: auto; }
+    h2 { font-size: 1.25rem; margin-top: 1.6em; border-bottom: 1px solid #E5DFD2; padding-bottom: 0.2em; }
+    h3 { font-size: 1.08rem; margin-top: 1.4em; }
+    h4 { font-size: 1rem; font-style: italic; color: #3F4147; }
+
+    /* Paragraphs / prose */
+    p { margin: 0 0 0.85em; orphans: 3; widows: 3; }
+    strong { color: #1A1B1F; }
+    em { font-style: italic; }
+
+    /* Code */
+    pre, code { font-family: 'JetBrains Mono', Menlo, monospace; font-size: 0.85em; }
+    code { background: #F3EFE6; padding: 0.05em 0.35em; border-radius: 3px; }
+    pre {
+      background: #F3EFE6;
+      padding: 0.8em 1em;
+      border-radius: 6px;
+      border: 1px solid #E5DFD2;
+      white-space: pre-wrap;
+      word-break: break-word;
+      page-break-inside: avoid;
+      break-inside: avoid;
+      margin: 0.8em 0;
+    }
+    pre code { background: transparent; padding: 0; }
+
+    /* Tables — full-width, hairline, no mid-row breaks */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1em 0;
+      font-size: 0.92em;
+      page-break-inside: avoid;
+      break-inside: avoid;
+    }
+    th, td {
+      border: 1px solid #C7BFAE;
+      padding: 0.4em 0.6em;
+      text-align: left;
+      vertical-align: top;
+    }
+    th { background: #F3EFE6; font-family: 'Inter', sans-serif; font-size: 0.85em; text-transform: uppercase; letter-spacing: 0.04em; }
+    tr { page-break-inside: avoid; break-inside: avoid; }
+
+    /* Blockquotes / definitions */
+    blockquote {
+      border-left: 3px solid #0F766E;
+      padding: 0.1em 0 0.1em 1em;
+      color: #3F4147;
+      font-style: italic;
+      margin: 0.8em 0;
+      page-break-inside: avoid;
+    }
+
+    /* Lists */
+    ul, ol { padding-left: 1.6em; margin: 0 0 0.8em; }
+    li { margin: 0.15em 0; }
+    li > p { margin: 0; }
+
+    /* Links */
+    a { color: #0F766E; text-decoration: none; }
+
+    /* KaTeX (math) — keep on-paper readable, no horizontal overflow */
+    .katex { font-size: 1em !important; }
+    .katex-display {
+      margin: 0.9em 0 !important;
+      page-break-inside: avoid;
+      break-inside: avoid;
+      overflow: visible;
+    }
+    .katex-display > .katex { white-space: normal !important; }
+
+    /* Images / figures — never slice */
+    img, figure, svg { max-width: 100%; height: auto; page-break-inside: avoid; break-inside: avoid; }
+    figure { margin: 0.8em 0; }
+
+    /* Meta header on each article */
+    .meta { color: #6B6D75; font-size: 0.85em; margin: -0.6em 0 1em; font-family: 'Inter', sans-serif; }
+
+    /* Cover sheet */
+    .cover { padding: 4em 0 2em; text-align: center; page-break-after: always; break-after: page; }
+    .cover h1 { border: 0; font-size: 2.6rem; padding-bottom: 0; margin-bottom: 0.4em; }
+    .cover small { color: #6B6D75; font-family: 'Inter', sans-serif; font-size: 0.9em; }
+
+    /* TOC */
+    .toc-only { page-break-after: always; break-after: page; }
+    .toc-only h2 { border: 0; font-size: 1.4rem; margin-top: 0; }
+    .toc-only ol { line-height: 1.9; }
+
+    /* Print-only refinements */
+    @media print {
+      .no-print { display: none !important; }
+      body { font-size: 10.5pt; }
+      a { color: #1A1B1F; text-decoration: underline; }
+      a[href^="http"]::after { content: ' (' attr(href) ')'; font-size: 0.75em; color: #6B6D75; }
+      /* Don't print the leading slug for internal links. */
+      a[href^="/"]::after { content: ''; }
+    }
+    .no-print button {
+      font-family: 'Inter', sans-serif;
+      padding: 0.55em 1.1em;
+      background: #0F766E;
+      color: #fff;
+      border: 0;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 500;
+    }
   `;
-  const body = docs
-    .map((d) => {
-      return `
-      <article>
-        <h1>${esc(d.title)}</h1>
-        <p class="meta">Source: <a href="${esc(d.slug)}">${esc(d.slug)}</a> · ${esc(String(d.minutes))} min · ${esc(d.wordCount.toLocaleString())} words</p>
-        ${mdToHtmlMinimal(d.markdown)}
-      </article>
-    `;
-    })
-    .join('');
+
+  const renderOne = (d) => `
+    <article>
+      <h1>${esc(d.title)}</h1>
+      <p class="meta">Source: <a href="${esc(d.slug)}">${esc(d.slug)}</a> · ${esc(String(d.minutes))} min · ${esc(d.wordCount.toLocaleString())} words</p>
+      ${mdToHtmlRich(d.markdown, marked, katex)}
+    </article>
+  `;
+
+  const body = docs.map(renderOne).join('');
+
   return `<!doctype html>
-<html><head><meta charset="utf-8"/>
+<html><head>
+<meta charset="utf-8"/>
 <title>EduHub — printable bundle</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lora:wght@400;600&family=Inter:wght@400;500&family=JetBrains+Mono&display=swap"/>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"/>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous"/>
 <style>${css}</style>
 </head><body>
-<div class="no-print" style="text-align:center;margin-bottom:1.5em;">
-  <button onclick="window.print()">Print / Save as PDF</button>
+<div class="no-print" style="text-align:center;margin:1.5em 0;">
+  <button onclick="window.print()">Print / Save as PDF (A4)</button>
 </div>
 <section class="cover">
   <h1>EduHub</h1>
   <p><em>Combined bundle of ${docs.length} chapter${docs.length === 1 ? '' : 's'}</em></p>
   <small>${esc(new Date().toLocaleString())} · eduhub.khanalrajesh.com.np</small>
 </section>
-<section class="toc">
+<section class="toc-only">
   <h2>Table of contents</h2>
-  <ol>${docs.map((d) => `<li>${esc(d.title)} <small style="color:#6B6D75">— ${esc(d.slug)}</small></li>`).join('')}</ol>
+  <ol>
+    ${docs.map((d) => `<li>${esc(d.title)} <small style="color:#6B6D75">— ${esc(d.slug)}</small></li>`).join('\n    ')}
+  </ol>
 </section>
 ${body}
 </body></html>`;
 }
 
-// Tiny, conservative markdown → HTML converter (enough for the printable view).
-// Code blocks, headings, lists, blockquotes, paragraphs, inline code, links, bold/italic.
-function mdToHtmlMinimal(src) {
-  const esc = (s) => s.replace(/[&<>]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' })[c]);
+// Full GFM markdown -> HTML for the printable view. Handles tables, fenced
+// code, blockquotes, lists, links — and pre-extracts LaTeX math ($...$ /
+// $$...$$) so it can be rendered by KaTeX before marked sees it (otherwise
+// marked treats the dollar signs as literal text). Strips YAML frontmatter
+// and MDX import/export lines.
+function mdToHtmlRich(src, marked, katex) {
+  // 1. Drop YAML frontmatter if present (Docusaurus exposes only the body
+  //    through the manifest, but be defensive — older bundles may include it).
+  src = src.replace(/^---\n[\s\S]*?\n---\n+/, '');
+
+  // 2. Strip MDX-only lines that CommonMark can't render.
   src = stripMdxImports(src);
 
-  const lines = src.split(/\r?\n/);
-  const out = [];
-  let inCode = false,
-    codeLang = '',
-    codeBuf = [];
-  let inList = false,
-    listOrdered = false;
-  let inQuote = false,
-    quoteBuf = [];
-  const flushQuote = () => {
-    if (inQuote) {
-      out.push(`<blockquote>${inlines(quoteBuf.join('\n'))}</blockquote>`);
-      quoteBuf = [];
-      inQuote = false;
+  // 3. Extract code blocks first so we don't math-touch their contents.
+  const codeBlocks = [];
+  src = src.replace(/```[\s\S]*?```/g, (block) => {
+    codeBlocks.push(block);
+    return `@@CODEBLOCK_${codeBlocks.length - 1}@@`;
+  });
+
+  // 4. Extract math blocks (display first, then inline) and render via KaTeX.
+  const mathBlocks = [];
+  const renderMath = (tex, displayMode) => {
+    try {
+      return katex.renderToString(tex, {
+        displayMode,
+        throwOnError: false,
+        strict: false,
+        output: 'html',
+      });
+    } catch {
+      return `<code>${tex}</code>`;
     }
   };
-  const flushList = () => {
-    if (inList) {
-      out.push(listOrdered ? '</ol>' : '</ul>');
-      inList = false;
+  src = src.replace(/\$\$([\s\S]+?)\$\$/g, (_m, tex) => {
+    mathBlocks.push(`<div class="katex-display">${renderMath(tex.trim(), true)}</div>`);
+    return `@@MATHBLOCK_${mathBlocks.length - 1}@@`;
+  });
+  src = src.replace(/(?<!\\)\$([^\n$]+?)\$/g, (_m, tex) => {
+    mathBlocks.push(renderMath(tex.trim(), false));
+    return `@@MATHBLOCK_${mathBlocks.length - 1}@@`;
+  });
+
+  // 5. Restore code blocks before handing to marked, so it can syntax-handle
+  //    them. (Math placeholders stay in for now — they're plain text so
+  //    marked leaves them as-is in paragraphs.)
+  src = src.replace(/@@CODEBLOCK_(\d+)@@/g, (_m, i) => codeBlocks[Number(i)]);
+
+  // 6. Parse the markdown.
+  const renderer = new marked.Renderer();
+  // Open external links in new tabs without breaking internal ones.
+  const origLink = renderer.link.bind(renderer);
+  renderer.link = (href, title, text) => {
+    const html = origLink(href, title, text);
+    if (/^https?:/.test(href)) {
+      return html.replace('<a ', '<a target="_blank" rel="noopener noreferrer" ');
     }
+    return html;
   };
 
-  function inlines(s) {
-    return esc(s)
-      .replace(/`([^`]+)`/g, '<code>$1</code>')
-      .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
-      .replace(/(?<!\*)\*([^*]+)\*(?!\*)/g, '<em>$1</em>')
-      .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
-  }
+  marked.setOptions({
+    gfm: true,
+    breaks: false,
+    headerIds: false,
+    mangle: false,
+    renderer,
+  });
 
-  for (const line of lines) {
-    if (line.startsWith('```')) {
-      if (inCode) {
-        out.push(`<pre><code class="lang-${codeLang}">${esc(codeBuf.join('\n'))}</code></pre>`);
-        codeBuf = [];
-        codeLang = '';
-        inCode = false;
-      } else {
-        flushQuote();
-        flushList();
-        inCode = true;
-        codeLang = line.slice(3).trim();
-      }
-      continue;
-    }
-    if (inCode) {
-      codeBuf.push(line);
-      continue;
-    }
+  let html = marked.parse(src);
 
-    const h = /^(#{1,6})\s+(.+)$/.exec(line);
-    if (h) {
-      flushQuote();
-      flushList();
-      out.push(`<h${h[1].length}>${inlines(h[2])}</h${h[1].length}>`);
-      continue;
-    }
+  // 7. Re-insert the rendered math.
+  html = html.replace(/@@MATHBLOCK_(\d+)@@/g, (_m, i) => mathBlocks[Number(i)] || '');
 
-    const q = /^>\s?(.*)$/.exec(line);
-    if (q) {
-      flushList();
-      inQuote = true;
-      quoteBuf.push(q[1]);
-      continue;
-    } else flushQuote();
-
-    const ul = /^[-*+]\s+(.+)$/.exec(line);
-    const ol = /^\d+\.\s+(.+)$/.exec(line);
-    if (ul || ol) {
-      const want = !!ol;
-      if (!inList || listOrdered !== want) {
-        flushList();
-        out.push(want ? '<ol>' : '<ul>');
-        inList = true;
-        listOrdered = want;
-      }
-      out.push(`<li>${inlines((ul || ol)[1])}</li>`);
-      continue;
-    } else flushList();
-
-    if (!line.trim()) {
-      out.push('');
-      continue;
-    }
-
-    if (/^---+$/.test(line.trim())) {
-      out.push('<hr/>');
-      continue;
-    }
-
-    out.push(`<p>${inlines(line)}</p>`);
-  }
-  flushQuote();
-  flushList();
-  if (inCode) out.push(`<pre><code>${esc(codeBuf.join('\n'))}</code></pre>`);
-  return out.join('\n');
+  return html;
 }
 
 // Strip `import …` and `export …` lines that MDX uses but plain MD can't render.

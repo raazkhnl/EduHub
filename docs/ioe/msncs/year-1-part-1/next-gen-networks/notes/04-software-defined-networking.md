@@ -1,0 +1,618 @@
+---
+title: 'Chapter 4 — Software-Defined Networking'
+sidebar_label: 'Ch 04 — Software-Defined Networking'
+sidebar_position: 4
+description: 'Chapter 4 of Next Generation Network Technologies (ENCTNS501).'
+slug: /ioe/msncs/year-1-part-1/next-gen-networks/notes/ch04
+tags: [msncs, ENCTNS501, notes]
+last_update:
+  date: 2026-05-22
+  author: Rajesh Khanal
+---
+
+For four decades the network was built out of standalone boxes — each router, switch, firewall, and load balancer running its own distributed control logic and reachable only through its own CLI. This model worked when networks were small enough to configure by hand and stable enough that the configuration did not change daily. By the late 2000s, hyperscale operators outgrew it. The response was **Software-Defined Networking (SDN)** — pull the control logic out of the boxes, run it centrally as software, and turn the boxes into commodity packet forwarders that take their instructions from above. This chapter covers SDN's architecture, its main protocol (OpenFlow), the API surfaces it exposes, the controller ecosystem, its application in telecom networks, the languages used to program data planes (P4, Frenetic), the closely related field of Network Function Virtualization (NFV), and the current direction of research.
+
+## 4.1 Importance and applications of SDN
+
+### Why SDN exists
+
+Three operational realities of large networks drove the SDN movement.
+
+**Configuration scale.** A Google or Microsoft data centre runs tens of thousands of switches. Hand-configuring each one is impractical, and even script-driven automation through CLI is fragile because each vendor's CLI is different, each device has its own state, and the same intent expressed in different ways across thousands of devices accumulates inconsistency. The operator wants one place to express the intent and one place to verify it has been realised.
+
+**Innovation pace.** New features in a traditional router required convincing the vendor's product management, waiting through their development cycle, qualifying the new firmware, and rolling it across the fleet — a multi-year cycle. By contrast, a new feature in software running on the operator's own controller is a code change merged and deployed in days.
+
+**Hardware cost and vendor lock-in.** A vendor's proprietary router with full control-plane software costs an order of magnitude more than a bare-metal switch (a "white box") that does only forwarding. Operators with sufficient scale to build their own control plane saw an opportunity to capture that delta.
+
+Three commonly cited milestones triggered the SDN movement from an academic idea to a deployed reality:
+
+- 2008: Nick McKeown's group at Stanford and Scott Shenker's group at Berkeley publish the OpenFlow specification, defining a clean control-data plane interface.
+- 2011: Google announces B4, its software-defined inter-data-centre WAN, at SIGCOMM 2013 (deployment was earlier). B4 carries Google's traffic between data centres at near-100% link utilisation, a number unheard of in classical networks.
+- 2012: The Open Networking Foundation (ONF) forms, stewarded by the major hyperscale operators (Google, Microsoft, Facebook, Yahoo, Verizon, Deutsche Telekom), to standardise OpenFlow and related protocols.
+
+### What SDN promises
+
+The core SDN proposition is **decoupling**:
+
+- The **control plane** — the part of the network that decides where each packet should go — is separated from the **data plane** — the part that actually forwards packets.
+- The control plane is **centralised** (logically, not physically — for survivability, controllers are clustered) and runs as software on general-purpose servers.
+- The data plane is **simple, fast, programmable** silicon that follows instructions from the controller through a standard protocol.
+
+### Applications of SDN
+
+The architecture suits several application classes especially well:
+
+**Data centre fabrics.** Hyperscale operators use SDN-controlled fabric switches running protocols like BGP-EVPN and VXLAN to build large Layer-2 overlays on top of Layer-3 cores. The controller assigns workloads to switches, programs the VXLAN tunnels, and tracks the state of every VM and container.
+
+**Wide-area traffic engineering.** B4 and Microsoft's SWAN allocate bandwidth across multiple paths between data centres according to application priority and time-of-day traffic patterns. Classical IGP/MPLS-TE struggles with global optimisation; an SDN controller with a global view can solve a linear-programming model and install paths that achieve near-optimal utilisation.
+
+**Service provider edge.** Aggregating residential subscribers, business VPN connections, and mobile backhaul into a programmable edge with on-demand service activation.
+
+**Campus and enterprise networks.** Aruba, Cisco DNA Center, Juniper Mist all market SDN-style controllers for enterprise switching that let an administrator express intent ("guest devices may reach the Internet but not the corporate VLAN") and have it realised across the access switches.
+
+**Network slicing in 5G.** Each 5G network slice is configured and provisioned by an SDN controller that programs the transport network underneath. Chapter 5 covers slicing.
+
+**Security and microsegmentation.** Zero-trust architectures rely on per-flow policy enforcement at the network. SDN provides the substrate — every flow can be inspected, every policy can be installed centrally and pushed to the right enforcement point.
+
+**Service chaining.** Forcing a flow through a chain of network functions (firewall, then DPI, then load balancer) requires forwarding control that classical routing cannot easily provide. SDN gives the controller direct control over which device sees which traffic, in which order.
+
+## 4.2 SDN architecture and components
+
+The classical SDN architecture has three planes — Data, Control, and Application — separated by two well-defined interfaces.
+
+### The three-plane model
+
+```
+    +---------------------------------------------------+
+    |              Application Plane                    |
+    |  (network apps: routing, monitoring, firewall,    |
+    |   load balancer, traffic engineering, ...)        |
+    +---------------------------------------------------+
+                          |   ^
+                          |   |
+                  Northbound API (REST, gRPC, ...)
+                          |   |
+                          v   |
+    +---------------------------------------------------+
+    |               Control Plane                       |
+    |        SDN Controller (one or more nodes)         |
+    |  - Maintains network state (topology, devices)    |
+    |  - Computes forwarding decisions                  |
+    |  - Hosts/runs applications                        |
+    +---------------------------------------------------+
+                          |   ^
+                          |   |
+                 Southbound API (OpenFlow, NETCONF,
+                          |   |  P4Runtime, gNMI, OF-Config)
+                          v   |
+    +---------------------------------------------------+
+    |                Data Plane                         |
+    |    Switches, routers, virtual switches            |
+    |  - Match-action tables, populated by controller   |
+    |  - Forward packets at line rate                   |
+    |  - Report state back to controller                |
+    +---------------------------------------------------+
+```
+
+Plus two horizontal interfaces — East and Westbound — between peer controllers in different administrative domains or in a clustered single domain.
+
+### Data plane
+
+*The SDN data plane is the set of switches and routers that forward packets according to forwarding tables installed by the controller, without making independent control-plane decisions about paths or policy.*
+
+A modern OpenFlow switch maintains one or more **flow tables**, each containing **flow entries**. Each flow entry has:
+
+- **Match fields** — what fields in the incoming packet must equal for the entry to apply (Ethernet MAC, Ethernet type, IP source, IP destination, TCP/UDP port, VLAN tag, MPLS label, IPv6 fields, and more).
+- **Priority** — used to disambiguate among multiple matching entries.
+- **Counters** — packets and bytes that hit this entry.
+- **Instructions** — actions to take on matching packets (output to a port, push or pop headers, modify fields, send to controller, drop, go to another table, group).
+- **Timeouts** — idle and hard timeouts after which the entry is removed.
+- **Cookie** — an opaque identifier the controller uses to track the entry.
+
+When a packet arrives, the switch looks it up in the flow table. If it matches an entry, the actions are applied. If no entry matches, the packet is sent to the controller in a **PACKET_IN** message (or dropped, depending on the table-miss configuration). The controller then decides what to do and may install a new flow entry so future packets of the same kind do not need controller involvement.
+
+Two important data-plane variants:
+
+**OpenFlow-only switches** — bare-metal hardware (Pica8, Edge-Core, Dell Networking) or virtual switches (Open vSwitch, OVS) implementing only the OpenFlow data plane.
+
+**Hybrid switches** — devices that run OpenFlow alongside their normal L2/L3 control plane. The controller installs flows for specific exceptional traffic while the device handles the rest with its built-in routing.
+
+### Control plane
+
+*The SDN control plane is the centralised (logically) software component that maintains a global view of network state, runs network applications, and translates application-level decisions into device-level forwarding rules through southbound protocols.*
+
+The controller maintains several core data structures:
+
+- **Topology view** — switches, links, ports, hosts. Built by discovery protocols (LLDP, link-state from switches).
+- **Device inventory** — capabilities of each switch (table sizes, supported match fields, supported actions).
+- **Flow state** — current flow entries on each switch and their statistics.
+- **Host tracking** — where each end-host is attached (which switch, which port).
+
+The controller hosts applications. Each application (a routing computation, a traffic-engineering optimiser, a firewall policy enforcer, a monitor) sits on top of the controller's data model and instructs the controller to push particular flow entries to particular switches.
+
+**Survivability.** A single controller is a single point of failure. Production deployments cluster controllers using a coordination service (often Zookeeper, etcd, or RAFT-based clustering) so multiple controller nodes share the same state. Each switch is configured with multiple controller addresses and follows the OpenFlow master/slave model — one controller acts as master at a time, others as standbys.
+
+### Application plane
+
+*The SDN application plane is the layer where network applications run on top of the controller, using its northbound API to read the current network state and to express the forwarding behaviour they want the controller to realise.*
+
+Examples of SDN applications:
+
+- **Routing applications** — shortest-path, equal-cost multipath, traffic-engineered path computation.
+- **Service chaining** — push specific flows through a sequence of network functions.
+- **Load balancing** — distribute incoming connections across a server pool by programming the switch fabric.
+- **DDoS mitigation** — detect anomalous flows and install drop entries at the network edge.
+- **Network monitoring** — sample flows, collect statistics, detect anomalies.
+- **Policy enforcement** — translate business policy (who may talk to whom) into flow entries.
+
+### Southbound interface (southbound API)
+
+The protocol the controller uses to talk to switches. OpenFlow is the canonical one, but several others are deployed:
+
+- **OpenFlow** — the original SDN southbound protocol. Section 4.3 covers it in detail.
+- **NETCONF / YANG** — for configuration management. NETCONF is the transport, YANG is the data model language. Used widely on traditional and modern devices.
+- **gNMI (gRPC Network Management Interface)** — Google's modern alternative to NETCONF, using gRPC and protobufs. Increasingly common in hyperscale and ISP environments.
+- **OF-Config** — for switch configuration (port settings, controller addresses) where OpenFlow itself handles only flows.
+- **P4Runtime** — for programmable data planes written in P4 (Section 4.7).
+- **OpFlex / OpenDaylight Lithium APIs** — vendor-specific southbound variants.
+- **BGP and IS-IS as southbound** — in SDN-WAN deployments, the controller speaks BGP to traditional devices to inject the routes the controller has computed.
+
+### Northbound interface (northbound API)
+
+The protocol that network applications use to talk to the controller. Most controllers expose **REST APIs** for simple operations and **gRPC** or message-bus interfaces for high-throughput interactions. There is no single standardised northbound API — each controller's API is its own, which has historically limited application portability across controllers.
+
+### East-West interface
+
+Used between controllers — either between peer controllers in different administrative domains, or between nodes of a single clustered controller. Mechanisms include:
+
+- **Custom protocols** (each controller cluster has its own intra-cluster sync).
+- **BGP** between SDN controllers and traditional network domains.
+- **SDN-IP integration** for joining SDN domains with the conventional Internet.
+
+## 4.3 SDN Protocol Standards — OpenFlow
+
+*OpenFlow is the SDN southbound protocol, originally specified by Stanford in 2008 and now maintained by the Open Networking Foundation, that defines the message exchange between a controller and a switch — letting the controller install, modify, and remove flow entries in the switch's match-action tables, query state, and receive event notifications.*
+
+### The OpenFlow versions
+
+OpenFlow has evolved through several versions:
+
+| Version | Year | Major additions |
+|---|---|---|
+| 1.0 | 2009 | Single flow table, 12-tuple match, basic actions |
+| 1.1 | 2011 | Multiple tables, group tables, MPLS, VLAN tagging |
+| 1.2 | 2011 | OXM (OpenFlow Extensible Match), IPv6 support |
+| 1.3 | 2012 | Meters (rate limiting), IPv6 extension headers, per-table miss control |
+| 1.4 | 2013 | Bundle messages, eviction, more group types |
+| 1.5 | 2015 | Egress tables, packet-type-aware pipeline, scheduled bundles |
+
+OpenFlow 1.3 is the de facto industry baseline; most production deployments use 1.3 or 1.5. OpenFlow 1.0 is sometimes still seen in teaching environments because of its simplicity.
+
+### The OpenFlow channel
+
+The controller and the switch communicate over a TLS-protected TCP connection on port **6653** (the IANA-assigned port; older deployments used 6633 and may still). Messages over this channel fall into three categories:
+
+**Controller-to-switch.** The controller drives the switch. Key messages:
+
+- `FEATURES_REQUEST / FEATURES_REPLY` — the controller asks what the switch supports.
+- `CONFIG_REQUEST / CONFIG_SET` — configuration of the switch's global state.
+- `FLOW_MOD` — add, modify, or delete flow entries.
+- `GROUP_MOD` — manage group table entries (for multicast, equal-cost paths, fast failover).
+- `METER_MOD` — manage meters for rate limiting.
+- `PACKET_OUT` — the controller sends a packet for the switch to forward.
+- `STATS_REQUEST / STATS_REPLY` — request flow, port, queue, or table statistics.
+- `BARRIER_REQUEST / BARRIER_REPLY` — synchronisation between dependent operations.
+
+**Asynchronous from switch to controller.**
+
+- `PACKET_IN` — a packet that did not match any flow entry (or that matched an entry whose action is "send to controller"). The switch encapsulates the packet and ships it up. The controller can then install a flow entry and tell the switch to forward similar packets in future.
+- `FLOW_REMOVED` — a flow entry has been removed (by timeout or controller request).
+- `PORT_STATUS` — a port has gone up or down or changed configuration.
+- `ERROR` — something went wrong.
+
+**Symmetric (either side initiates).**
+
+- `HELLO` — initial handshake to agree on protocol version.
+- `ECHO_REQUEST / ECHO_REPLY` — keepalive.
+- `EXPERIMENTER` — vendor-specific extensions.
+
+### The OpenFlow flow table
+
+A switch supporting OpenFlow 1.3+ has a pipeline of one or more flow tables, numbered from 0. Packets enter at table 0 and either match an entry, are sent to the controller, are dropped, or are forwarded to a later table by a `goto_table` instruction.
+
+Each flow entry has:
+
+- **Match.** OXM-encoded match fields. A match can be exact (specific value) or wildcarded (don't care), and supports masked matches on most fields (e.g., match an entire IPv4 subnet by specifying the prefix and mask).
+- **Priority.** 16-bit. Higher priority wins among multiple matching entries.
+- **Counters.** Packets and bytes hit; duration.
+- **Instructions.** Actions to apply immediately, an action set to accumulate across tables, metadata to write, meter to apply, and an optional `goto_table` to forward to a later table.
+- **Timeouts.** Idle (remove if no traffic hits for N seconds) and hard (remove after N seconds regardless).
+- **Cookie.** Opaque controller-set ID for grouping related flows.
+- **Flags.** Send a FLOW_REMOVED when removed, check overlap, reset counters, no-packet-counts (counters off), no-byte-counts.
+
+### A worked OpenFlow example
+
+A small SDN network: two hosts H1 (`10.0.0.1`) and H2 (`10.0.0.2`) connected to switch S1, controlled by controller C. The desired behaviour: H1 can ping H2 and vice versa.
+
+1. **Switch boots.** S1 connects to C over TCP/6653, exchanges HELLO, completes FEATURES handshake.
+2. **C installs a default rule.** C sends FLOW_MOD installing a low-priority "send to controller" rule in table 0 — anything that doesn't match a more specific rule goes to C.
+3. **H1 sends ARP for H2.** S1 receives the ARP packet. No matching flow except the default. Switch sends PACKET_IN to C.
+4. **C learns H1's location.** C records: H1 is on port 1 of S1. C also sees the ARP target is H2.
+5. **C floods the ARP.** C sends PACKET_OUT to S1 with action OUTPUT=ALL_EXCEPT_INPUT_PORT.
+6. **H2 receives the ARP and replies.** H2's reply arrives at S1, generates a PACKET_IN at C.
+7. **C now knows both hosts.** C installs two flow entries:
+   - In S1: match `eth_src=H1.mac, eth_dst=H2.mac`, action `output=port2`.
+   - In S1: match `eth_src=H2.mac, eth_dst=H1.mac`, action `output=port1`.
+8. **Future packets bypass C.** H1 → H2 traffic now matches the first entry directly in the switch's hardware path and is forwarded at line rate. No more PACKET_IN messages for this conversation.
+
+This minimal example is what every introductory Mininet tutorial does. Real controllers do not work flow-by-flow on every new connection — that would not scale. They install proactive rules covering entire subnets and rely on PACKET_IN only for exceptional flows.
+
+### OpenFlow limitations and the rise of P4
+
+OpenFlow had a fundamental design limit: the protocol pre-defines the set of match fields. If you wanted to match on a header field OpenFlow did not know about — a new IPv6 extension header, a custom MPLS variant, an emerging protocol — you had to wait for the next OpenFlow version. The pipeline itself was also fixed: every implementation parsed packets the same way.
+
+The response was **P4** (Section 4.7), a language that lets the operator describe how the switch should parse and process packets, rather than configuring fields the switch already knows. P4 is the direction the industry has moved; OpenFlow remains widely deployed but new programmable-pipeline work happens in P4.
+
+## 4.4 SDN APIs — Northbound, Southbound, Eastbound, Westbound
+
+The four "directions" name the four interfaces of an SDN controller. The names follow a convention: the controller is in the middle; applications sit above it (north); switches sit below (south); peer controllers sit on either side (east, west).
+
+### Southbound API
+
+*The Southbound API is the interface between the SDN controller and the network devices it controls, carrying flow entries, configuration, and state-collection commands down to the data plane and event notifications back up.*
+
+Southbound is the most heavily standardised interface because it must work across multivendor hardware. OpenFlow is the canonical example, but modern controllers speak many protocols on the southbound:
+
+- **OpenFlow** — for explicit flow programming on OpenFlow-capable hardware and virtual switches.
+- **NETCONF/YANG** — for traditional CLI-replaced configuration on Cisco, Juniper, Arista, and similar devices that expose YANG models.
+- **gNMI/gNOI** — Google's modern alternative for streaming telemetry and configuration over gRPC.
+- **P4Runtime** — for controlling P4-programmable switches.
+- **OVSDB** — for managing Open vSwitch instances.
+- **OpFlex** — Cisco-specific policy-distribution protocol, used by ACI.
+- **BGP and IS-IS** — used by SDN-WAN controllers to inject computed routes into traditional routing domains.
+- **SNMP** — legacy, monitoring-mainly, still used for collecting counters from older devices.
+- **NETCONF over SSH** — common for vendor devices that support YANG models but not OpenFlow.
+
+A capable controller (OpenDaylight, ONOS) supports multiple southbound protocols simultaneously, so the operator can mix programmable bare-metal switches with traditional vendor routers in a single fabric.
+
+### Northbound API
+
+*The Northbound API is the interface between the SDN controller and the network applications running on top of it, exposing the controller's data model and policy primitives in a form applications can read and write.*
+
+Unlike southbound, the northbound is not standardised. Each major controller exposes its own API surface, typically:
+
+- **REST/HTTP+JSON** — for simple integration with applications, scripts, and web dashboards. Easy to use, slow per-call.
+- **gRPC** — for high-throughput streaming and remote-procedure-call patterns.
+- **Java/Python SDKs** — direct in-process interfaces for applications loaded into the controller itself.
+- **Message-bus integration** — Kafka, RabbitMQ, NATS for event-driven applications.
+
+The IETF and ONF have made attempts at standard northbound APIs (NEMO, Boulder, Intent-based NBI) but none has achieved cross-controller adoption. The pragmatic position is that applications target a specific controller's native API.
+
+### Eastbound and Westbound API
+
+*Eastbound and Westbound APIs are the interfaces between SDN controllers — between nodes of a clustered controller (intra-cluster), between controllers in different administrative domains (inter-domain), or between an SDN controller and a non-SDN routing domain.*
+
+The name asymmetry (east vs west) is administrative convention; the protocol does not care. Typical uses:
+
+- **Cluster synchronisation.** A clustered controller (ONOS, OpenDaylight) keeps consistent state across multiple physical controller nodes using a distributed datastore — etcd, Atomix, or raft-based consensus. This is the east-west traffic that keeps the cluster coherent.
+- **Inter-domain peering.** Two SDN domains, possibly belonging to different operators, exchange reachability and policy information. BGP-LS is one mechanism. Custom controller-to-controller protocols are another.
+- **SDN-to-traditional integration.** An SDN domain peers with a traditional network running OSPF, IS-IS, or BGP. The controller speaks the traditional protocol to inject and receive routes.
+
+## 4.5 Data plane, control plane, and SDN controllers (NOX, POX, Beacon, FloodLight, and beyond)
+
+### Data and control planes recap
+
+The data plane is the part of the network that handles individual packets — receiving, looking up the forwarding decision, applying actions, and emitting. In a traditional router, the data plane is silicon (ASIC, NPU) implementing fixed forwarding logic, configured by entries the local control plane has installed. In an SDN switch, the data plane is the same silicon, but its forwarding tables are populated by the controller through OpenFlow or P4Runtime, not by a local routing protocol.
+
+The control plane is the part that decides what the data plane should do. In a traditional router, the control plane runs locally — BGP, OSPF, IS-IS, ARP, ND, all on the device's CPU. In SDN, the control plane is centralised on the controller.
+
+The performance asymmetry matters: the data plane processes every packet, often at hundreds of gigabits per second per port; the control plane processes only events (new flows, topology changes), at much lower rates but with more complex logic.
+
+### The SDN controller landscape
+
+Controllers have evolved through generations. Early controllers (2008–2012) were research artefacts built to demonstrate the SDN concept. Mid-period controllers (2012–2016) were production-quality single-controller deployments. The current generation (2016–present) is built for hyperscale clustering with high availability.
+
+**NOX (and POX).** *NOX is the original OpenFlow controller, developed at Nicira and Stanford, written in C++ with a Python event-handling shim, that served as the reference implementation during OpenFlow's early years.* POX is the pure-Python sibling. Both are now used almost exclusively for teaching — POX is the controller of choice in introductory SDN courses and labs because it is small, easy to read, and runs natively on the same machine as Mininet for student work. Production deployments do not use POX or NOX.
+
+**Beacon.** A Java-based controller from David Erickson at Stanford (2010–2013). Better performance than NOX, with a clean modular design. Spawned Floodlight as its commercial-friendly fork.
+
+**Floodlight.** *Floodlight is an Apache-licensed open-source Java-based OpenFlow controller, originally forked from Beacon and now maintained by Big Switch Networks and the broader community, designed for enterprise and academic use.* Floodlight became the most popular SDN controller for teaching and small-to-medium production deployments through the early 2010s. Its REST API and modular Java architecture made it easy to extend. As of the late 2020s Floodlight's community has slowed but the controller is still functional for OpenFlow networks.
+
+**Ryu.** A Python-based controller from NTT Labs. Easier to learn than Java-based options, with extensive protocol support beyond OpenFlow (BGP, NETCONF, OF-Config). Popular for research and prototyping.
+
+**OpenDaylight (ODL).** A Linux Foundation project launched in 2013 with major vendor backing (Cisco, IBM, Red Hat, Brocade, others). Java-based, supports many southbound protocols, designed for service-provider scale. Widely deployed in telecom NFV and in some enterprise SDN. ODL has had multiple releases (Helium, Lithium, Beryllium, ..., Sulfur, Phosphorus, Chlorine, Argon, Potassium) — naming after chemical elements alphabetically.
+
+**ONOS (Open Network Operating System).** *ONOS is a Linux Foundation open-source SDN operating system, originally developed at ON.Lab and now under LF Networking, designed for service-provider and ISP-scale deployments with built-in clustering, high availability, and a strong focus on white-box switching and disaggregation.* ONOS is the platform behind the Open Compute Project's networking work, behind the disaggregated cell-site gateway used in many 5G deployments, and behind the optical-IP integration work in major operators. It is the closest thing to a reference SDN controller for the telecom industry.
+
+**Faucet and Allied Telesis SDN Controller.** Smaller, focused controllers — Faucet from Brad Cowie's group in New Zealand targets simple Layer-2 SDN deployments. Allied Telesis SDN Controller targets campus networks.
+
+**Commercial controllers.** Cisco's APIC and DNA Center, Juniper Contrail, VMware NSX, Arista CloudVision, Big Switch (acquired by Arista) Big Cloud Fabric. These are vendor-specific, generally with proprietary southbound interfaces or extensions, and are the controllers actually deployed in many enterprises and service-provider networks. The open-source controllers (ONOS, ODL) dominate research and disaggregated networking; vendor controllers dominate mainstream enterprise.
+
+### Controller architecture — what's inside
+
+A typical modern SDN controller has these layers:
+
+```
++--------------------------------------------------+
+| Applications (loaded as bundles or external)    |
++--------------------------------------------------+
+| Northbound API (REST, gRPC)                      |
++--------------------------------------------------+
+| Core services                                    |
+|  - Topology service                              |
+|  - Host tracking                                 |
+|  - Flow programming abstraction                  |
+|  - Statistics collection                         |
+|  - Group/meter management                        |
+|  - Path computation                              |
++--------------------------------------------------+
+| Distributed store (Atomix, etcd, Raft)           |
++--------------------------------------------------+
+| Southbound protocol drivers                      |
+|  (OpenFlow, NETCONF, P4Runtime, gNMI, ...)       |
++--------------------------------------------------+
+```
+
+Performance points to watch:
+
+- **Flow setup rate.** How many new flows per second can the controller install? Modern controllers handle 10⁵–10⁶ flows/sec per node.
+- **Topology change reaction time.** Sub-second is the target for production deployments.
+- **Cluster sync latency.** Cluster members agreeing on shared state quickly enough for failovers to be safe.
+
+### Mininet — the SDN learning platform
+
+*Mininet is a network emulator that runs a network of virtual switches and hosts inside a single Linux machine using lightweight virtualisation (network namespaces and process isolation), letting a developer prototype and test SDN designs without physical hardware.*
+
+Mininet became the universal teaching tool because:
+
+- It is free and runs on a laptop.
+- A topology of dozens of switches and hosts can be created with a single Python script.
+- It interoperates with any OpenFlow-capable controller.
+- It supports automated testing via the Python API.
+
+A canonical Mininet teaching exercise: create a linear topology of three switches and three hosts, attach a Ryu or POX controller, and write the controller code that lets H1 reach H3 through the chain. The same exercise runs in 30 minutes on a laptop; in physical hardware it would take a lab full of switches and weeks of setup.
+
+For wireless and 5G work, **Mininet-WiFi** extends Mininet with simulated radio interfaces, mobility models, and access points — used for 5G research labs and for the IoT-related lab work in this subject.
+
+## 4.6 SDN in the Telecom/ISP domain
+
+Telecom operators were among the largest backers of SDN, for reasons different from data-centre operators. Their motivations:
+
+**CapEx reduction.** Replacing expensive vendor middleboxes with virtual functions on commodity servers (NFV, see Section 4.8) and using disaggregated white-box hardware for transport.
+
+**Service agility.** Provisioning a new enterprise customer's VPN, a new mobile-edge slice, a new content-distribution arrangement — operators wanted these to happen in minutes, not weeks.
+
+**Network slicing for 5G.** 5G's design requires multiple logically isolated networks running on a shared physical infrastructure, each tuned to a different service class. Network slicing rests on SDN-controlled transport.
+
+### Specific telecom SDN deployments
+
+**Google B4.** Inter-data-centre WAN. Two-tier SDN architecture: site controllers manage local switches, a global SDN controller computes paths across the whole WAN. Production since 2012. Carries Google's bulk inter-data-centre traffic at 70-90%+ link utilisation (compared to 30-40% in classical IP/MPLS networks).
+
+**Microsoft SWAN.** Similar to B4, used for Microsoft's inter-data-centre traffic engineering.
+
+**AT&T Domain 2.0.** AT&T's strategic plan to transform 75% of its network into a software-defined, virtualised infrastructure by 2020. Drove the creation of ONAP (Open Network Automation Platform), now under the Linux Foundation.
+
+**Deutsche Telekom Pan-Net.** A European programmable transport network built on disaggregated SDN.
+
+**Open Networking Foundation's CORD (Central Office Re-architected as a Datacenter).** Reimagines the traditional telecom central office as a small data centre running disaggregated hardware controlled by ONOS. The cellular variant, M-CORD, became part of the 5G operator playbook.
+
+### Telecom-specific challenges
+
+Telecom networks bring scale and reliability constraints data centres do not have:
+
+- **Five-nines availability** is the baseline expectation for residential and business voice service. Controllers must fail over within milliseconds, not seconds.
+- **Geographic distribution.** A telecom network spans thousands of kilometres; controllers must operate over WAN latencies.
+- **Regulatory compliance.** Lawful intercept, emergency services, voice service for the regulator's quality-of-service requirements. These map onto SDN architectures awkwardly.
+- **Legacy interoperation.** No operator can replace its entire network at once. SDN domains must coexist with traditional IP/MPLS for years.
+
+### The Nepal angle
+
+Nepal's telecom operators have followed the SDN curve at a smaller scale. Nepal Telecom and Ncell both run programmable transport in their core networks. NTC's metro-Ethernet aggregation and the FTTH access network use SDN-managed Optical Transport Network (OTN) and packet transport elements. The mobile packet core for both operators uses NFV-style virtualised gateways from Huawei, Ericsson, or Nokia, with the operators' own orchestration layer on top. None of this is publicly advertised as "SDN" but the underlying control architecture is SDN-style.
+
+NPIX itself, the Nepal Internet Exchange, has been exploring SDN-controlled exchange-fabric models — common at large IXPs (AMS-IX, LINX) and now spreading to smaller exchanges. An SDN-controlled IXP fabric lets new peering relationships be enabled with a controller API call rather than a manual configuration change.
+
+## 4.7 SDN programming — P4 and Frenetic
+
+### P4
+
+*P4 (Programming Protocol-independent Packet Processors) is a domain-specific language, currently at version P4_16, that lets a developer describe how a programmable network device should parse incoming packets, perform match-action processing through a pipeline of tables, and emit outgoing packets — making the device's behaviour fully software-defined rather than fixed by silicon.*
+
+P4 emerged from a 2014 SIGCOMM paper by Pat Bosshart and colleagues (Barefoot Networks, Stanford, Princeton, Google). It addresses what OpenFlow could not: programmability of the data plane itself, not just its forwarding table.
+
+A P4 program defines four pieces:
+
+1. **Parser** — a state machine that reads incoming packets and extracts headers into named fields.
+2. **Match-Action Pipeline** — a sequence of tables, each performing lookups on extracted fields and applying actions.
+3. **Deparser** — assembles the modified headers back into an outgoing packet.
+4. **Controls** — orchestration logic between the pipeline elements.
+
+A simple P4 program that implements basic IPv4 forwarding looks like (sketch, not full syntax):
+
+```p4
+header ethernet_t { bit<48> dst; bit<48> src; bit<16> type; }
+header ipv4_t     { /* IPv4 fields */ bit<32> dstAddr; ... }
+
+parser MyParser(packet_in pkt, out headers hdr) {
+    state start { pkt.extract(hdr.ethernet); transition select(hdr.ethernet.type) {
+        0x0800: parse_ipv4;
+        default: accept;
+    }}
+    state parse_ipv4 { pkt.extract(hdr.ipv4); transition accept; }
+}
+
+control MyIngress(inout headers hdr, ...) {
+    action forward(bit<9> port) { standard_metadata.egress_port = port; }
+    action drop() { mark_to_drop(); }
+
+    table ipv4_lpm {
+        key   = { hdr.ipv4.dstAddr: lpm; }
+        actions = { forward; drop; }
+        default_action = drop();
+    }
+
+    apply { ipv4_lpm.apply(); }
+}
+```
+
+The controller populates `ipv4_lpm` at runtime through **P4Runtime** (a gRPC-based southbound API), telling the table "for the prefix 10.0.0.0/24, forward to port 3."
+
+P4's importance:
+
+- **Hardware portability.** A P4 program compiled for Barefoot Tofino runs on Tofino silicon at terabit speeds; the same program compiled for a Mellanox or NVIDIA SmartNIC runs on that silicon. The operator no longer waits for ASIC vendors to add features.
+- **New protocols.** A new header (a new tunnel encapsulation, a new in-band telemetry format) can be deployed in days rather than waiting for OpenFlow to be updated.
+- **In-band telemetry.** P4 enabled INT (In-band Network Telemetry), where switches add per-hop measurement data into packet headers as they traverse the network, giving operators per-flow visibility impossible with classical SNMP polling.
+
+P4's challenges include the limited number of P4-target hardware platforms (Intel/Barefoot Tofino was the leading silicon, with its future uncertain after Intel's networking strategy shifts in 2024–25) and the operational complexity of debugging programmable pipelines.
+
+### Frenetic
+
+*Frenetic is a family of high-level network programming languages from Cornell and Princeton — including Frenetic itself, NetKAT, Pyretic, and FlowLog — that let an operator express network behaviour as compositions of policies, with a compiler that produces the corresponding OpenFlow flow entries.*
+
+Where P4 lets the operator program what a switch does to a packet, Frenetic lets the operator program what the network as a whole should do, at a logical level, and leaves the compiler to figure out how to realise it across many switches.
+
+A Frenetic-style policy might read: "All HTTP traffic must pass through the IDS, then the load balancer, then to the web server pool. All non-HTTP traffic from outside is dropped at the perimeter. Internal SSH is allowed to administrators only." Each piece is a small policy; they compose with operators like `||` (parallel composition: do both), `>>` (sequential composition: do first then second), and filters. The compiler verifies the policies are well-formed and emits flow entries that realise them.
+
+Frenetic and its descendants are mostly research languages — they have not seen wide industrial deployment — but their ideas influenced commercial intent-based networking (Section 6.5) and the policy frameworks in OpenDaylight, ONOS, and ACI.
+
+## 4.8 Network Function Virtualization — concepts and principles
+
+*NFV (Network Function Virtualization) is the architectural approach of implementing network functions — firewalls, load balancers, deep packet inspection, mobile-core gateways, broadband network gateways, session border controllers — as software running on standard server hardware in virtual machines or containers, rather than as dedicated proprietary appliances.*
+
+### Origin
+
+NFV was launched as a concept in an October 2012 white paper at the SDN and OpenFlow World Congress, authored by seven large telecom operators (AT&T, BT, Deutsche Telekom, Orange, Telecom Italia, Telefónica, Verizon). The operators were paying premium prices for hardware appliances from a handful of vendors, with long lead times for new features and slow innovation. The white paper proposed that network functions could run as software on COTS (commercial off-the-shelf) servers, like cloud workloads, and that the operator could buy hardware and software separately.
+
+ETSI (European Telecommunications Standards Institute) then formed an NFV Industry Specification Group (NFV ISG) which became the main standards body for NFV architecture. ETSI NFV releases (Phase 1 in 2014, Phase 2 in 2017, Phase 3 onwards) defined the architecture framework that most NFV deployments still follow.
+
+### The NFV architecture
+
+The ETSI NFV reference architecture has three main domains:
+
+```
++---------------------------------------------------------------+
+|  OSS/BSS (operator's existing systems)                        |
++---------------------------------------------------------------+
+                              |
++---------------------------------------------------------------+
+|  NFV-MANO (Management and Orchestration)                      |
+|    - NFV Orchestrator (NFVO)                                  |
+|    - VNF Manager (VNFM)                                       |
+|    - Virtualised Infrastructure Manager (VIM)                 |
++---------------------------------------------------------------+
+                              |
++---------------------------------------------------------------+
+|  VNFs (Virtualised Network Functions, running as VMs or       |
+|        containers)                                            |
+|    - Virtual Firewall, Virtual Router, Virtual BNG,           |
+|      Virtual 5G Core elements, Virtual Load Balancer, ...     |
++---------------------------------------------------------------+
+                              |
++---------------------------------------------------------------+
+|  NFVI (NFV Infrastructure)                                    |
+|    - Compute (servers)                                        |
+|    - Storage                                                  |
+|    - Network (including SDN-controlled switches)              |
+|    - Virtualisation layer (KVM, VMware ESXi, OpenStack,       |
+|      Kubernetes)                                              |
++---------------------------------------------------------------+
+```
+
+**NFVI (NFV Infrastructure).** The hardware and virtualisation. Servers, storage arrays, switches, plus the hypervisor or container runtime that turns them into virtual resources. OpenStack and increasingly Kubernetes are the typical platforms.
+
+**VNFs (Virtual Network Functions).** Software implementations of network functions. A vBNG (virtual Broadband Network Gateway) replaces a hardware BNG that aggregates DSL or FTTH subscribers. A vEPC (virtual Evolved Packet Core) replaces the 4G mobile core gateways. A vRAN (virtual Radio Access Network) replaces the base-station baseband processing.
+
+**MANO (Management and Orchestration).** The control plane for VNF lifecycle. Three sub-components:
+- **NFVO (NFV Orchestrator)** — manages network services that span multiple VNFs.
+- **VNFM (VNF Manager)** — manages individual VNF instances (instantiate, scale, terminate).
+- **VIM (Virtualised Infrastructure Manager)** — manages the underlying NFVI; OpenStack is the most common VIM.
+
+### NFV vs SDN
+
+The two are complementary but distinct:
+
+| | SDN | NFV |
+|---|---|---|
+| Focuses on | The forwarding plane | The function (firewall, router, etc.) |
+| Centralises | Control | Implementation (hardware → software) |
+| Key protocol | OpenFlow, P4Runtime | Not a single protocol — orchestration via TOSCA, YANG models |
+| Primary benefit | Programmability of paths | Cost reduction, agility for functions |
+
+A modern telecom infrastructure uses both. SDN provides the programmable transport. NFV provides the functions (firewall, mobile-core, BRAS). The orchestration layer ties them together — when MANO instantiates a new VNF, it talks to the SDN controller to set up the connectivity that VNF needs.
+
+### Cloud-native network functions
+
+By the mid-2020s, the industry has moved beyond VM-based VNFs to **CNFs (Cloud-Native Network Functions)** — network functions running as Kubernetes-orchestrated containers, designed with microservice architectures, horizontal scaling, and rolling upgrades. The 5G Core network functions (AMF, SMF, UPF, etc.) are typically deployed as CNFs in 3GPP-compliant operators. The shift mirrors what happened in general cloud — from VMs to containers to serverless.
+
+## 4.9 NFV orchestration and management
+
+The orchestration and management layer (MANO) is what turns a pile of VNFs into a working network service.
+
+### Lifecycle of a VNF
+
+A VNF has a lifecycle the orchestrator must manage:
+
+1. **Onboarding.** The vendor delivers the VNF package — a software image plus a descriptor file (VNFD) that tells the orchestrator what resources the VNF needs, how its components interconnect, what scaling policies apply.
+2. **Instantiation.** The VNFM, working with the VIM, allocates compute, storage, and network resources and starts the VNF.
+3. **Configuration.** The VNF is configured with operator-specific settings — IPs, peers, certificates, policies.
+4. **Day-2 operations.** Monitoring, performance tuning, troubleshooting, healing.
+5. **Scaling.** Horizontal scaling (add more VNF instances) or vertical scaling (give existing instance more resources) based on load.
+6. **Upgrade.** Rolling upgrade to a new version without service downtime.
+7. **Termination.** Tear down the VNF and reclaim its resources.
+
+### Network service orchestration
+
+A **network service** in NFV terminology is a chain of VNFs delivering a customer-visible service. The NFVO instantiates the chain by:
+
+1. Reading the **NSD (Network Service Descriptor)** that defines which VNFs are involved and how they connect.
+2. Instructing the VNFM(s) to instantiate each VNF.
+3. Instructing the VIM and the SDN controller to set up the inter-VNF connectivity.
+4. Verifying the chain is operational and reporting back to the OSS.
+
+### Open-source MANO implementations
+
+Several open-source MANO projects exist:
+
+- **ONAP (Open Network Automation Platform)** — Linux Foundation, originally seeded by AT&T's ECOMP code. The most feature-rich open MANO, also the most complex to deploy.
+- **OSM (Open Source MANO)** — ETSI-hosted, more lightweight than ONAP, focused on the standard ETSI architecture.
+- **Cloudify** — open-source TOSCA-based orchestrator with both NFV and cloud workloads.
+- **Tacker** — OpenStack's NFV orchestration project.
+
+All face the same challenge — telecom standardisation is slow, vendor packaging varies, and onboarding a real VNF into any open MANO is still substantial integration work. Vendor MANO products (Ericsson, Nokia, Cisco) dominate actual operator deployments.
+
+## 4.10 Future smart networking with SDN and IPv6
+
+The combination of SDN and IPv6 underpins several specific future-network directions.
+
+**Segment Routing over IPv6 (SRv6).** SRv6 (RFC 8754, 8986) uses the IPv6 routing header to carry a sequence of segments the packet must visit. Each segment is itself an IPv6 address that identifies either a network node or an action to be performed. The source determines the path; the network just forwards according to the segment list. SRv6 is the simplest, most powerful expression of the SDN+IPv6 combination — full source routing, programmable per-flow paths, no per-flow state in the core, just IPv6 forwarding. Major operators (Sprint, Bell Canada, China Telecom, Orange, Microsoft) have deployed SRv6 in production. SRv6 is increasingly the answer to "what comes after MPLS."
+
+**5G transport.** The transport network underneath 5G — backhaul from cell sites, fronthaul between radio units and baseband units, midhaul, the connections between core network functions — runs on SDN-controlled IPv6 fabric. Network slices (Chapter 5) require per-slice isolation in the transport, realised through SRv6 segments or through SDN-controlled VPN overlays.
+
+**Data centre interconnect with IPv6.** Hyperscale data centres are IPv6-native internally and connect to other data centres over IPv6 SRv6 paths controlled by SDN. The fabric inside (BGP-EVPN over VXLAN over IPv6) and the fabric between (SRv6 over IPv6) are uniform.
+
+**Programmable mobile edge.** Edge data centres at the base of cell towers run NFV workloads serving low-latency applications. SDN controllers steer traffic to the right edge based on application, customer slice, and current load.
+
+**Network programmability as a service.** Operators expose APIs to enterprise customers that let the customer programmatically request bandwidth, latency, or path properties for specific traffic. This was a stretch goal for SDN in 2014 and is starting to be a real product in 2025–26 ("Network APIs," "CAMARA" project under Linux Foundation).
+
+## 4.11 Research trends in SDN, NFV, and IPv6
+
+Several themes dominate the current research literature in these areas:
+
+**Verification of programmable networks.** With P4 and SDN, network behaviour is software, and software has bugs. Formal verification tools (HSA, NetKAT, Veriflow, Batfish) check that a network's configuration realises the operator's intent. Active research in compositional verification (proving properties of a large network by combining proofs about its parts).
+
+**Machine learning in networking.** Reinforcement-learning agents that learn routing or traffic-engineering policies from observation. Anomaly detection in network telemetry using deep learning. Pattern recognition in encrypted-traffic classification (which application is generating this encrypted flow, even though we can't read its contents). The challenge is producing models that generalise across networks and that operators can trust.
+
+**In-network computation.** Programmable switches can perform computation in the data plane — aggregation of telemetry, caching of frequent lookups, machine-learning inference on packet headers, even consensus protocols implemented at line rate. The line between switch and server blurs.
+
+**Disaggregated optical networks.** The same SDN ideas applied to optical transport — separating the optical hardware from the control plane, mixing optical components from different vendors under one controller. OpenROADM and Open Optical & Packet Transport are the standardisation efforts.
+
+**Cloud-native 5G core.** The current research frontier for 5G operators — how to design, deploy, and operate a 5G core as a set of cloud-native microservices, with the kind of CI/CD pipelines and observability that cloud-native applications enjoy.
+
+**SRv6 extensions.** Adding new behaviours — micro-segments (uSID) for compact segment lists, network programming primitives that combine routing with computation, traffic engineering with explicit constraints.
+
+**Post-quantum cryptography in network protocols.** Once quantum computers can break current RSA and elliptic-curve cryptography, every protocol that uses them needs new algorithms. NIST's post-quantum standardisation has finalised the first algorithms (ML-KEM/Kyber for key encapsulation, ML-DSA/Dilithium for signatures). Active work on integrating these into TLS, IPsec, IKEv2, and SSH.
+
+**IPv6 deployment and IPv6-only transition.** Research on how networks should be designed for IPv6-only operation (with NAT64 or similar at the edge for IPv4 reachability), the security properties of IPv6-only deployments, and the operational practices for legacy applications that still assume IPv4.
+
+**Network slicing and intent-based networking.** Bridging the gap between business intent and network configuration — what does a customer actually want, how does the operator's automation realise it, and how is the realisation verified? Chapter 6 returns to intent-based networking.
+
+The unifying theme is that the network is now a software platform, with all the development methods and research opportunities that "platform" implies. SDN and NFV gave the industry the architecture; the work for the next decade is in making the architecture deliver the operational and economic gains it promised.

@@ -2,5 +2,10 @@
   "label": "Cryptography & Data Security",
   "position": 2,
   "collapsed": true,
-  "link": { "type": "doc", "id": "ioe/msncs/year-1-part-1/cryptography/index" }
+  "link": {
+    "type": "generated-index",
+    "title": "Cryptography & Data Security",
+    "description": "Syllabus and chapter notes for Cryptography & Data Security.",
+    "slug": "/ioe/msncs/year-1-part-1/cryptography"
+  }
 }

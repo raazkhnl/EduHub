@@ -2,5 +2,10 @@
   "label": "Routing and Switching",
   "position": 1,
   "collapsed": true,
-  "link": { "type": "doc", "id": "ioe/msncs/year-1-part-2/elective-i/routing-and-switching/index" }
+  "link": {
+    "type": "generated-index",
+    "title": "Routing and Switching",
+    "description": "Syllabus and chapter notes for Routing and Switching.",
+    "slug": "/ioe/msncs/year-1-part-2/elective-i/routing-and-switching"
+  }
 }

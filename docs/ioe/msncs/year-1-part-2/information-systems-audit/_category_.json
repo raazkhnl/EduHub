@@ -2,5 +2,10 @@
   "label": "Information Systems Audit",
   "position": 2,
   "collapsed": true,
-  "link": { "type": "doc", "id": "ioe/msncs/year-1-part-2/information-systems-audit/index" }
+  "link": {
+    "type": "generated-index",
+    "title": "Information Systems Audit",
+    "description": "Syllabus and chapter notes for Information Systems Audit.",
+    "slug": "/ioe/msncs/year-1-part-2/information-systems-audit"
+  }
 }

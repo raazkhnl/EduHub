@@ -2,5 +2,10 @@
   "label": "Intelligent Networking",
   "position": 5,
   "collapsed": true,
-  "link": { "type": "doc", "id": "ioe/msncs/year-1-part-2/elective-i/intelligent-networking/index" }
+  "link": {
+    "type": "generated-index",
+    "title": "Intelligent Networking",
+    "description": "Syllabus and chapter notes for Intelligent Networking.",
+    "slug": "/ioe/msncs/year-1-part-2/elective-i/intelligent-networking"
+  }
 }

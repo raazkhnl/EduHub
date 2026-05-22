@@ -5,8 +5,8 @@
   "description": "EduHub — Smart study, simplified. A scholarly-minimalist portal for Nepali engineering curricula (CTEVT, IOE BE, IOE M.Sc, TU).",
   "homepage": "https://eduhub.khanalrajesh.com.np",
   "author": {
-    "name": "Rajesh Khanal",
-    "email": "raju@astha.ai",
+    "name": "RaaZ Khanal",
+    "email": "raazkhnl@gmail.com",
     "url": "https://khanalrajesh.com.np"
   },
   "license": "CC-BY-4.0",
@@ -42,7 +42,8 @@
     "react-dom": "^18.3.1",
     "rehype-katex": "^7.0.1",
     "remark-math": "^6.0.0",
-    "katex": "^0.16.11"
+    "katex": "^0.16.11",
+    "marked": "^16.4.2"
   },
   "devDependencies": {
     "@docusaurus/module-type-aliases": "^3.10.1",
