@@ -16,7 +16,7 @@ This chapter is the algorithmic heart of the subject. It covers the two families
 
 ### Perfect secrecy
 
-_Perfect secrecy is the property of a cipher, formalised by Claude Shannon in 1949, that the ciphertext gives an attacker no information whatsoever about the plaintext — formally, that for every plaintext $P$ and every ciphertext $C$, $\Pr[P \mid C] = \Pr[P]$._
+*Perfect secrecy is the property of a cipher, formalised by Claude Shannon in 1949, that the ciphertext gives an attacker no information whatsoever about the plaintext — formally, that for every plaintext $P$ and every ciphertext $C$, $\Pr[P \mid C] = \Pr[P]$.*
 
 In plain language: seeing the ciphertext does not change the attacker's belief about which plaintext was sent. An attacker who knows the ciphertext is in the same position as an attacker who knows nothing.
 
@@ -28,7 +28,7 @@ The one-time pad is the unique cipher that achieves perfect secrecy.
 
 ### The one-time pad
 
-_The one-time pad (OTP) is the cipher in which the ciphertext is produced by combining the plaintext bit-by-bit with a uniformly random key (the pad) of the same length as the plaintext using the XOR operation, with the absolute requirement that the pad be truly random, kept secret, and never reused._
+*The one-time pad (OTP) is the cipher in which the ciphertext is produced by combining the plaintext bit-by-bit with a uniformly random key (the pad) of the same length as the plaintext using the XOR operation, with the absolute requirement that the pad be truly random, kept secret, and never reused.*
 
 The construction is simple. For each bit $p_i$ of the plaintext and the corresponding bit $k_i$ of the pad, the ciphertext bit is:
 
@@ -46,7 +46,7 @@ Pad:          0 1 1 0 1 1 0
 Ciphertext:   1 1 1 0 1 1 1
 ```
 
-If the recipient also has the pad, they XOR ciphertext with pad to recover plaintext. An attacker who sees only the ciphertext `1110111` cannot know whether the plaintext was `A` (1000001), `B` (1000010), `Z` (1011010), `5` (0110101), or any of the 128 possible seven-bit values. _Every_ plaintext is equally likely, because for every candidate plaintext there is exactly one pad that would have produced the observed ciphertext.
+If the recipient also has the pad, they XOR ciphertext with pad to recover plaintext. An attacker who sees only the ciphertext `1110111` cannot know whether the plaintext was `A` (1000001), `B` (1000010), `Z` (1011010), `5` (0110101), or any of the 128 possible seven-bit values. *Every* plaintext is equally likely, because for every candidate plaintext there is exactly one pad that would have produced the observed ciphertext.
 
 ### Why the OTP works
 
@@ -94,7 +94,7 @@ Shannon's perfect secrecy remains the theoretical ideal. Every practical cipher 
 
 ## 2.2 Block ciphers
 
-_A block cipher is a deterministic, keyed symmetric cipher that takes a fixed-length block of plaintext (typically 64 or 128 bits) and a key, and produces a ciphertext block of the same length, such that the transformation is a permutation of the block space for each fixed key._
+*A block cipher is a deterministic, keyed symmetric cipher that takes a fixed-length block of plaintext (typically 64 or 128 bits) and a key, and produces a ciphertext block of the same length, such that the transformation is a permutation of the block space for each fixed key.*
 
 Block ciphers are the workhorse symmetric primitive. AES is the dominant block cipher in 2026; DES and 3DES are its predecessors. Block ciphers also serve as building blocks for hash functions, MACs, stream ciphers (in certain modes), and authenticated-encryption schemes.
 
@@ -169,7 +169,7 @@ A block cipher's key size determines the brute-force resistance:
 
 ### DES — Data Encryption Standard
 
-_DES (Data Encryption Standard) is the symmetric block cipher standardised by the US National Bureau of Standards in 1977 as FIPS PUB 46, operating on 64-bit blocks with a 56-bit key (presented as 64 bits with 8 parity bits) through 16 rounds of a Feistel network._
+*DES (Data Encryption Standard) is the symmetric block cipher standardised by the US National Bureau of Standards in 1977 as FIPS PUB 46, operating on 64-bit blocks with a 56-bit key (presented as 64 bits with 8 parity bits) through 16 rounds of a Feistel network.*
 
 DES was the first publicly specified, widely deployed cipher. It was designed by IBM (originally as Lucifer, by Horst Feistel and his team) and modified by the NSA before standardisation. The modifications — particularly the design of the S-boxes — were controversial at the time but were later vindicated when differential cryptanalysis was discovered publicly; the NSA had clearly known about the attack and tweaked the S-boxes to resist it.
 
@@ -199,7 +199,7 @@ DES is now historically interesting only. It must not be used to protect new tra
 
 ### 3DES (Triple DES)
 
-_3DES (Triple DES) is the symmetric block cipher that applies the DES algorithm three times in sequence with two or three different keys, providing an effective key length of either 112 bits (two-key 3DES) or 168 bits (three-key 3DES) while preserving DES's 64-bit block size._
+*3DES (Triple DES) is the symmetric block cipher that applies the DES algorithm three times in sequence with two or three different keys, providing an effective key length of either 112 bits (two-key 3DES) or 168 bits (three-key 3DES) while preserving DES's 64-bit block size.*
 
 3DES was the bridge between DES and AES. Once DES became too weak, instead of standardising a new cipher immediately, NIST authorised running DES three times: encrypt-decrypt-encrypt (EDE) with three keys.
 
@@ -217,7 +217,7 @@ The middle operation is decryption, not encryption. This is for backward compati
 
 ### AES — Advanced Encryption Standard
 
-_AES (Advanced Encryption Standard) is the symmetric block cipher standardised by NIST in 2001 as FIPS PUB 197, derived from the Rijndael design by Joan Daemen and Vincent Rijmen, that encrypts 128-bit blocks using a key of 128, 192, or 256 bits through a substitution-permutation network of 10, 12, or 14 rounds respectively._
+*AES (Advanced Encryption Standard) is the symmetric block cipher standardised by NIST in 2001 as FIPS PUB 197, derived from the Rijndael design by Joan Daemen and Vincent Rijmen, that encrypts 128-bit blocks using a key of 128, 192, or 256 bits through a substitution-permutation network of 10, 12, or 14 rounds respectively.*
 
 The competition that produced AES is one of the cleanest demonstrations of how good standards happen. NIST ran an open process from January 1997 to October 2000:
 
@@ -226,7 +226,7 @@ The competition that produced AES is one of the cleanest demonstrations of how g
 - For three years the world's cryptanalytic community publicly attacked each candidate, in conferences and journal papers.
 - Rijndael was selected in October 2000, standardised in November 2001.
 
-The decision was based on security, performance, and implementation flexibility. Rijndael won partly because it had excellent performance in software _and_ hardware, partly because its design was clean enough that side-channel analysis was tractable.
+The decision was based on security, performance, and implementation flexibility. Rijndael won partly because it had excellent performance in software *and* hardware, partly because its design was clean enough that side-channel analysis was tractable.
 
 **AES structure.** AES is a substitution-permutation network. The 128-bit block is treated as a 4×4 matrix of bytes called the **state**. Each round applies four operations:
 
@@ -260,16 +260,16 @@ The final round skips MixColumns. (Skipping it makes the decryption circuit symm
 
 ### Quick comparison
 
-|                | DES                     | 3DES           | AES                          |
-| -------------- | ----------------------- | -------------- | ---------------------------- |
-| Year           | 1977                    | 1998           | 2001                         |
-| Block size     | 64 bits                 | 64 bits        | 128 bits                     |
-| Key size       | 56 bits                 | 112/168 bits   | 128/192/256 bits             |
-| Structure      | Feistel                 | Triple Feistel | SPN                          |
-| Rounds         | 16                      | 48 (16 × 3)    | 10/12/14                     |
-| Software speed | Slow                    | Very slow      | Fast (with AES-NI very fast) |
-| Hardware speed | Fast in custom hardware | Slow           | Fast                         |
-| Status         | Broken                  | Deprecated     | Current standard             |
+| | DES | 3DES | AES |
+|---|---|---|---|
+| Year | 1977 | 1998 | 2001 |
+| Block size | 64 bits | 64 bits | 128 bits |
+| Key size | 56 bits | 112/168 bits | 128/192/256 bits |
+| Structure | Feistel | Triple Feistel | SPN |
+| Rounds | 16 | 48 (16 × 3) | 10/12/14 |
+| Software speed | Slow | Very slow | Fast (with AES-NI very fast) |
+| Hardware speed | Fast in custom hardware | Slow | Fast |
+| Status | Broken | Deprecated | Current standard |
 
 ### A worked AES round (high-level)
 
@@ -328,7 +328,7 @@ A block cipher only encrypts one block at a time. Most plaintexts are longer tha
 
 ### ECB — Electronic Codebook (do not use)
 
-_ECB (Electronic Codebook) is the simplest block cipher mode, in which each plaintext block is encrypted independently with the same key, producing one ciphertext block per plaintext block with no chaining between blocks._
+*ECB (Electronic Codebook) is the simplest block cipher mode, in which each plaintext block is encrypted independently with the same key, producing one ciphertext block per plaintext block with no chaining between blocks.*
 
 $$
 C_i = E_K(P_i)
@@ -346,7 +346,7 @@ ECB has exactly one legitimate use: encrypting a single block of random data (li
 
 ### CBC — Cipher Block Chaining
 
-_CBC (Cipher Block Chaining) is the block cipher mode in which each plaintext block is XORed with the previous ciphertext block before encryption, with an initialisation vector (IV) used in place of the previous ciphertext for the first block, breaking the ECB pattern-leakage problem._
+*CBC (Cipher Block Chaining) is the block cipher mode in which each plaintext block is XORed with the previous ciphertext block before encryption, with an initialisation vector (IV) used in place of the previous ciphertext for the first block, breaking the ECB pattern-leakage problem.*
 
 $$
 C_1 = E_K(P_1 \oplus IV) \qquad C_i = E_K(P_i \oplus C_{i-1}) \quad \text{for } i \geq 2
@@ -373,7 +373,7 @@ CBC is still widely deployed but is being replaced by authenticated-encryption m
 
 ### CTR — Counter mode
 
-_CTR (Counter mode) is the block cipher mode that turns a block cipher into a stream cipher by encrypting a sequence of counter values (initialised to a nonce) and XORing the resulting keystream with the plaintext._
+*CTR (Counter mode) is the block cipher mode that turns a block cipher into a stream cipher by encrypting a sequence of counter values (initialised to a nonce) and XORing the resulting keystream with the plaintext.*
 
 $$
 C_i = P_i \oplus E_K(\text{nonce} \| i)
@@ -396,7 +396,7 @@ CTR is the basis of several authenticated-encryption modes (GCM in particular).
 
 ### GCM — Galois/Counter Mode
 
-_GCM (Galois/Counter Mode) is the authenticated-encryption mode that combines CTR-mode encryption with a Galois-field-based authentication tag, providing both confidentiality and integrity in a single pass over the data._
+*GCM (Galois/Counter Mode) is the authenticated-encryption mode that combines CTR-mode encryption with a Galois-field-based authentication tag, providing both confidentiality and integrity in a single pass over the data.*
 
 GCM is the modern default. It is used by TLS 1.3 (mandatory), TLS 1.2 (with AES-GCM cipher suites), IPsec, SSH, and many others.
 
@@ -433,7 +433,7 @@ These two modes were popular in the 1980s and 1990s. Both turn the block cipher 
 
 ### XTS — used for disk encryption
 
-_XTS-AES is the tweakable block cipher mode standardised in IEEE P1619 and NIST SP 800-38E, used for full-disk encryption, that combines AES with a tweak based on the disk sector address so that the same plaintext at different sector positions encrypts to different ciphertexts._
+*XTS-AES is the tweakable block cipher mode standardised in IEEE P1619 and NIST SP 800-38E, used for full-disk encryption, that combines AES with a tweak based on the disk sector address so that the same plaintext at different sector positions encrypts to different ciphertexts.*
 
 XTS is the mode used by:
 
@@ -465,7 +465,7 @@ In 2026, the practical guidance is straightforward:
 
 ## 2.5 Stream ciphers and RC4
 
-_A stream cipher is a symmetric cipher that generates a key-dependent pseudorandom bit stream (the keystream) and combines it with the plaintext through XOR to produce the ciphertext, processing the data bit-by-bit or byte-by-byte rather than in fixed-size blocks._
+*A stream cipher is a symmetric cipher that generates a key-dependent pseudorandom bit stream (the keystream) and combines it with the plaintext through XOR to produce the ciphertext, processing the data bit-by-bit or byte-by-byte rather than in fixed-size blocks.*
 
 Stream ciphers are conceptually the practical version of the one-time pad: replace the truly random pad with a pseudorandom keystream generated from a short key. The security depends on the keystream being indistinguishable from random.
 
@@ -486,13 +486,13 @@ Encryption is just XOR of the keystream with the plaintext; decryption is the sa
 
 ### RC4
 
-_RC4 is the stream cipher designed by Ron Rivest at RSA Security in 1987, kept proprietary until it was leaked anonymously in 1994, that produces a keystream by maintaining a permutation of 256 bytes and updating it with a simple state-update rule._
+*RC4 is the stream cipher designed by Ron Rivest at RSA Security in 1987, kept proprietary until it was leaked anonymously in 1994, that produces a keystream by maintaining a permutation of 256 bytes and updating it with a simple state-update rule.*
 
 RC4 was once the most widely deployed stream cipher in the world. WEP (early Wi-Fi encryption), WPA-TKIP (early WPA), SSL up to TLS 1.2, Bittorrent, Microsoft Office password protection, Lotus Notes, and many other systems used it. The reasons were practical: RC4 was simple, fast, and worked on devices with very limited resources.
 
 **Algorithm.** RC4 has two phases.
 
-_Key-Scheduling Algorithm (KSA)._ Initialise an array $S$ with $S[i] = i$ for $i = 0$ to 255. Then mix it with the key:
+*Key-Scheduling Algorithm (KSA).* Initialise an array $S$ with $S[i] = i$ for $i = 0$ to 255. Then mix it with the key:
 
 ```
 j = 0
@@ -501,7 +501,7 @@ for i from 0 to 255:
     swap S[i] and S[j]
 ```
 
-_Pseudo-Random Generation Algorithm (PRGA)._ Generate keystream bytes:
+*Pseudo-Random Generation Algorithm (PRGA).* Generate keystream bytes:
 
 ```
 i = 0
@@ -532,7 +532,7 @@ By 2015, RC4 was banned from TLS and similar standards. By 2026, it survives onl
 
 ### ChaCha20 — the modern replacement
 
-_ChaCha20 is the stream cipher designed by Daniel J. Bernstein in 2008 as an improvement on his earlier Salsa20, that maintains a 512-bit internal state derived from a 256-bit key, a 96-bit nonce, and a 32-bit counter, and produces 64-byte keystream blocks through 20 rounds of ARX (Addition, Rotation, XOR) operations._
+*ChaCha20 is the stream cipher designed by Daniel J. Bernstein in 2008 as an improvement on his earlier Salsa20, that maintains a 512-bit internal state derived from a 256-bit key, a 96-bit nonce, and a 32-bit counter, and produces 64-byte keystream blocks through 20 rounds of ARX (Addition, Rotation, XOR) operations.*
 
 ChaCha20 is the stream cipher of choice in 2026. It is fast in software (no S-box lookups, no modular arithmetic beyond 32-bit addition), resistant to timing attacks (all operations are constant-time by construction), and free from RC4's biases. ChaCha20 paired with Poly1305 for authentication is the ChaCha20-Poly1305 AEAD scheme standardised in RFC 8439.
 
@@ -670,9 +670,9 @@ Most real-world cryptographic failures are not breaks of the cipher but bugs in 
 
 ## 2.7 Principles of public-key cryptography
 
-_Public-key cryptography (also called asymmetric cryptography) is the class of cryptographic schemes that use a pair of mathematically related keys — a public key that may be freely shared and a private key that the owner keeps secret — designed so that operations performed with one key can be reversed only by the other._
+*Public-key cryptography (also called asymmetric cryptography) is the class of cryptographic schemes that use a pair of mathematically related keys — a public key that may be freely shared and a private key that the owner keeps secret — designed so that operations performed with one key can be reversed only by the other.*
 
-The 1976 paper by Whitfield Diffie and Martin Hellman that introduced public-key cryptography was titled, with deliberate ambition, _New Directions in Cryptography_. It changed the field permanently. Before 1976, every two parties who wanted to communicate securely had to share a secret key in advance — a problem of key distribution that was the central bottleneck of military, diplomatic, and commercial cryptography. After 1976, two parties who had never met could establish a secure channel over an insecure network. The entire architecture of the modern Internet rests on this idea.
+The 1976 paper by Whitfield Diffie and Martin Hellman that introduced public-key cryptography was titled, with deliberate ambition, *New Directions in Cryptography*. It changed the field permanently. Before 1976, every two parties who wanted to communicate securely had to share a secret key in advance — a problem of key distribution that was the central bottleneck of military, diplomatic, and commercial cryptography. After 1976, two parties who had never met could establish a secure channel over an insecure network. The entire architecture of the modern Internet rests on this idea.
 
 ### The two big problems public-key cryptography solves
 
@@ -702,7 +702,7 @@ For a digital signature scheme:
 
 Public-key cryptography rests on a special class of mathematical functions:
 
-_A trapdoor one-way function is a function that is easy to compute in one direction, computationally infeasible to invert without a secret value (the trapdoor), and easy to invert if the trapdoor is known._
+*A trapdoor one-way function is a function that is easy to compute in one direction, computationally infeasible to invert without a secret value (the trapdoor), and easy to invert if the trapdoor is known.*
 
 The public key encodes the function. The private key is the trapdoor. Encryption is forward computation; decryption uses the trapdoor.
 
@@ -768,7 +768,7 @@ The next sections cover Diffie-Hellman, RSA, and ECC in detail.
 
 ## 2.8 Diffie-Hellman key exchange
 
-_The Diffie-Hellman key exchange is the cryptographic protocol, published by Whitfield Diffie and Martin Hellman in 1976, by which two parties communicating over an insecure channel can establish a shared secret key without ever transmitting it, with the security resting on the difficulty of computing discrete logarithms in a finite cyclic group._
+*The Diffie-Hellman key exchange is the cryptographic protocol, published by Whitfield Diffie and Martin Hellman in 1976, by which two parties communicating over an insecure channel can establish a shared secret key without ever transmitting it, with the security resting on the difficulty of computing discrete logarithms in a finite cyclic group.*
 
 The Diffie-Hellman exchange does not encrypt anything itself. It produces a shared secret that the two parties then use as a symmetric key. It is the universal answer to the question "how do two parties who have never met agree on a key without an eavesdropper learning it?"
 
@@ -860,7 +860,7 @@ In TLS 1.3 the only key-exchange mechanisms allowed are (EC)DHE — ephemeral, p
 
 ## 2.9 RSA
 
-_RSA is the public-key cryptosystem invented by Ron Rivest, Adi Shamir, and Leonard Adleman at MIT in 1977 and published in 1978, based on the practical difficulty of factoring the product of two large prime numbers, used for public-key encryption, digital signatures, and key exchange._
+*RSA is the public-key cryptosystem invented by Ron Rivest, Adi Shamir, and Leonard Adleman at MIT in 1977 and published in 1978, based on the practical difficulty of factoring the product of two large prime numbers, used for public-key encryption, digital signatures, and key exchange.*
 
 RSA is the most widely deployed public-key algorithm in history. It is in TLS certificates, in PGP, in SSH host keys, in document signing, in code signing, in banking transactions, in e-passports. Even where modern protocols prefer elliptic curve cryptography, RSA remains entrenched in the certificate hierarchy and in legacy systems.
 
@@ -943,7 +943,6 @@ For illustration, with very small primes.
 $c = 88^7 \mod 187$.
 
 Compute step by step:
-
 - $88^2 = 7744$. $7744 \mod 187$: $187 \cdot 41 = 7667$, so $7744 - 7667 = 77$. Thus $88^2 \equiv 77 \pmod{187}$.
 - $88^4 = 77^2 = 5929$. $5929 \mod 187$: $187 \cdot 31 = 5797$, so $5929 - 5797 = 132$. Thus $88^4 \equiv 132 \pmod{187}$.
 - $88^7 = 88^4 \cdot 88^2 \cdot 88 = 132 \cdot 77 \cdot 88$. Step by step:
@@ -1009,7 +1008,7 @@ In Nepal, RSA is the foundation of every HTTPS-enabled `.gov.np` and commercial 
 
 ## 2.10 Elliptic curve cryptography
 
-_Elliptic Curve Cryptography (ECC) is the family of public-key cryptosystems based on the algebraic structure of elliptic curves over finite fields, in which the hard problem is the elliptic curve discrete logarithm — finding the integer $k$ given two points $P$ and $Q = kP$ on the curve._
+*Elliptic Curve Cryptography (ECC) is the family of public-key cryptosystems based on the algebraic structure of elliptic curves over finite fields, in which the hard problem is the elliptic curve discrete logarithm — finding the integer $k$ given two points $P$ and $Q = kP$ on the curve.*
 
 ECC offers the same security as RSA at much smaller key sizes. A 256-bit elliptic curve provides about 128 bits of security — comparable to 3072-bit RSA. The smaller keys, faster operations, and lower bandwidth make ECC the preferred choice for mobile, IoT, and high-volume server applications.
 
@@ -1043,7 +1042,7 @@ Scalar multiplication is computed efficiently using the double-and-add algorithm
 
 ### The Elliptic Curve Discrete Logarithm Problem (ECDLP)
 
-_Given a base point $G$ on an elliptic curve, and another point $Q = kG$ on the same curve, find the integer $k$._
+*Given a base point $G$ on an elliptic curve, and another point $Q = kG$ on the same curve, find the integer $k$.*
 
 Scalar multiplication ($G \to kG$) is easy. The inverse — recovering $k$ from $Q$ and $G$ — is the ECDLP.
 
@@ -1126,14 +1125,14 @@ The choice of elliptic curve parameters is critical and is one place where ECC h
 
 The benefits of ECC compared to RSA:
 
-|                    | RSA-2048           | ECC P-256 / Curve25519 |
-| ------------------ | ------------------ | ---------------------- |
-| Security level     | 112 bits           | 128 bits               |
-| Public key size    | 256 bytes          | 32 bytes               |
-| Signature size     | 256 bytes          | 64 bytes               |
-| Key generation     | Slow (find primes) | Fast (one scalar mult) |
-| Signing speed      | Moderate           | Fast                   |
-| Verification speed | Fast               | Moderate               |
+| | RSA-2048 | ECC P-256 / Curve25519 |
+|---|---|---|
+| Security level | 112 bits | 128 bits |
+| Public key size | 256 bytes | 32 bytes |
+| Signature size | 256 bytes | 64 bytes |
+| Key generation | Slow (find primes) | Fast (one scalar mult) |
+| Signing speed | Moderate | Fast |
+| Verification speed | Fast | Moderate |
 
 ECC's smaller keys and faster operations are the reasons it has become the default in new protocols. Modern TLS handshakes use ECDHE-ECDSA (Curve25519 + Ed25519 or P-256) as the preferred cipher suite.
 

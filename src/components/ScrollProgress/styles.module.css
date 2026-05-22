@@ -1,11 +1,14 @@
+/* Scroll progress bar pinned to the very top of the viewport — above the
+   navbar. z-index sits above the navbar (typically z-index ~200 in Docusaurus
+   classic theme) so the fill is always visible while scrolling. */
 .bar {
   position: fixed;
-  top: var(--ifm-navbar-height, 60px);
+  top: 0;
   left: 0;
   right: 0;
-  height: 2px;
+  height: 3px;
   background: transparent;
-  z-index: 40;
+  z-index: 1000;
   pointer-events: none;
 }
 .fill {
@@ -15,6 +18,7 @@
   transform: scaleX(0);
   transition: transform 80ms linear;
   border-radius: 0 1px 1px 0;
+  box-shadow: 0 0 6px rgba(15, 118, 110, 0.35);
 }
 @media print {
   .bar {

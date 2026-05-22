@@ -10,13 +10,13 @@ last_update:
   author: Rajesh Khanal
 ---
 
-The fifth generation of cellular and the Internet of Things share the same chapter because they share the same business case. The unit economics of cellular for the last two decades came from billing human users for voice and data. The unit economics that 5G needs to justify the capital cost of its rollout come from billing _things_ — sensors, vehicles, robots, smart meters, drones, medical devices — for connectivity. The IoT side of the chapter is the demand; the 5G side is the supply that 4G could not provide. Edge computing and cyber-physical systems are the architectural and application patterns that connect the two.
+The fifth generation of cellular and the Internet of Things share the same chapter because they share the same business case. The unit economics of cellular for the last two decades came from billing human users for voice and data. The unit economics that 5G needs to justify the capital cost of its rollout come from billing *things* — sensors, vehicles, robots, smart meters, drones, medical devices — for connectivity. The IoT side of the chapter is the demand; the 5G side is the supply that 4G could not provide. Edge computing and cyber-physical systems are the architectural and application patterns that connect the two.
 
 ## 5.1 Definition, overview, applications, potential, and challenges
 
 ### What 5G is
 
-_5G is the fifth-generation mobile network standard, defined by 3GPP starting with Release 15 (2018) and conforming to the ITU-R IMT-2020 requirements, designed to support three classes of service — enhanced Mobile Broadband (eMBB), Ultra-Reliable Low-Latency Communications (URLLC), and massive Machine-Type Communications (mMTC) — over a unified radio and core architecture._
+*5G is the fifth-generation mobile network standard, defined by 3GPP starting with Release 15 (2018) and conforming to the ITU-R IMT-2020 requirements, designed to support three classes of service — enhanced Mobile Broadband (eMBB), Ultra-Reliable Low-Latency Communications (URLLC), and massive Machine-Type Communications (mMTC) — over a unified radio and core architecture.*
 
 This is the defining shift from 4G. Every generation up to 4G optimised for one workload — voice (1G–2G), then mobile data (3G–4G). 5G is the first generation designed for three workloads explicitly, which means a single network must simultaneously deliver gigabit downloads to a streaming user, sub-millisecond control loops to a factory robot, and ten-year-battery connectivity to a water meter. Network slicing (Section 5.4) is how a single 5G network presents itself as three different networks to three different customer types.
 
@@ -24,16 +24,16 @@ This is the defining shift from 4G. Every generation up to 4G optimised for one 
 
 ITU-R IMT-2020, published in 2017, lays out the performance targets 5G technologies must meet to qualify:
 
-| Capability            | Target                            |
-| --------------------- | --------------------------------- |
-| Peak data rate        | 20 Gbps downlink, 10 Gbps uplink  |
+| Capability | Target |
+|---|---|
+| Peak data rate | 20 Gbps downlink, 10 Gbps uplink |
 | User-experienced rate | 100 Mbps downlink, 50 Mbps uplink |
-| Spectral efficiency   | 3× IMT-Advanced (4G)              |
-| Mobility              | Up to 500 km/h                    |
-| Latency (radio)       | 1 ms for URLLC                    |
-| Connection density    | 1 million devices per km²         |
-| Energy efficiency     | 100× improvement over 4G          |
-| Area traffic capacity | 10 Mbps per m²                    |
+| Spectral efficiency | 3× IMT-Advanced (4G) |
+| Mobility | Up to 500 km/h |
+| Latency (radio) | 1 ms for URLLC |
+| Connection density | 1 million devices per km² |
+| Energy efficiency | 100× improvement over 4G |
+| Area traffic capacity | 10 Mbps per m² |
 
 Real deployments rarely hit all of these targets simultaneously — they are upper bounds for specific configurations. A real 5G handset on a real Nepali network in 2026 might see a few hundred megabits down, not 20 Gbps.
 
@@ -93,27 +93,27 @@ The challenges are technical, economic, and regulatory.
 
 ### The cellular generational timeline
 
-| Generation | Decade           | Defining technology          | Key capability                                         |
-| ---------- | ---------------- | ---------------------------- | ------------------------------------------------------ |
-| 1G         | 1980s            | Analogue AMPS, NMT, TACS     | Voice, no data                                         |
-| 2G         | 1990s            | GSM, CDMA (IS-95)            | Digital voice, SMS, low-rate data (GPRS, EDGE)         |
-| 3G         | 2000s            | UMTS (WCDMA), CDMA2000       | Mobile data (kbps to a few Mbps)                       |
-| 4G         | 2010s            | LTE, LTE-Advanced            | All-IP packet network, tens to hundreds of Mbps, VoLTE |
-| 5G         | 2020s            | NR, 5G Core                  | eMBB / URLLC / mMTC, network slicing                   |
-| 6G         | 2030s (expected) | ITU-R IMT-2030, 3GPP Rel-21+ | Integrated sensing + communication, sub-1ms latency    |
+| Generation | Decade | Defining technology | Key capability |
+|---|---|---|---|
+| 1G | 1980s | Analogue AMPS, NMT, TACS | Voice, no data |
+| 2G | 1990s | GSM, CDMA (IS-95) | Digital voice, SMS, low-rate data (GPRS, EDGE) |
+| 3G | 2000s | UMTS (WCDMA), CDMA2000 | Mobile data (kbps to a few Mbps) |
+| 4G | 2010s | LTE, LTE-Advanced | All-IP packet network, tens to hundreds of Mbps, VoLTE |
+| 5G | 2020s | NR, 5G Core | eMBB / URLLC / mMTC, network slicing |
+| 6G | 2030s (expected) | ITU-R IMT-2030, 3GPP Rel-21+ | Integrated sensing + communication, sub-1ms latency |
 
 ### Within 5G — 3GPP releases
 
 3GPP publishes 5G in releases:
 
-| Release        | Frozen              | Theme                                                                            |
-| -------------- | ------------------- | -------------------------------------------------------------------------------- |
-| Rel-15         | 2018                | 5G Phase 1: NR, NSA, basic SA                                                    |
-| Rel-16         | 2020                | 5G Phase 2: URLLC enhancements, V2X, industrial IoT                              |
-| Rel-17         | 2022                | 5G Advanced foundation, NB-IoT/LTE-M integration, NTN (non-terrestrial networks) |
-| Rel-18         | 2024                | 5G Advanced (5G-A), early AI/ML in air interface                                 |
-| Rel-19         | In progress 2025–26 | Continued 5G-A, more sensing-and-communication, sustainability                   |
-| Rel-20 onwards | Pre-6G study items  |                                                                                  |
+| Release | Frozen | Theme |
+|---|---|---|
+| Rel-15 | 2018 | 5G Phase 1: NR, NSA, basic SA |
+| Rel-16 | 2020 | 5G Phase 2: URLLC enhancements, V2X, industrial IoT |
+| Rel-17 | 2022 | 5G Advanced foundation, NB-IoT/LTE-M integration, NTN (non-terrestrial networks) |
+| Rel-18 | 2024 | 5G Advanced (5G-A), early AI/ML in air interface |
+| Rel-19 | In progress 2025–26 | Continued 5G-A, more sensing-and-communication, sustainability |
+| Rel-20 onwards | Pre-6G study items | |
 
 Most current operator deployments globally are on Rel-15 or Rel-16. Rel-17 enhancements are rolling in. 6G work is in the study-item phase.
 
@@ -174,7 +174,7 @@ The 5G architecture has two main parts — the Radio Access Network (RAN) that c
 
 The 5G RAN introduces several major changes from 4G:
 
-**New Radio (NR).** _NR (New Radio) is the 5G physical-layer radio interface, designed by 3GPP starting in Rel-15, supporting both sub-6 GHz and mmWave bands, scalable subcarrier spacings (15 kHz, 30 kHz, 60 kHz, 120 kHz, 240 kHz) to suit different latency and bandwidth requirements, and massive MIMO with hundreds of antenna elements at the base station._ NR uses Cyclic-Prefix OFDM in downlink and either CP-OFDM or DFT-spread-OFDM in uplink. The numerology (subcarrier spacing, slot duration) is configurable, letting the same air interface serve eMBB (15 kHz, long slots, high spectral efficiency) and URLLC (60 kHz, short slots, low latency).
+**New Radio (NR).** *NR (New Radio) is the 5G physical-layer radio interface, designed by 3GPP starting in Rel-15, supporting both sub-6 GHz and mmWave bands, scalable subcarrier spacings (15 kHz, 30 kHz, 60 kHz, 120 kHz, 240 kHz) to suit different latency and bandwidth requirements, and massive MIMO with hundreds of antenna elements at the base station.* NR uses Cyclic-Prefix OFDM in downlink and either CP-OFDM or DFT-spread-OFDM in uplink. The numerology (subcarrier spacing, slot duration) is configurable, letting the same air interface serve eMBB (15 kHz, long slots, high spectral efficiency) and URLLC (60 kHz, short slots, low latency).
 
 **Massive MIMO and beamforming.** A 5G base station can have 64, 128, or 256 antenna elements. The base station forms narrow beams aimed at individual users, increasing both signal strength and spatial reuse. This is critical at mmWave where the signal would otherwise not reach.
 
@@ -186,7 +186,7 @@ The 5G RAN introduces several major changes from 4G:
 
 The interfaces between them are open: F1 between DU and CU, eCPRI between RU and DU. The Open RAN movement standardises these interfaces further to enable multi-vendor deployments.
 
-**Open RAN.** _Open RAN (O-RAN) is the industry effort, led by the O-RAN Alliance, to open the previously proprietary interfaces inside the 5G RAN — between RU, DU, CU, and the RAN Intelligent Controller — so that operators can mix hardware and software from different vendors._ Open RAN is in active deployment with operators like Vodafone (Europe), Rakuten (Japan), Reliance Jio (India). The promise is reduced cost and vendor lock-in; the reality has been more complicated, with maturity and integration challenges still working through.
+**Open RAN.** *Open RAN (O-RAN) is the industry effort, led by the O-RAN Alliance, to open the previously proprietary interfaces inside the 5G RAN — between RU, DU, CU, and the RAN Intelligent Controller — so that operators can mix hardware and software from different vendors.* Open RAN is in active deployment with operators like Vodafone (Europe), Rakuten (Japan), Reliance Jio (India). The promise is reduced cost and vendor lock-in; the reality has been more complicated, with maturity and integration challenges still working through.
 
 ### The 5G Core (5GC)
 
@@ -194,19 +194,19 @@ The 5GC is the cloud-native rebuild of the 4G Evolved Packet Core. Instead of mo
 
 Key network functions:
 
-| Function                                          | Role                                                  |
-| ------------------------------------------------- | ----------------------------------------------------- |
-| **AMF** (Access and Mobility Management Function) | Handles registration, authentication, mobility        |
-| **SMF** (Session Management Function)             | Handles PDU sessions, IP address allocation           |
-| **UPF** (User Plane Function)                     | The data plane — forwards user packets to/from the DN |
-| **AUSF** (Authentication Server Function)         | Authentication of UE                                  |
-| **UDM** (Unified Data Management)                 | Subscriber data — subscription, security keys         |
-| **UDR** (Unified Data Repository)                 | Database backing UDM, PCF, NEF                        |
-| **PCF** (Policy Control Function)                 | QoS and charging policy                               |
-| **NRF** (NF Repository Function)                  | Service registry — lets NFs discover each other       |
-| **NEF** (Network Exposure Function)               | Exposes services to external applications via APIs    |
-| **NSSF** (Network Slice Selection Function)       | Selects the right slice for a UE                      |
-| **NWDAF** (Network Data Analytics Function)       | Collects data and produces analytics, often using ML  |
+| Function | Role |
+|---|---|
+| **AMF** (Access and Mobility Management Function) | Handles registration, authentication, mobility |
+| **SMF** (Session Management Function) | Handles PDU sessions, IP address allocation |
+| **UPF** (User Plane Function) | The data plane — forwards user packets to/from the DN |
+| **AUSF** (Authentication Server Function) | Authentication of UE |
+| **UDM** (Unified Data Management) | Subscriber data — subscription, security keys |
+| **UDR** (Unified Data Repository) | Database backing UDM, PCF, NEF |
+| **PCF** (Policy Control Function) | QoS and charging policy |
+| **NRF** (NF Repository Function) | Service registry — lets NFs discover each other |
+| **NEF** (Network Exposure Function) | Exposes services to external applications via APIs |
+| **NSSF** (Network Slice Selection Function) | Selects the right slice for a UE |
+| **NWDAF** (Network Data Analytics Function) | Collects data and produces analytics, often using ML |
 
 The Service-Based Architecture is a microservices design. Each NF exposes its capabilities as HTTP/2 REST APIs registered with the NRF. Other NFs discover and call those APIs. This is fundamentally different from 4G's point-to-point GTP signalling.
 
@@ -234,7 +234,7 @@ Most early commercial 5G deployments globally (China, Korea, USA) launched NSA a
 
 ## 5.4 5G network slicing
 
-_Network slicing is the 5G capability that lets a single physical 5G infrastructure be partitioned into multiple logical end-to-end networks (slices), each with its own QoS, security, and topology characteristics, presented to different customer types as if each had its own dedicated network._
+*Network slicing is the 5G capability that lets a single physical 5G infrastructure be partitioned into multiple logical end-to-end networks (slices), each with its own QoS, security, and topology characteristics, presented to different customer types as if each had its own dedicated network.*
 
 Slicing is the architectural answer to the three-service-class problem. The same gNB, the same fibre backhaul, and the same 5GC must serve a smartphone user, a factory robot, and a smart meter — each with different latency, throughput, and reliability targets. A slice is a way of carving out the right resources and configuration for each.
 
@@ -278,7 +278,7 @@ Slicing means the same physical equipment hosts traffic from different customers
 
 ### The IoT vision
 
-_The Internet of Things is the network of physical objects equipped with sensors, actuators, and connectivity that exchange data with each other and with networked applications, allowing them to be sensed and controlled remotely and to participate in larger automated processes._
+*The Internet of Things is the network of physical objects equipped with sensors, actuators, and connectivity that exchange data with each other and with networked applications, allowing them to be sensed and controlled remotely and to participate in larger automated processes.*
 
 The term was coined by Kevin Ashton at Procter & Gamble in 1999, in the context of using RFID tags to track inventory through a supply chain. The vision has expanded: from passive RFID tags to active sensors, from inventory to every category of physical object, from corporate supply chains to consumer devices, smart cities, and industrial automation.
 
@@ -298,7 +298,7 @@ Devices in IoT differ from traditional computing endpoints along several axes:
 
 ### RFID
 
-_RFID (Radio-Frequency Identification) is the technology in which a small tag, powered either passively by the reader's radio signal or actively by its own battery, transmits a unique identifier and optionally additional data over a short-range radio link to a reader, enabling automatic identification of physical objects._
+*RFID (Radio-Frequency Identification) is the technology in which a small tag, powered either passively by the reader's radio signal or actively by its own battery, transmits a unique identifier and optionally additional data over a short-range radio link to a reader, enabling automatic identification of physical objects.*
 
 RFID has three main categories:
 
@@ -324,7 +324,7 @@ In Nepal, RFID is most visible in:
 
 ### Wireless Sensor Networks (WSN)
 
-_A WSN (Wireless Sensor Network) is a collection of spatially distributed, autonomous, battery-powered sensor nodes that cooperate over wireless links to monitor physical or environmental conditions and forward measurements to a central collection point or sink._
+*A WSN (Wireless Sensor Network) is a collection of spatially distributed, autonomous, battery-powered sensor nodes that cooperate over wireless links to monitor physical or environmental conditions and forward measurements to a central collection point or sink.*
 
 A typical WSN node has:
 
@@ -416,7 +416,7 @@ Provisioning a million devices, rotating their keys over a decade, replacing the
 
 ## 5.7 Edge computing for IoT applications
 
-_Edge computing is the deployment model in which computation, storage, and networking resources are placed close to the data sources (IoT devices, end users), at the edge of the network rather than in a central cloud, in order to reduce latency, conserve bandwidth, improve resilience, and address data-sovereignty constraints._
+*Edge computing is the deployment model in which computation, storage, and networking resources are placed close to the data sources (IoT devices, end users), at the edge of the network rather than in a central cloud, in order to reduce latency, conserve bandwidth, improve resilience, and address data-sovereignty constraints.*
 
 ### Why edge
 
@@ -463,7 +463,7 @@ A connected-vehicle deployment might have:
 
 ### MEC — Multi-access Edge Computing
 
-_MEC (Multi-access Edge Computing) is the ETSI-standardised edge-computing framework that places computation and storage at the cellular network's edge — typically at the base station, at the aggregation site, or at the central office — so that mobile applications can be served with low latency from a location close to the user._
+*MEC (Multi-access Edge Computing) is the ETSI-standardised edge-computing framework that places computation and storage at the cellular network's edge — typically at the base station, at the aggregation site, or at the central office — so that mobile applications can be served with low latency from a location close to the user.*
 
 MEC is the 5G operator's way to monetise edge. The operator provides:
 
@@ -495,18 +495,18 @@ The IoT cases for edge include:
 
 ## 5.8 Overview of Industrial IoT (IIoT)
 
-_IIoT (Industrial Internet of Things) is the application of IoT technologies — sensors, connectivity, edge analytics, automation — to industrial environments such as manufacturing, energy, transportation, and infrastructure, with the goal of monitoring and optimising physical processes that produce economic output._
+*IIoT (Industrial Internet of Things) is the application of IoT technologies — sensors, connectivity, edge analytics, automation — to industrial environments such as manufacturing, energy, transportation, and infrastructure, with the goal of monitoring and optimising physical processes that produce economic output.*
 
 The distinction between consumer IoT and Industrial IoT is one of stakes and operational discipline:
 
-|                   | Consumer IoT                           | Industrial IoT                                     |
-| ----------------- | -------------------------------------- | -------------------------------------------------- |
-| Examples          | Smart bulbs, watches, voice assistants | Factory robots, smart-grid sensors, mine equipment |
-| Failure cost      | Inconvenience                          | Production loss, safety incidents                  |
-| Lifetime expected | 2–5 years                              | 10–30 years                                        |
-| Security maturity | Often poor                             | Higher (but still uneven)                          |
-| Standards         | Many, fragmented                       | Industry-specific (IEC 61131, OPC UA, ISA-95)      |
-| Connectivity      | Wi-Fi, BLE, Zigbee                     | Industrial Ethernet, NB-IoT, 5G, fieldbuses        |
+| | Consumer IoT | Industrial IoT |
+|---|---|---|
+| Examples | Smart bulbs, watches, voice assistants | Factory robots, smart-grid sensors, mine equipment |
+| Failure cost | Inconvenience | Production loss, safety incidents |
+| Lifetime expected | 2–5 years | 10–30 years |
+| Security maturity | Often poor | Higher (but still uneven) |
+| Standards | Many, fragmented | Industry-specific (IEC 61131, OPC UA, ISA-95) |
+| Connectivity | Wi-Fi, BLE, Zigbee | Industrial Ethernet, NB-IoT, 5G, fieldbuses |
 
 ### IIoT architecture
 
@@ -567,7 +567,7 @@ The Stuxnet attack on Iranian nuclear centrifuges (2010), the Ukraine power-grid
 
 ## 5.9 Cyber-physical systems
 
-_A Cyber-Physical System (CPS) is an engineered system in which computation, networking, and physical processes are tightly integrated, with computers and networks monitoring and controlling the physical process and the physical process providing context and feedback to the computational layer._
+*A Cyber-Physical System (CPS) is an engineered system in which computation, networking, and physical processes are tightly integrated, with computers and networks monitoring and controlling the physical process and the physical process providing context and feedback to the computational layer.*
 
 The concept overlaps with IIoT but is broader. IIoT emphasises the technology stack — sensors, connectivity, analytics. CPS emphasises the engineering discipline of designing systems where computation and physics are co-designed.
 
@@ -581,7 +581,7 @@ A CPS has:
 - **Closed-loop feedback.** The result of actuation feeds back into the sensing, completing the loop.
 - **Networking.** Local networks among components, often wider networks for coordination.
 
-A CPS is not just a computer that happens to interact with a physical process. The defining property is that the computation and physics are designed _together_ — the computational model accounts for physical dynamics (mass, momentum, inertia, response times), and the physical design accounts for computational constraints (sample rate, processing latency, communication delays).
+A CPS is not just a computer that happens to interact with a physical process. The defining property is that the computation and physics are designed *together* — the computational model accounts for physical dynamics (mass, momentum, inertia, response times), and the physical design accounts for computational constraints (sample rate, processing latency, communication delays).
 
 ### Examples
 

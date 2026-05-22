@@ -121,7 +121,7 @@ A reference model is not a protocol. It is a layered way of describing what a ne
 
 ### The OSI reference model
 
-_The OSI (Open Systems Interconnection) reference model is a seven-layer conceptual framework, published by ISO as ISO/IEC 7498-1 in 1984, that decomposes the work of network communication into Physical, Data Link, Network, Transport, Session, Presentation, and Application layers, each providing well-defined services to the layer above._
+*The OSI (Open Systems Interconnection) reference model is a seven-layer conceptual framework, published by ISO as ISO/IEC 7498-1 in 1984, that decomposes the work of network communication into Physical, Data Link, Network, Transport, Session, Presentation, and Application layers, each providing well-defined services to the layer above.*
 
 The seven layers, from bottom to top:
 
@@ -143,7 +143,7 @@ The mnemonic "Please Do Not Throw Sausage Pizza Away" (bottom-up) or "All People
 
 ### The TCP/IP reference model
 
-_The TCP/IP reference model is the four-layer descriptive model — Network Access, Internet, Transport, and Application — that grew alongside the actual TCP/IP protocols deployed on the Internet, with each layer corresponding to the layer (or group of OSI layers) where the protocols of the real Internet operate._
+*The TCP/IP reference model is the four-layer descriptive model — Network Access, Internet, Transport, and Application — that grew alongside the actual TCP/IP protocols deployed on the Internet, with each layer corresponding to the layer (or group of OSI layers) where the protocols of the real Internet operate.*
 
 The TCP/IP model has four layers — though some textbooks split the bottom layer into two and present it as five. From bottom to top:
 
@@ -161,15 +161,15 @@ The OSI model was designed by an international standards committee in the early 
 
 In practice, engineers use OSI vocabulary to describe what a device does, and TCP/IP to describe how the protocols actually fit together. A modern descriptive answer is expected to know both, to explain their differences, and to map specific protocols onto each.
 
-|               | OSI (1984)                                      | TCP/IP (deployed)                                       |
-| ------------- | ----------------------------------------------- | ------------------------------------------------------- |
-| Layers        | 7                                               | 4 (sometimes 5)                                         |
-| Origin        | ISO committee, top-down design                  | DARPA/research community, bottom-up evolution           |
-| Status        | Reference model, conceptual                     | Reference model, matches real protocols                 |
-| Transport     | Connection-oriented assumed                     | Both TCP (connection-oriented) and UDP (connectionless) |
-| Layer 5/6     | Session, Presentation separated                 | Folded into Application                                 |
-| Network layer | Multiple network-layer protocols anticipated    | IP is the single internetwork protocol                  |
-| Practical use | Vocabulary for describing devices and functions | Vocabulary for describing the protocol stack            |
+| | OSI (1984) | TCP/IP (deployed) |
+|---|---|---|
+| Layers | 7 | 4 (sometimes 5) |
+| Origin | ISO committee, top-down design | DARPA/research community, bottom-up evolution |
+| Status | Reference model, conceptual | Reference model, matches real protocols |
+| Transport | Connection-oriented assumed | Both TCP (connection-oriented) and UDP (connectionless) |
+| Layer 5/6 | Session, Presentation separated | Folded into Application |
+| Network layer | Multiple network-layer protocols anticipated | IP is the single internetwork protocol |
+| Practical use | Vocabulary for describing devices and functions | Vocabulary for describing the protocol stack |
 
 ### A worked walk-through: typing a URL into a browser
 
@@ -197,11 +197,11 @@ This nesting is what allows the engineering principle of layer independence — 
 
 ## 1.4 Network and Internet governing bodies
 
-The Internet is not run by any single organisation. It is governed by a small constellation of bodies, each responsible for a specific category of decision. Understanding who decides what is part of literacy in this field — a question about why a particular protocol behaves a particular way often resolves to "because RFC \_\_\_\_" and a question about why a country has a certain block of IP addresses resolves to "because IANA allocated it to APNIC, which sub-allocated it to NTA / a Nepali ISP."
+The Internet is not run by any single organisation. It is governed by a small constellation of bodies, each responsible for a specific category of decision. Understanding who decides what is part of literacy in this field — a question about why a particular protocol behaves a particular way often resolves to "because RFC ____" and a question about why a country has a certain block of IP addresses resolves to "because IANA allocated it to APNIC, which sub-allocated it to NTA / a Nepali ISP."
 
 ### IETF — Internet Engineering Task Force
 
-_The IETF is an open, voluntary, international standards body that develops and publishes the technical specifications of the Internet's protocols as Request for Comments (RFC) documents, operating under the principle of "rough consensus and running code."_
+*The IETF is an open, voluntary, international standards body that develops and publishes the technical specifications of the Internet's protocols as Request for Comments (RFC) documents, operating under the principle of "rough consensus and running code."*
 
 The IETF is the body that designs Internet protocols. TCP, IP, IPv6, HTTP, DNS, BGP, TLS, OAuth, QUIC, MPLS — every one of these is an IETF specification. The IETF was formed in 1986 and is administratively housed under the Internet Society (ISOC) and now the IETF Administration LLC.
 
@@ -217,7 +217,7 @@ The IETF meets three times a year in person — once each in Asia, Europe, and t
 
 ### IANA — Internet Assigned Numbers Authority
 
-_IANA is the technical function, operated since 2016 by the Public Technical Identifiers (PTI) affiliate of ICANN, responsible for coordinating the globally unique values used by Internet protocols — including IP address blocks, autonomous system numbers, DNS root zone, and protocol port numbers._
+*IANA is the technical function, operated since 2016 by the Public Technical Identifiers (PTI) affiliate of ICANN, responsible for coordinating the globally unique values used by Internet protocols — including IP address blocks, autonomous system numbers, DNS root zone, and protocol port numbers.*
 
 IANA does not design protocols. It allocates the numbers the protocols use. There are three big categories of IANA-administered numbers:
 
@@ -233,7 +233,7 @@ For a Nepali example: when WorldLink became a member of APNIC and was allocated 
 
 ### ITU — International Telecommunication Union
 
-_The ITU is the United Nations specialised agency for information and communication technologies, established in 1865 (originally as the International Telegraph Union), that coordinates global radio-spectrum allocation, develops telecommunication standards, and works to extend connectivity in developing countries._
+*The ITU is the United Nations specialised agency for information and communication technologies, established in 1865 (originally as the International Telegraph Union), that coordinates global radio-spectrum allocation, develops telecommunication standards, and works to extend connectivity in developing countries.*
 
 The ITU is a treaty-based intergovernmental body with 193 member states, including Nepal. It is older than the Internet by more than a century — it began in 1865 as the body coordinating international telegraph traffic. It has three sectors:
 
@@ -247,7 +247,7 @@ ITU and IETF roles are sometimes confused. The clean separation: IETF designs th
 
 ### ICANN — Internet Corporation for Assigned Names and Numbers
 
-_ICANN is a U.S.-based non-profit, multi-stakeholder organisation established in 1998 that coordinates the global policies for the unique identifiers of the Internet — domain names, IP addresses, and protocol port numbers — operating IANA through its PTI affiliate and managing the contracts with registries and registrars._
+*ICANN is a U.S.-based non-profit, multi-stakeholder organisation established in 1998 that coordinates the global policies for the unique identifiers of the Internet — domain names, IP addresses, and protocol port numbers — operating IANA through its PTI affiliate and managing the contracts with registries and registrars.*
 
 ICANN's primary visible role is the domain-name system. ICANN does not run the domain name servers; it sets policy for them. Some specific responsibilities:
 

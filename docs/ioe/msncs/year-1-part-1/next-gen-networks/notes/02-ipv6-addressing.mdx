@@ -10,13 +10,13 @@ last_update:
   author: Rajesh Khanal
 ---
 
-The Internet Protocol is what makes the network a _single_ network. Every device that participates in the global Internet — whether a 5G handset on Ncell, an FTTH router at a Subisu customer's home, a server at the Government Integrated Data Centre, or a Raspberry Pi running an air-quality sensor in Pokhara — speaks the Internet Protocol. There are two deployed versions: IPv4 from 1981, and IPv6 from 1998 (RFC 2460) as currently defined by RFC 8200 (2017). This chapter establishes the addressing model of both, then concentrates on IPv6 in the depth a network engineer needs.
+The Internet Protocol is what makes the network a *single* network. Every device that participates in the global Internet — whether a 5G handset on Ncell, an FTTH router at a Subisu customer's home, a server at the Government Integrated Data Centre, or a Raspberry Pi running an air-quality sensor in Pokhara — speaks the Internet Protocol. There are two deployed versions: IPv4 from 1981, and IPv6 from 1998 (RFC 2460) as currently defined by RFC 8200 (2017). This chapter establishes the addressing model of both, then concentrates on IPv6 in the depth a network engineer needs.
 
 ## 2.1 IPv4 addressing overview, challenges, and issues
 
 ### The IPv4 address
 
-_An IPv4 address is a 32-bit number, written as four decimal octets separated by dots, that uniquely identifies a network interface on the IPv4 Internet under the rules of RFC 791 and its successors._
+*An IPv4 address is a 32-bit number, written as four decimal octets separated by dots, that uniquely identifies a network interface on the IPv4 Internet under the rules of RFC 791 and its successors.*
 
 The address `202.51.84.45` is a typical IPv4 address — four decimal numbers, each in the range 0–255, separated by dots. The same address in binary is `11001010.00110011.01010100.00101101`, and in hex is `CA.33.54.2D`. Thirty-two bits is the limit: $2^{32}$ ≈ 4.29 billion addresses.
 
@@ -26,13 +26,13 @@ An IPv4 address has two logical parts — a **network portion** that identifies 
 
 Before 1993, IPv4 used **classful addressing**. The class of an address was determined by its leading bits:
 
-| Class | Leading bits | First octet range | Default mask        | Network bits | Host bits | Typical use            |
-| ----- | ------------ | ----------------- | ------------------- | ------------ | --------- | ---------------------- |
-| A     | 0            | 0–127             | 255.0.0.0 (/8)      | 8            | 24        | Very large networks    |
-| B     | 10           | 128–191           | 255.255.0.0 (/16)   | 16           | 16        | Large networks         |
-| C     | 110          | 192–223           | 255.255.255.0 (/24) | 24           | 8         | Small networks         |
-| D     | 1110         | 224–239           | —                   | —            | —         | Multicast              |
-| E     | 1111         | 240–255           | —                   | —            | —         | Experimental, reserved |
+| Class | Leading bits | First octet range | Default mask | Network bits | Host bits | Typical use |
+|---|---|---|---|---|---|---|
+| A | 0 | 0–127 | 255.0.0.0 (/8) | 8 | 24 | Very large networks |
+| B | 10 | 128–191 | 255.255.0.0 (/16) | 16 | 16 | Large networks |
+| C | 110 | 192–223 | 255.255.255.0 (/24) | 24 | 8 | Small networks |
+| D | 1110 | 224–239 | — | — | — | Multicast |
+| E | 1111 | 240–255 | — | — | — | Experimental, reserved |
 
 Classful addressing was a poor fit for most real networks. A company that needed 500 addresses was too large for a single Class C (254 hosts) but wasted most of a Class B (65,534 hosts). By the early 1990s the Internet was hitting two crises at once — the IP address pool was being consumed faster than expected, and the global routing table was growing alarmingly because every Class C network needed its own routing entry.
 
@@ -40,7 +40,7 @@ Classful addressing was a poor fit for most real networks. A company that needed
 
 **CIDR**, standardised in RFC 1519 (1993) and now in RFC 4632 (2006), removed the rigid class boundaries. The prefix length can now be any value from /0 to /32, allowing networks to be sized to actual need.
 
-_CIDR (Classless Inter-Domain Routing) is the address allocation and routing scheme that replaced classful addressing in 1993, expressing the network portion of an IPv4 address as a variable-length prefix written as a slash followed by the number of network bits._
+*CIDR (Classless Inter-Domain Routing) is the address allocation and routing scheme that replaced classful addressing in 1993, expressing the network portion of an IPv4 address as a variable-length prefix written as a slash followed by the number of network bits.*
 
 CIDR allows two things that classful addressing did not. First, **address aggregation** — an ISP holding the block `202.51.0.0/16` advertises a single routing table entry covering all 65,536 addresses, rather than 256 separate /24 entries. This kept the global BGP routing table from exploding. Second, **Variable Length Subnet Masking (VLSM)** — different subnets inside an organisation can have different sizes. A point-to-point WAN link uses a /30 (4 addresses, 2 usable), a small office uses a /28 (16 addresses, 14 usable), a large server VLAN uses a /23 (512 addresses, 510 usable).
 
@@ -52,12 +52,12 @@ A worked subnetting example. The block `192.168.10.0/24` is to be divided into f
 
 The four subnets are:
 
-| Subnet | Network           | Usable range | Broadcast |
-| ------ | ----------------- | ------------ | --------- |
-| 1      | 192.168.10.0/26   | .1 – .62     | .63       |
-| 2      | 192.168.10.64/26  | .65 – .126   | .127      |
-| 3      | 192.168.10.128/26 | .129 – .190  | .191      |
-| 4      | 192.168.10.192/26 | .193 – .254  | .255      |
+| Subnet | Network | Usable range | Broadcast |
+|---|---|---|---|
+| 1 | 192.168.10.0/26 | .1 – .62 | .63 |
+| 2 | 192.168.10.64/26 | .65 – .126 | .127 |
+| 3 | 192.168.10.128/26 | .129 – .190 | .191 |
+| 4 | 192.168.10.192/26 | .193 – .254 | .255 |
 
 ### Private addressing and NAT
 
@@ -105,7 +105,7 @@ The IPv6 design goal was not just more addresses. It was a chance to fix the str
 
 ### The IPv6 address
 
-_An IPv6 address is a 128-bit number, written as eight groups of four hexadecimal digits separated by colons, that uniquely identifies a network interface on the IPv6 Internet under RFC 8200._
+*An IPv6 address is a 128-bit number, written as eight groups of four hexadecimal digits separated by colons, that uniquely identifies a network interface on the IPv6 Internet under RFC 8200.*
 
 A full IPv6 address looks like:
 
@@ -118,24 +118,22 @@ The address space is $2^{128} ≈ 3.4 \times 10^{38}$. The number is large enoug
 Two notation rules compress long addresses:
 
 **Rule 1 — Leading zeros within a group may be omitted.** The address above becomes:
-
 ```
 2001:db8:85a3:0:0:8a2e:370:7334
 ```
 
 **Rule 2 — A single run of consecutive all-zero groups may be replaced by `::`.** Only one such replacement is allowed in a single address (otherwise the address would be ambiguous):
-
 ```
 2001:db8:85a3::8a2e:370:7334
 ```
 
 A few more examples:
 
-| Full form                                 | Compressed form                         |
-| ----------------------------------------- | --------------------------------------- |
-| `2001:0db8:0000:0000:0000:0000:0000:0001` | `2001:db8::1`                           |
-| `0000:0000:0000:0000:0000:0000:0000:0001` | `::1` (loopback)                        |
-| `0000:0000:0000:0000:0000:0000:0000:0000` | `::` (unspecified)                      |
+| Full form | Compressed form |
+|---|---|
+| `2001:0db8:0000:0000:0000:0000:0000:0001` | `2001:db8::1` |
+| `0000:0000:0000:0000:0000:0000:0000:0001` | `::1` (loopback) |
+| `0000:0000:0000:0000:0000:0000:0000:0000` | `::` (unspecified) |
 | `fe80:0000:0000:0000:0202:b3ff:fe1e:8329` | `fe80::202:b3ff:fe1e:8329` (link-local) |
 
 An IPv6 address with a port is written with the address in square brackets to disambiguate the colons:
@@ -218,13 +216,13 @@ IPv6 has three address categories. **Broadcast does not exist** in IPv6 — any 
 
 ### Unicast
 
-_A unicast address identifies a single network interface, and a packet sent to a unicast address is delivered to that one interface._
+*A unicast address identifies a single network interface, and a packet sent to a unicast address is delivered to that one interface.*
 
 Several kinds of unicast address exist, distinguished by their leading bits:
 
 **Global unicast.** The IPv6 equivalent of a public IPv4 address. Currently allocated from `2000::/3`. The first 48 bits typically come from the ISP allocation, the next 16 bits identify the subnet inside the customer site, and the last 64 bits identify the interface. A subscriber prefix on a WorldLink IPv6 connection might be `2400:1a00:bf00::/48`.
 
-**Link-local.** _A link-local address is a unicast address in the range `fe80::/10` that is valid only on a single link and is never forwarded by a router._ Every IPv6 interface has a link-local address, generated automatically when the interface comes up. Link-local addresses are used for neighbour discovery, router discovery, and routing protocol messages between neighbours. A typical link-local address looks like `fe80::1a2b:3cff:fe4d:5e6f`. Because the same link-local address can be in use on different interfaces, link-local communication uses a **zone identifier** appended with `%` — `fe80::1%eth0` means "fe80::1, reached through interface eth0."
+**Link-local.** *A link-local address is a unicast address in the range `fe80::/10` that is valid only on a single link and is never forwarded by a router.* Every IPv6 interface has a link-local address, generated automatically when the interface comes up. Link-local addresses are used for neighbour discovery, router discovery, and routing protocol messages between neighbours. A typical link-local address looks like `fe80::1a2b:3cff:fe4d:5e6f`. Because the same link-local address can be in use on different interfaces, link-local communication uses a **zone identifier** appended with `%` — `fe80::1%eth0` means "fe80::1, reached through interface eth0."
 
 **Unique Local Address (ULA).** Specified by RFC 4193, ULAs occupy `fc00::/7` (in practice `fd00::/8` for randomly generated prefixes). They are the IPv6 equivalent of RFC 1918 private addresses — usable inside an organisation, not routable on the public Internet. A typical ULA prefix is `fd6f:42a1:b8c7::/48` where the bits after `fd` are chosen randomly to avoid collisions when networks merge.
 
@@ -238,7 +236,7 @@ Several kinds of unicast address exist, distinguished by their leading bits:
 
 ### Anycast
 
-_An anycast address is a unicast-format address assigned to multiple network interfaces, and a packet sent to it is delivered to the topologically nearest one according to the routing protocol's distance metric._
+*An anycast address is a unicast-format address assigned to multiple network interfaces, and a packet sent to it is delivered to the topologically nearest one according to the routing protocol's distance metric.*
 
 An anycast address is syntactically indistinguishable from a unicast address. The difference is administrative — the network operator chooses to advertise the same prefix from multiple locations. The routing protocol carries each advertisement, and a packet follows the path the router decides is shortest.
 
@@ -250,7 +248,7 @@ Use cases include:
 
 ### Multicast
 
-_An IPv6 multicast address identifies a group of interfaces, and a packet sent to it is delivered to every interface that has joined the group._
+*An IPv6 multicast address identifies a group of interfaces, and a packet sent to it is delivered to every interface that has joined the group.*
 
 Every multicast address begins with `ff` (eight leading 1 bits), which makes the entire `ff00::/8` range multicast. The format of the rest of the address carries the scope and the group identifier:
 
@@ -261,29 +259,29 @@ Every multicast address begins with `ff` (eight leading 1 bits), which makes the
 
 The **scope** field limits how far the multicast packet may travel:
 
-| Scope              | Value | Range                           |
-| ------------------ | ----- | ------------------------------- |
-| Interface-local    | 1     | Same node only                  |
-| Link-local         | 2     | Same physical link only         |
-| Admin-local        | 4     | Administratively defined region |
-| Site-local         | 5     | One site                        |
-| Organization-local | 8     | One organisation                |
-| Global             | E     | Entire IPv6 Internet            |
+| Scope | Value | Range |
+|---|---|---|
+| Interface-local | 1 | Same node only |
+| Link-local | 2 | Same physical link only |
+| Admin-local | 4 | Administratively defined region |
+| Site-local | 5 | One site |
+| Organization-local | 8 | One organisation |
+| Global | E | Entire IPv6 Internet |
 
 A router refuses to forward a multicast packet outside its scope. This is a meaningful improvement over IPv4 multicast, where the TTL field is used as a coarse scope proxy.
 
 Several well-known multicast addresses are reserved:
 
-| Address              | Meaning                         |
-| -------------------- | ------------------------------- |
-| `ff02::1`            | All nodes on the link           |
-| `ff02::2`            | All routers on the link         |
-| `ff02::5`            | OSPFv3 all routers              |
-| `ff02::6`            | OSPFv3 DR routers               |
-| `ff02::9`            | RIPng routers                   |
-| `ff02::a`            | EIGRP routers                   |
-| `ff02::d`            | PIM routers                     |
-| `ff02::16`           | MLDv2-capable routers           |
+| Address | Meaning |
+|---|---|
+| `ff02::1` | All nodes on the link |
+| `ff02::2` | All routers on the link |
+| `ff02::5` | OSPFv3 all routers |
+| `ff02::6` | OSPFv3 DR routers |
+| `ff02::9` | RIPng routers |
+| `ff02::a` | EIGRP routers |
+| `ff02::d` | PIM routers |
+| `ff02::16` | MLDv2-capable routers |
 | `ff02::1:ff00:0/104` | Solicited-node multicast prefix |
 
 The **solicited-node multicast address** is worth singling out. Every IPv6 interface automatically joins a multicast group derived from its own unicast address — specifically, `ff02::1:ff` concatenated with the last 24 bits of its unicast address. When another node needs to resolve the link-layer address for a unicast IPv6 address, it sends a Neighbour Solicitation to that target's solicited-node multicast address instead of broadcasting. Only the few nodes whose last 24 address bits happen to collide need to wake up and check the message; the rest are not bothered. This replaces ARP and removes the broadcast burden ARP placed on every node.
@@ -294,7 +292,7 @@ One of IPv6's defining features is that a host can come up on a new network and 
 
 ### SLAAC mechanism
 
-_SLAAC (Stateless Address Autoconfiguration) is the mechanism defined in RFC 4862 by which an IPv6 host derives a global unicast address by combining the network prefix advertised by the local router with an interface identifier it generates itself, requiring no server-side state._
+*SLAAC (Stateless Address Autoconfiguration) is the mechanism defined in RFC 4862 by which an IPv6 host derives a global unicast address by combining the network prefix advertised by the local router with an interface identifier it generates itself, requiring no server-side state.*
 
 The process when an interface comes up:
 
@@ -320,20 +318,20 @@ Two methods are used for the 64-bit interface identifier.
 
 **Modified EUI-64.** Take the 48-bit MAC address, insert `ff:fe` in the middle, flip the universal/local bit (bit 6 of the first octet). MAC `00:1B:63:84:45:E6` becomes IID `021b:63ff:fe84:45e6`. This was the original method. It has a serious privacy problem: the MAC address travels with the device. Anyone watching network traffic across multiple networks can correlate the same device at different locations by its IID. A laptop's MAC stays the same in a Kathmandu café and at a Bharatpur hotel, so the laptop's IPv6 address has the same lower 64 bits at both, and an observer can link the two sessions.
 
-**RFC 7217 stable privacy addresses (current default).** The IID is generated by hashing the prefix, interface, and a host secret. The IID is _stable_ for a given network (so a server reaches it reliably) but _different_ across networks (so observers cannot correlate). This is the current default on modern Linux, Windows, macOS, iOS, and Android.
+**RFC 7217 stable privacy addresses (current default).** The IID is generated by hashing the prefix, interface, and a host secret. The IID is *stable* for a given network (so a server reaches it reliably) but *different* across networks (so observers cannot correlate). This is the current default on modern Linux, Windows, macOS, iOS, and Android.
 
-**RFC 8981 temporary addresses.** In addition to the stable IID, the node generates short-lived random IIDs to use as the _source_ address for outgoing connections. A temporary address typically lives one day. Outbound web browsing uses the temporary address; inbound connections (servers, peer-to-peer) use the stable address. This prevents tracking of outgoing connections across time.
+**RFC 8981 temporary addresses.** In addition to the stable IID, the node generates short-lived random IIDs to use as the *source* address for outgoing connections. A temporary address typically lives one day. Outbound web browsing uses the temporary address; inbound connections (servers, peer-to-peer) use the stable address. This prevents tracking of outgoing connections across time.
 
 ### SLAAC vs DHCPv6
 
 Both can coexist. The RA flags tell the host which to use.
 
-| Scenario         | RA flags      | Address source                | DNS, NTP, etc.                      |
-| ---------------- | ------------- | ----------------------------- | ----------------------------------- |
-| Pure SLAAC       | M=0, A=1      | SLAAC from prefix             | From RA options (RDNSS)             |
-| Stateless DHCPv6 | M=0, O=1, A=1 | SLAAC from prefix             | From DHCPv6 (no address assignment) |
-| Stateful DHCPv6  | M=1, A=0      | DHCPv6 server                 | From DHCPv6                         |
-| Both             | M=1, A=1      | Both (one SLAAC + one DHCPv6) | From DHCPv6                         |
+| Scenario | RA flags | Address source | DNS, NTP, etc. |
+|---|---|---|---|
+| Pure SLAAC | M=0, A=1 | SLAAC from prefix | From RA options (RDNSS) |
+| Stateless DHCPv6 | M=0, O=1, A=1 | SLAAC from prefix | From DHCPv6 (no address assignment) |
+| Stateful DHCPv6 | M=1, A=0 | DHCPv6 server | From DHCPv6 |
+| Both | M=1, A=1 | Both (one SLAAC + one DHCPv6) | From DHCPv6 |
 
 In residential ISP deployments in Nepal — WorldLink, Subisu, Vianet — the standard is **DHCPv6 prefix delegation** between ISP and home router, and **SLAAC on the LAN** between the home router and connected devices. The ISP delegates a /56 to the home router, which then advertises /64s on each of its LAN segments via RA.
 
@@ -379,22 +377,22 @@ The IPv4 header is between 20 and 60 bytes long, depending on whether options ar
 
 Twelve fields:
 
-| Field                        | Bits  | Purpose                                            |
-| ---------------------------- | ----- | -------------------------------------------------- |
-| Version                      | 4     | Always 4 for IPv4                                  |
-| IHL (Internet Header Length) | 4     | Header length in 32-bit words (5 to 15)            |
-| DSCP                         | 6     | Differentiated Services class                      |
-| ECN                          | 2     | Explicit Congestion Notification                   |
-| Total Length                 | 16    | Header + data in bytes (max 65,535)                |
-| Identification               | 16    | Used during fragmentation                          |
-| Flags                        | 3     | DF (Don't Fragment), MF (More Fragments), reserved |
-| Fragment Offset              | 13    | Position of this fragment in original packet       |
-| TTL                          | 8     | Hop count; decremented at every router             |
-| Protocol                     | 8     | Next-layer protocol (TCP=6, UDP=17, ICMP=1)        |
-| Header Checksum              | 16    | Computed over the IPv4 header only                 |
-| Source Address               | 32    | Sender's IPv4                                      |
-| Destination Address          | 32    | Recipient's IPv4                                   |
-| Options                      | 0–320 | Optional extensions                                |
+| Field | Bits | Purpose |
+|---|---|---|
+| Version | 4 | Always 4 for IPv4 |
+| IHL (Internet Header Length) | 4 | Header length in 32-bit words (5 to 15) |
+| DSCP | 6 | Differentiated Services class |
+| ECN | 2 | Explicit Congestion Notification |
+| Total Length | 16 | Header + data in bytes (max 65,535) |
+| Identification | 16 | Used during fragmentation |
+| Flags | 3 | DF (Don't Fragment), MF (More Fragments), reserved |
+| Fragment Offset | 13 | Position of this fragment in original packet |
+| TTL | 8 | Hop count; decremented at every router |
+| Protocol | 8 | Next-layer protocol (TCP=6, UDP=17, ICMP=1) |
+| Header Checksum | 16 | Computed over the IPv4 header only |
+| Source Address | 32 | Sender's IPv4 |
+| Destination Address | 32 | Recipient's IPv4 |
+| Options | 0–320 | Optional extensions |
 
 ### The IPv6 header
 
@@ -426,42 +424,42 @@ The IPv6 header is exactly 40 bytes. Always. Eight fields:
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 ```
 
-| Field               | Bits | Purpose                                                        |
-| ------------------- | ---- | -------------------------------------------------------------- |
-| Version             | 4    | Always 6 for IPv6                                              |
-| Traffic Class       | 8    | DSCP + ECN (same role as IPv4 DSCP+ECN)                        |
-| Flow Label          | 20   | Identifies a flow for per-flow routing/QoS                     |
-| Payload Length      | 16   | Length of everything after this header, in bytes               |
-| Next Header         | 8    | Either an extension header type or a transport protocol number |
-| Hop Limit           | 8    | Decremented at every router (replaces TTL)                     |
-| Source Address      | 128  | Sender's IPv6                                                  |
-| Destination Address | 128  | Recipient's IPv6                                               |
+| Field | Bits | Purpose |
+|---|---|---|
+| Version | 4 | Always 6 for IPv6 |
+| Traffic Class | 8 | DSCP + ECN (same role as IPv4 DSCP+ECN) |
+| Flow Label | 20 | Identifies a flow for per-flow routing/QoS |
+| Payload Length | 16 | Length of everything after this header, in bytes |
+| Next Header | 8 | Either an extension header type or a transport protocol number |
+| Hop Limit | 8 | Decremented at every router (replaces TTL) |
+| Source Address | 128 | Sender's IPv6 |
+| Destination Address | 128 | Recipient's IPv6 |
 
 ### Field-by-field comparison
 
-| Function                                 | IPv4                                         | IPv6                                                               | Comment                        |
-| ---------------------------------------- | -------------------------------------------- | ------------------------------------------------------------------ | ------------------------------ |
-| Header size                              | 20–60 bytes, variable                        | 40 bytes, fixed                                                    | IPv6 is faster to parse        |
-| Address size                             | 32 bits                                      | 128 bits                                                           | $4 \times$ larger              |
-| Header length field                      | IHL needed                                   | Not needed                                                         | IPv6 header has fixed size     |
-| Header checksum                          | Yes, recomputed at every hop                 | Removed                                                            | Saves router CPU               |
-| Fragmentation                            | Done by router or sender                     | Done only by sender                                                | Routers never fragment in IPv6 |
-| Identification / Flags / Fragment Offset | In the main header                           | In a Fragment extension header (only when used)                    | Out of fast path               |
-| Options                                  | In the main header (variable)                | In extension headers (chained after main header)                   | Out of fast path               |
-| TTL → Hop Limit                          | TTL (semantically same)                      | Hop Limit (better name)                                            | Same function, clearer name    |
-| Protocol → Next Header                   | Protocol field points to next-layer protocol | Next Header points to next extension header OR next-layer protocol | More flexible                  |
-| Type of Service → Traffic Class          | 8-bit ToS, later split into DSCP+ECN         | 8-bit Traffic Class, same DSCP+ECN                                 | Same semantics                 |
-| Flow Label                               | Not present                                  | 20 bits                                                            | New, enables per-flow handling |
+| Function | IPv4 | IPv6 | Comment |
+|---|---|---|---|
+| Header size | 20–60 bytes, variable | 40 bytes, fixed | IPv6 is faster to parse |
+| Address size | 32 bits | 128 bits | $4 \times$ larger |
+| Header length field | IHL needed | Not needed | IPv6 header has fixed size |
+| Header checksum | Yes, recomputed at every hop | Removed | Saves router CPU |
+| Fragmentation | Done by router or sender | Done only by sender | Routers never fragment in IPv6 |
+| Identification / Flags / Fragment Offset | In the main header | In a Fragment extension header (only when used) | Out of fast path |
+| Options | In the main header (variable) | In extension headers (chained after main header) | Out of fast path |
+| TTL → Hop Limit | TTL (semantically same) | Hop Limit (better name) | Same function, clearer name |
+| Protocol → Next Header | Protocol field points to next-layer protocol | Next Header points to next extension header OR next-layer protocol | More flexible |
+| Type of Service → Traffic Class | 8-bit ToS, later split into DSCP+ECN | 8-bit Traffic Class, same DSCP+ECN | Same semantics |
+| Flow Label | Not present | 20 bits | New, enables per-flow handling |
 
 ### Key design improvements
 
-**Router-side fragmentation is gone.** In IPv4, if a packet was too large for the next link's MTU, the router fragmented it. This required the router to allocate buffers, copy header information across multiple fragments, and add per-fragment overhead. In IPv6, if a packet is too large, the router drops it and sends an ICMPv6 _Packet Too Big_ message back to the source. The source learns the path MTU and resizes its packets. This makes routers simpler and faster, but it requires that ICMPv6 messages flow back to the source — administrators who blindly block all ICMP break IPv6 path-MTU discovery, leading to silent connection hangs.
+**Router-side fragmentation is gone.** In IPv4, if a packet was too large for the next link's MTU, the router fragmented it. This required the router to allocate buffers, copy header information across multiple fragments, and add per-fragment overhead. In IPv6, if a packet is too large, the router drops it and sends an ICMPv6 *Packet Too Big* message back to the source. The source learns the path MTU and resizes its packets. This makes routers simpler and faster, but it requires that ICMPv6 messages flow back to the source — administrators who blindly block all ICMP break IPv6 path-MTU discovery, leading to silent connection hangs.
 
 **No checksum.** The IPv4 header checksum had to be recomputed at every hop because the TTL changes at every hop. Removing it saves router cycles. Data integrity now relies on Layer 2 frame checksums (Ethernet FCS) and Layer 4 checksums (UDP and TCP). In IPv6, the UDP checksum is also mandatory — in IPv4, it was optional.
 
 **Options moved out.** Putting options in extension headers (Section 2.7) means the router's fast path can be optimised for the common case (no extension headers) and only the slow path handles the rare case.
 
-**Bigger addresses, fewer header changes.** The address fields are four times larger, but the rest of the header has _fewer_ fields than IPv4. The total header size is only twice as large despite the address fields being four times as large.
+**Bigger addresses, fewer header changes.** The address fields are four times larger, but the rest of the header has *fewer* fields than IPv4. The total header size is only twice as large despite the address fields being four times as large.
 
 ## 2.7 IPv6 extension headers
 
@@ -526,46 +524,45 @@ Practical advice: in production deployments, avoid extension headers other than 
 
 ### ICMPv6
 
-_ICMPv6 (Internet Control Message Protocol version 6) is the diagnostic, error-reporting, and signalling protocol for IPv6 defined in RFC 4443, used for the same purposes as ICMP in IPv4 plus the address-resolution and neighbour-management functions that ARP performed in IPv4._
+*ICMPv6 (Internet Control Message Protocol version 6) is the diagnostic, error-reporting, and signalling protocol for IPv6 defined in RFC 4443, used for the same purposes as ICMP in IPv4 plus the address-resolution and neighbour-management functions that ARP performed in IPv4.*
 
 ICMPv6 has Next Header value 58. Messages fall into two broad categories — error messages (types 0–127) and informational messages (types 128–255).
 
 **Error message types (selected):**
 
-| Type | Name                    | When sent                                               |
-| ---- | ----------------------- | ------------------------------------------------------- |
-| 1    | Destination Unreachable | No route, port unreachable, etc.                        |
-| 2    | Packet Too Big          | Next link's MTU is smaller than packet                  |
-| 3    | Time Exceeded           | Hop Limit reached zero or fragment reassembly timed out |
-| 4    | Parameter Problem       | Bad field in header                                     |
+| Type | Name | When sent |
+|---|---|---|
+| 1 | Destination Unreachable | No route, port unreachable, etc. |
+| 2 | Packet Too Big | Next link's MTU is smaller than packet |
+| 3 | Time Exceeded | Hop Limit reached zero or fragment reassembly timed out |
+| 4 | Parameter Problem | Bad field in header |
 
 **Informational message types (selected):**
 
-| Type | Name                      | Purpose                                |
-| ---- | ------------------------- | -------------------------------------- |
-| 128  | Echo Request              | The IPv6 `ping`                        |
-| 129  | Echo Reply                | Response to ping                       |
-| 130  | Multicast Listener Query  | MLD — multicast group management       |
-| 131  | Multicast Listener Report | MLD                                    |
-| 132  | Multicast Listener Done   | MLD                                    |
-| 133  | Router Solicitation       | NDP — ask routers to send RAs          |
-| 134  | Router Advertisement      | NDP — announce router presence, prefix |
-| 135  | Neighbour Solicitation    | NDP — ask for link-layer address, DAD  |
-| 136  | Neighbour Advertisement   | NDP — respond with link-layer address  |
-| 137  | Redirect                  | NDP — tell host of a better next hop   |
+| Type | Name | Purpose |
+|---|---|---|
+| 128 | Echo Request | The IPv6 `ping` |
+| 129 | Echo Reply | Response to ping |
+| 130 | Multicast Listener Query | MLD — multicast group management |
+| 131 | Multicast Listener Report | MLD |
+| 132 | Multicast Listener Done | MLD |
+| 133 | Router Solicitation | NDP — ask routers to send RAs |
+| 134 | Router Advertisement | NDP — announce router presence, prefix |
+| 135 | Neighbour Solicitation | NDP — ask for link-layer address, DAD |
+| 136 | Neighbour Advertisement | NDP — respond with link-layer address |
+| 137 | Redirect | NDP — tell host of a better next hop |
 
 ICMPv6 is fundamental to IPv6 in a way ICMPv4 never was to IPv4. Blocking ICMPv6 at a firewall breaks IPv6. The minimum messages that must be allowed are Packet Too Big (for path-MTU discovery), the NDP messages (for basic address resolution), and Destination Unreachable. RFC 4890 gives detailed guidance on which ICMPv6 messages to permit at a firewall.
 
 ### Neighbour Discovery Protocol (NDP)
 
-_NDP (Neighbour Discovery Protocol) is the ICMPv6-based protocol defined in RFC 4861 that performs link-local discovery, address resolution, router discovery, prefix discovery, parameter discovery, address autoconfiguration support, neighbour reachability tracking, and redirection on an IPv6 link._
+*NDP (Neighbour Discovery Protocol) is the ICMPv6-based protocol defined in RFC 4861 that performs link-local discovery, address resolution, router discovery, prefix discovery, parameter discovery, address autoconfiguration support, neighbour reachability tracking, and redirection on an IPv6 link.*
 
 NDP replaces what was scattered across ARP, ICMP Router Discovery, and ICMP Redirect in IPv4, plus adds several new functions. The five message types:
 
 **Router Solicitation (RS, type 133).** Sent by a host when its interface comes up, to prompt routers on the link to send Router Advertisements immediately rather than waiting for the next scheduled one. Destination is `ff02::2` (all routers on the link).
 
 **Router Advertisement (RA, type 134).** Sent periodically by every router on the link, and additionally in response to RS messages. Carries:
-
 - The router's link-layer address (so hosts know the gateway's MAC)
 - One or more **Prefix Information Options** advertising prefixes for SLAAC
 - The current hop limit hosts should use

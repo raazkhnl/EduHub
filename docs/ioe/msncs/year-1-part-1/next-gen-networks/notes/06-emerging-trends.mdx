@@ -20,7 +20,7 @@ Each of the three technologies the syllabus has spent chapters on involves a mig
 
 The IPv4-to-IPv6 transition has been formally in progress since 1995 and is still incomplete in 2026. Three transition mechanisms cover the practical patterns.
 
-**Dual stack.** _Dual stack is the transition strategy in which a host or router runs both IPv4 and IPv6 simultaneously, listening on both, and choosing which to use for each outgoing connection based on the destination's available addresses and Happy Eyeballs heuristics._ Every operating system since Windows Vista (2007) and every reasonable network device supports dual stack. This is the default approach. The downside is operational complexity — every firewall rule, every routing policy, every monitoring system has to know about both protocols. Address-space economics also work against pure dual stack at the access layer because IPv4 addresses are scarce.
+**Dual stack.** *Dual stack is the transition strategy in which a host or router runs both IPv4 and IPv6 simultaneously, listening on both, and choosing which to use for each outgoing connection based on the destination's available addresses and Happy Eyeballs heuristics.* Every operating system since Windows Vista (2007) and every reasonable network device supports dual stack. This is the default approach. The downside is operational complexity — every firewall rule, every routing policy, every monitoring system has to know about both protocols. Address-space economics also work against pure dual stack at the access layer because IPv4 addresses are scarce.
 
 **Tunnelling.** Where dual stack is not possible because intermediate networks support only IPv4, IPv6 packets are encapsulated inside IPv4 packets and tunnelled across. Mechanisms include:
 
@@ -242,7 +242,7 @@ For an operator in Nepal, the practical concern is being collateral damage in an
 
 ## 6.4 Named Data Networking (NDN)
 
-_Named Data Networking is a proposed future Internet architecture in which packets are addressed not by the IP address of a destination host but by the name of the content being requested, with the network routing requests by name and delivering responses along the reverse path, treating content rather than location as the fundamental identifier._
+*Named Data Networking is a proposed future Internet architecture in which packets are addressed not by the IP address of a destination host but by the name of the content being requested, with the network routing requests by name and delivering responses along the reverse path, treating content rather than location as the fundamental identifier.*
 
 ### The motivation
 
@@ -335,7 +335,7 @@ IBN is closely related to SDN and depends on it. SDN provides the programmable s
 
 ## 6.6 Quantum Networking (QNet)
 
-_A Quantum Network is a network that transmits and stores quantum information — typically encoded in quantum bits (qubits) carried by single photons — to support tasks such as Quantum Key Distribution, distributed quantum computing, and quantum-enhanced sensing, in addition to or independent of classical data communication._
+*A Quantum Network is a network that transmits and stores quantum information — typically encoded in quantum bits (qubits) carried by single photons — to support tasks such as Quantum Key Distribution, distributed quantum computing, and quantum-enhanced sensing, in addition to or independent of classical data communication.*
 
 ### Why quantum networking
 
@@ -376,7 +376,7 @@ The frontier:
 
 ### Quantum networking in context
 
-The honest position in 2026: QKD has commercial niches but is far from mainstream because PQC is solving the same problem with much lower cost, less infrastructure, and global compatibility. The interesting question is what quantum networking will do _beyond_ key distribution — distributed quantum computing and quantum sensing. These are the long-game justifications.
+The honest position in 2026: QKD has commercial niches but is far from mainstream because PQC is solving the same problem with much lower cost, less infrastructure, and global compatibility. The interesting question is what quantum networking will do *beyond* key distribution — distributed quantum computing and quantum sensing. These are the long-game justifications.
 
 For Nepal, quantum networking is a research-only topic. There is no QKD deployment in Nepal, no quantum-network testbed, no commercial driver. The academic interest is at IOE Pulchowk and a small number of researchers; that is the realistic scope for the next decade.
 

@@ -5,8 +5,9 @@ import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import styles from './styles.module.css';
 
 /**
- * ScrollProgress — a 2px bar pinned just below the navbar that fills as the
- * reader scrolls a doc page. Hidden on the homepage and on `/bundle`.
+ * ScrollProgress — a 3px bar pinned to the very top of the viewport (above
+ * the navbar) that fills as the reader scrolls a doc page. Hidden on the
+ * homepage and on `/bundle`.
  *
  * Uses requestAnimationFrame to avoid jank on long pages.
  */

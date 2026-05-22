@@ -10,3 +10,10 @@ static/img/social-card.png
 files (1)
 files (2)
 incoming
+
+# MDX in docs/ is excluded because Prettier's markdown processor mishandles
+# LaTeX math: it sees `$p_i$` as italic markdown (`*i*` swap) and corrupts
+# every subscripted equation. Until prettier-plugin-math (or equivalent) is
+# wired up, MDX content is hand-formatted and Prettier-skipped.
+docs/**/*.mdx
+docs/**/*.md

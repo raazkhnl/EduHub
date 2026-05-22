@@ -14,7 +14,7 @@ Cryptography assumes the right keys are in the right hands. Symmetric ciphers as
 
 ## 4.1 PKI — definition, historical context, importance
 
-_A Public Key Infrastructure (PKI) is the combination of policies, procedures, hardware, software, and the trusted organisations that issue, manage, distribute, validate, and revoke digital certificates binding public keys to identities, allowing authenticated public-key cryptography at scale._
+*A Public Key Infrastructure (PKI) is the combination of policies, procedures, hardware, software, and the trusted organisations that issue, manage, distribute, validate, and revoke digital certificates binding public keys to identities, allowing authenticated public-key cryptography at scale.*
 
 PKI is what turns Diffie-Hellman, RSA, ECDSA, and EdDSA from interesting mathematics into infrastructure that protects every HTTPS connection, every signed app on every phone, every encrypted email between governments. Without PKI, public-key cryptography solves nothing — Alice and Bob can exchange keys, but they cannot know whose keys those really are.
 
@@ -28,7 +28,7 @@ The solution adopted by the Internet is the **certificate** — a signed documen
 
 ### Historical context
 
-The need for a key-binding mechanism was clear from the moment public-key cryptography was invented. The 1976 Diffie-Hellman paper discussed it; the 1977 RSA paper proposed a "public file" of keys; the 1978 paper _Using Encryption for Authentication in Large Networks of Computers_ by Needham and Schroeder gave the first detailed protocol with a trusted third party.
+The need for a key-binding mechanism was clear from the moment public-key cryptography was invented. The 1976 Diffie-Hellman paper discussed it; the 1977 RSA paper proposed a "public file" of keys; the 1978 paper *Using Encryption for Authentication in Large Networks of Computers* by Needham and Schroeder gave the first detailed protocol with a trusted third party.
 
 The X.509 standard came from a different direction — the ITU-T's work on the X.500 directory system in the 1980s. X.509 was designed as a way to authenticate users of the X.500 directory; the directory itself never took off, but the certificate format X.509 specified became the universal certificate format. The IETF later adapted X.509 to the Internet through a series of RFCs (the most important being RFC 5280 in 2008, defining X.509v3 certificates for Internet use).
 
@@ -67,7 +67,7 @@ A working PKI has several distinct roles, often run by different organisations.
 
 ### Certificate Authority (CA)
 
-_A Certificate Authority is the entity that issues digital certificates, vouches for the binding between a public key and an identity by signing the certificate with its own private key, and accepts the trust responsibility for the issued certificates._
+*A Certificate Authority is the entity that issues digital certificates, vouches for the binding between a public key and an identity by signing the certificate with its own private key, and accepts the trust responsibility for the issued certificates.*
 
 The CA is the trusted third party at the heart of PKI. Its job:
 
@@ -101,7 +101,7 @@ The browser, presented with the end-entity certificate, walks up the chain throu
 
 ### Registration Authority (RA)
 
-_A Registration Authority is the entity that receives certificate requests from end users, verifies their identity according to the CA's policies, and forwards approved requests to the CA for signing — separating the identity-verification function from the certificate-signing function._
+*A Registration Authority is the entity that receives certificate requests from end users, verifies their identity according to the CA's policies, and forwards approved requests to the CA for signing — separating the identity-verification function from the certificate-signing function.*
 
 The RA is the "front office" of the CA. It interacts with applicants, checks documents (passport, business registration, domain ownership proof), and authorises issuance. The CA's private key may be in a hardware-locked vault that no one at the RA touches; the RA's job is only to say "issue a certificate for this verified identity."
 
@@ -109,9 +109,9 @@ In small CAs the RA and CA functions are combined. In large CAs they are separat
 
 ### Certificate Revocation List (CRL)
 
-_A Certificate Revocation List is a digitally signed list, published periodically by the CA, of certificate serial numbers that have been revoked before their natural expiry, allowing relying parties to check whether a certificate they hold is still trustworthy._
+*A Certificate Revocation List is a digitally signed list, published periodically by the CA, of certificate serial numbers that have been revoked before their natural expiry, allowing relying parties to check whether a certificate they hold is still trustworthy.*
 
-Certificates have an expiry date — typically one year now, after the CA/Browser Forum ratcheted down the maximum to 398 days in 2020. But sometimes a certificate must be invalidated _before_ its expiry — the holder's private key was compromised, the holder lied during identity verification, the holder's organisation no longer exists, or some misissuance was discovered.
+Certificates have an expiry date — typically one year now, after the CA/Browser Forum ratcheted down the maximum to 398 days in 2020. But sometimes a certificate must be invalidated *before* its expiry — the holder's private key was compromised, the holder lied during identity verification, the holder's organisation no longer exists, or some misissuance was discovered.
 
 The CRL is the original revocation mechanism. The CA maintains a list of revoked serial numbers and signs it. A client checking a certificate downloads the CRL and looks for the certificate's serial number.
 
@@ -125,17 +125,16 @@ These problems led to two successors.
 
 ### OCSP and OCSP stapling
 
-_OCSP (Online Certificate Status Protocol, RFC 6960) is a real-time protocol by which a client queries a CA's OCSP responder for the current status of a specific certificate, receiving a signed "good," "revoked," or "unknown" response._
+*OCSP (Online Certificate Status Protocol, RFC 6960) is a real-time protocol by which a client queries a CA's OCSP responder for the current status of a specific certificate, receiving a signed "good," "revoked," or "unknown" response.*
 
 OCSP solves the CRL size and freshness problems. The client asks about one specific certificate; the responder answers about that one certificate. Responses are cached briefly (typically minutes to hours).
 
 OCSP itself has problems:
-
 - **Privacy.** The OCSP responder learns which websites you visit (because you query it about each site's certificate).
 - **Reliability.** If the responder is down, browsers historically "fail open" — they treat the unanswered query as "certificate is fine" — to avoid breaking the user experience.
 - **Performance.** An extra round trip to the CA before each connection.
 
-**OCSP stapling** (RFC 6066) addresses these. Instead of the client asking the OCSP responder, the _server_ asks periodically and includes the signed response in its TLS handshake. The client gets the freshness guarantee without the extra round trip or the privacy leak.
+**OCSP stapling** (RFC 6066) addresses these. Instead of the client asking the OCSP responder, the *server* asks periodically and includes the signed response in its TLS handshake. The client gets the freshness guarantee without the extra round trip or the privacy leak.
 
 ### CRLite and modern revocation
 
@@ -145,10 +144,9 @@ The combination of short certificate lifetimes (90 days for Let's Encrypt, 398 d
 
 ### Certificate Repository
 
-_A Certificate Repository is the publicly accessible storage system from which issued certificates and revocation information can be downloaded, typically operated by the CA._
+*A Certificate Repository is the publicly accessible storage system from which issued certificates and revocation information can be downloaded, typically operated by the CA.*
 
 The repository serves several purposes:
-
 - Distributing intermediate CA certificates that servers may not have included in their TLS handshake.
 - Providing CRLs and OCSP responses.
 - Publishing the CA's policy documents (Certificate Practice Statement and Certificate Policy).
@@ -157,7 +155,7 @@ For browser PKI, the repository is just a set of HTTPS endpoints; for X.500-styl
 
 ### Certificate Transparency logs
 
-_Certificate Transparency (CT, RFC 6962) is the system of public, append-only, cryptographically-verifiable logs of every certificate issued by participating CAs, designed so that misissuance can be detected by anyone monitoring the logs._
+*Certificate Transparency (CT, RFC 6962) is the system of public, append-only, cryptographically-verifiable logs of every certificate issued by participating CAs, designed so that misissuance can be detected by anyone monitoring the logs.*
 
 CT is not part of the classical PKI model but has become essential since around 2018. The problem CT solves: if a CA misissues a certificate (issues one to an attacker for a domain they do not own), the legitimate owner may never know. CT requires every certificate to be published in append-only logs that anyone can monitor.
 
@@ -320,7 +318,7 @@ The CA validates identity to different depths depending on the certificate type.
 
 ### ACME — Automatic Certificate Management Environment
 
-_ACME (RFC 8555) is the IETF-standardised protocol for automating certificate issuance and renewal, designed for Let's Encrypt and now widely supported, in which a client proves control of a domain through automated challenges and receives a signed certificate without human intervention._
+*ACME (RFC 8555) is the IETF-standardised protocol for automating certificate issuance and renewal, designed for Let's Encrypt and now widely supported, in which a client proves control of a domain through automated challenges and receives a signed certificate without human intervention.*
 
 ACME made HTTPS-by-default practical. Before ACME, every certificate was a manual operation — email exchange, payment, file uploads. With ACME, a server can request and renew its own certificates automatically. Major ACME clients: Certbot, acme.sh, Caddy (built-in), Traefik (built-in), Nginx with the certbot plugin.
 
@@ -415,7 +413,7 @@ CT deserves a closer look because it has reshaped trust expectations in the PKI 
 The mechanism:
 
 1. **Logs.** A small number of operators run append-only logs. Each log is a Merkle tree; entries can only be added, never removed or reordered.
-2. **CAs submit certificates to logs.** When a CA issues a certificate, it sends a _precertificate_ (a special form of the certificate with one extension that makes it not directly usable) to one or more logs. The log returns a _Signed Certificate Timestamp (SCT)_ — a receipt that the certificate has been logged.
+2. **CAs submit certificates to logs.** When a CA issues a certificate, it sends a *precertificate* (a special form of the certificate with one extension that makes it not directly usable) to one or more logs. The log returns a *Signed Certificate Timestamp (SCT)* — a receipt that the certificate has been logged.
 3. **SCTs in certificates.** The CA embeds the SCTs into the final certificate before issuing.
 4. **Browsers verify SCTs.** A browser refuses to trust a certificate that does not include SCTs from a sufficient number of trusted logs.
 5. **Monitors watch the logs.** Anyone can subscribe to the logs and watch for certificates issued for their domains. crt.sh, Censys, and several other services provide free monitoring.
@@ -428,7 +426,6 @@ The result: every certificate issued by every trusted CA appears in a public log
 The 2026 best practices for operating PKI:
 
 **For end users / domain owners.**
-
 - Use Let's Encrypt or another ACME-compatible CA for automated issuance.
 - Monitor your domains in CT (crt.sh dashboards, free alert services).
 - Pin certificates in mobile applications.
@@ -436,7 +433,6 @@ The 2026 best practices for operating PKI:
 - Keep CA root stores updated on managed devices.
 
 **For organisations running internal PKI.**
-
 - Run the root CA offline (powered-off in a safe). Bring it online only when signing intermediate certificates.
 - Store all CA keys in FIPS-140-2 Level 3 HSMs.
 - Separate the RA and CA functions, with multi-person controls on the signing operation.
@@ -444,7 +440,6 @@ The 2026 best practices for operating PKI:
 - Plan for CA migration — the root will need to be replaced before its expiry (typically 10–25 years).
 
 **For CAs.**
-
 - Maintain WebTrust audits.
 - Submit to CT for all issued certificates.
 - Implement strong identity validation, especially for higher-trust certificate tiers.
