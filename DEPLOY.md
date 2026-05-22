@@ -25,14 +25,14 @@ CI runs `npm run lint` and `npm run build` on every PR (see
 If `npm run build` fails:
 
 - **`fatal: your current branch '…' does not have any commits yet`** — Docusaurus
-  is reading the git "last updated" stamp. Locally, the build *gates that on
-  `process.env.CI`* (see `docusaurus.config.js`), so this should only happen in
+  is reading the git "last updated" stamp. Locally, the build _gates that on
+  `process.env.CI`_ (see `docusaurus.config.js`), so this should only happen in
   CI. If it does, ensure the workflow checkout step uses `fetch-depth: 0`.
 - **Plugin "rehype-katex" is not a valid MDX plugin config** — the build was
   bootstrapped against an ESM-only build of `rehype-katex`. We pull `.default`
   defensively; if you upgrade `rehype-katex`, verify the import in
   `docusaurus.config.js` still works.
-- **Duplicate routes** — usually means a folder has both an `index.mdx` *and* a
+- **Duplicate routes** — usually means a folder has both an `index.mdx` _and_ a
   `_category_.json` with `link.type: 'generated-index'` claiming the same slug.
   Pick one (we use explicit `index.mdx` per institution and program).
 
@@ -50,9 +50,9 @@ If `npm run build` fails:
 
 Two DNS records, both at your registrar / DNS host:
 
-| Type    | Name    | Value                            | Notes                       |
-| ------- | ------- | -------------------------------- | --------------------------- |
-| `CNAME` | `notes` | `<github-username>.github.io.`   | Required. Trailing dot.     |
+| Type    | Name                             | Value                              | Notes                                                          |
+| ------- | -------------------------------- | ---------------------------------- | -------------------------------------------------------------- |
+| `CNAME` | `eduhub`                         | `<github-username>.github.io.`     | Required. Trailing dot.                                        |
 | `TXT`   | `_github-pages-challenge-<user>` | (value from GitHub Pages settings) | If GitHub asks for domain verification — see Settings → Pages. |
 
 After DNS propagates (5 min – 24 h):
@@ -63,19 +63,19 @@ After DNS propagates (5 min – 24 h):
 3. Tick **Enforce HTTPS**.
 
 The repo already ships `static/CNAME` so every build pins the domain. If you
-*don't* want a custom domain, delete `static/CNAME` and update `url` /
+_don't_ want a custom domain, delete `static/CNAME` and update `url` /
 `baseUrl` in `docusaurus.config.js`.
 
 ## 4. Optional integrations (set as repo secrets)
 
 Add at **Settings → Secrets and variables → Actions → New repository secret**:
 
-| Secret              | What it does                                         |
-| ------------------- | ---------------------------------------------------- |
-| `ALGOLIA_APP_ID`    | Switches search from local index to Algolia DocSearch. |
-| `ALGOLIA_API_KEY`   | Public search-only API key (NOT the admin key).      |
-| `ALGOLIA_INDEX`     | Algolia index name. Defaults to `eduhub`.            |
-| `GA_TRACKING_ID`    | Google Analytics 4 measurement ID, e.g. `G-XXXXXXX`. |
+| Secret            | What it does                                           |
+| ----------------- | ------------------------------------------------------ |
+| `ALGOLIA_APP_ID`  | Switches search from local index to Algolia DocSearch. |
+| `ALGOLIA_API_KEY` | Public search-only API key (NOT the admin key).        |
+| `ALGOLIA_INDEX`   | Algolia index name. Defaults to `eduhub`.              |
+| `GA_TRACKING_ID`  | Google Analytics 4 measurement ID, e.g. `G-XXXXXXX`.   |
 
 Local search works without any of these — Algolia is purely an upgrade.
 
@@ -84,21 +84,21 @@ Local search works without any of these — Algolia is purely an upgrade.
 Open the live URL and confirm in this order. Anything in the **must-pass**
 column blocks the release; **should-pass** items just file a follow-up.
 
-| Check                              | Pass criterion                                                   | Severity   |
-| ---------------------------------- | ---------------------------------------------------------------- | ---------- |
-| Home page renders                  | `/` returns 200, branded                                          | must-pass  |
-| Doc page renders                   | `/ioe/msncs/year-1-part-1/cryptography/notes/ch01` returns 200    | must-pass  |
-| Search opens                       | ⌘K / CtrlK opens the search modal                                 | must-pass  |
-| Math renders                       | Inline `$E=mc^2$` shows as KaTeX, not raw text                    | must-pass  |
-| Dark mode toggles                  | Click sun/moon — colours flip without reload                      | must-pass  |
-| Edit on GitHub link                | Clicking it lands on the correct file in the GH editor            | must-pass  |
-| 404 page                           | `/this-does-not-exist` shows the branded 404                      | must-pass  |
-| PWA installable                    | DevTools → Application → Manifest shows all icons, no warnings    | should-pass |
-| Bundle Builder                     | `/bundle` lists 29 docs; selecting + Markdown export downloads    | should-pass |
-| Focus Mode                         | Shift+F hides chrome, Esc restores                                | should-pass |
-| OG image preview                   | Paste URL in Slack / Discord — see the social card                | should-pass |
-| Lighthouse score                   | Performance ≥ 90, SEO ≥ 95, Best-practices ≥ 95, A11y ≥ 95        | should-pass |
-| Last-updated stamp on doc          | Shows date + author (CI builds only)                              | should-pass |
+| Check                     | Pass criterion                                                 | Severity    |
+| ------------------------- | -------------------------------------------------------------- | ----------- |
+| Home page renders         | `/` returns 200, branded                                       | must-pass   |
+| Doc page renders          | `/ioe/msncs/year-1-part-1/cryptography/notes/ch01` returns 200 | must-pass   |
+| Search opens              | ⌘K / CtrlK opens the search modal                              | must-pass   |
+| Math renders              | Inline `$E=mc^2$` shows as KaTeX, not raw text                 | must-pass   |
+| Dark mode toggles         | Click sun/moon — colours flip without reload                   | must-pass   |
+| Edit on GitHub link       | Clicking it lands on the correct file in the GH editor         | must-pass   |
+| 404 page                  | `/this-does-not-exist` shows the branded 404                   | must-pass   |
+| PWA installable           | DevTools → Application → Manifest shows all icons, no warnings | should-pass |
+| Bundle Builder            | `/bundle` lists 29 docs; selecting + Markdown export downloads | should-pass |
+| Focus Mode                | Shift+F hides chrome, Esc restores                             | should-pass |
+| OG image preview          | Paste URL in Slack / Discord — see the social card             | should-pass |
+| Lighthouse score          | Performance ≥ 90, SEO ≥ 95, Best-practices ≥ 95, A11y ≥ 95     | should-pass |
+| Last-updated stamp on doc | Shows date + author (CI builds only)                           | should-pass |
 
 ## 6. Rolling forward
 
@@ -175,7 +175,7 @@ recovered in 4 minutes end-to-end.
 
 ### Prettier and ESLint disagree on formatting
 
-- ESLint here is configured for *correctness*, not style — Prettier owns
+- ESLint here is configured for _correctness_, not style — Prettier owns
   formatting. Run `npm run format` (writes) or `npm run format:check`
   (verifies). If a rule ever conflicts, change the ESLint rule, not Prettier.
 
