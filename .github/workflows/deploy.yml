@@ -18,19 +18,16 @@ permissions:
 env:
   NODE_VERSION: '20'
   # ─── Deployment target ──────────────────────────────────────────────────────
-  # Set to `ghpages` while the site is served at the GitHub Pages preview URL
-  # (https://raazkhnl.github.io/EduHub/) — Docusaurus builds with the right
-  # baseUrl and omits the CNAME file so GH Pages doesn't redirect.
+  # Default is the custom domain (eduhub.khanalrajesh.com.np):
+  # baseUrl=/ and `static/CNAME` is shipped on every deploy.
   #
-  # Once the custom domain (eduhub.khanalrajesh.com.np) is live and verified in
-  # Settings → Pages, change the value below to an empty string ('') or delete
-  # the line entirely. The build will then default to baseUrl `/` and ship the
-  # CNAME file again, locking the deploy onto the custom domain.
+  # To temporarily ship to the GitHub Pages preview URL
+  # (https://raazkhnl.github.io/EduHub/) instead — e.g. while DNS is migrating
+  # — uncomment the next line:
   #
-  # To override per-run (e.g. testing a branch), define a repo *variable* of
-  # the same name at Settings → Secrets and variables → Actions → Variables
-  # and adjust the env-block below to read from `${{ vars.DEPLOY_TARGET }}`.
-  DEPLOY_TARGET: 'ghpages'
+  #   DEPLOY_TARGET: 'ghpages'
+  #
+  # `ghpages` mode flips baseUrl to /EduHub/ and strips CNAME from the build.
 
 jobs:
   build:
