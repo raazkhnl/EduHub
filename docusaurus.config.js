@@ -117,8 +117,14 @@ const config = {
         sitemap: {
           changefreq: 'weekly',
           priority: 0.6,
-          ignorePatterns: ['/tags/**'],
+          ignorePatterns: ['/tags/**', '/search'],
           filename: 'sitemap.xml',
+          // `lastmod: 'date'` makes Docusaurus emit a YYYY-MM-DD <lastmod> from
+          // the doc's last git-edit time during CI builds. Outside CI the
+          // showLastUpdateTime gate above stays off, so the seo-enhance plugin
+          // (postBuild) backfills <lastmod> from the `last_update.date`
+          // frontmatter for any URL the sitemap left blank.
+          lastmod: 'date',
         },
         gtag: process.env.GA_TRACKING_ID
           ? { trackingID: process.env.GA_TRACKING_ID, anonymizeIP: true }
@@ -174,6 +180,71 @@ const config = {
       tagName: 'link',
       attributes: { rel: 'preconnect', href: 'https://cdn.jsdelivr.net', crossorigin: 'anonymous' },
     },
+    // ── Sitemap discovery hint ────────────────────────────────────────────
+    // Some crawlers (most notably Bingbot and a few archival bots) look for
+    // <link rel="sitemap"> as a backup signal even when robots.txt already
+    // points them at the same URL.
+    {
+      tagName: 'link',
+      attributes: {
+        rel: 'sitemap',
+        type: 'application/xml',
+        title: 'Sitemap',
+        href: `${SITE_URL}/sitemap.xml`,
+      },
+    },
+    // ── schema.org · Organization ─────────────────────────────────────────
+    // Tells Google who runs this site, which is what unlocks the "knowledge
+    // panel" treatment and lets it merge social profile + logo data into the
+    // SERP listing.
+    {
+      tagName: 'script',
+      attributes: { type: 'application/ld+json' },
+      innerHTML: JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'Organization',
+        name: 'EduHub',
+        alternateName: 'EduHub — Nepal engineering notes',
+        url: SITE_URL,
+        logo: `${SITE_URL}/img/social-card.png`,
+        founder: {
+          '@type': 'Person',
+          name: 'RaaZ Khanal',
+          url: 'https://khanalrajesh.com.np',
+        },
+        sameAs: [
+          `https://github.com/${GITHUB_ORG}`,
+          `https://github.com/${GITHUB_ORG}/${GITHUB_REPO}`,
+          'https://khanalrajesh.com.np',
+        ],
+      }),
+    },
+    // ── schema.org · WebSite + SearchAction ───────────────────────────────
+    // The SearchAction block is what enables the "sitelinks search box" in
+    // Google for the brand query. The URL template points at the local docs
+    // search route the search-local plugin owns.
+    {
+      tagName: 'script',
+      attributes: { type: 'application/ld+json' },
+      innerHTML: JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'WebSite',
+        name: 'EduHub',
+        url: SITE_URL,
+        inLanguage: 'en',
+        description:
+          'Curated chapter notes, lab manuals, and past papers for IOE, CTEVT and TU programs in Nepal — including MSNCS (M.Sc. Networks and Cybersecurity).',
+        publisher: { '@type': 'Organization', name: 'EduHub', url: SITE_URL },
+        potentialAction: {
+          '@type': 'SearchAction',
+          target: {
+            '@type': 'EntryPoint',
+            urlTemplate: `${SITE_URL}/search?q={search_term_string}`,
+          },
+          'query-input': 'required name=search_term_string',
+        },
+      }),
+    },
   ],
 
   themes: ['@docusaurus/theme-mermaid'],
@@ -209,6 +280,9 @@ const config = {
 
     // ── Bundle manifest ──────────────────────────────────────────────────────
     require.resolve('./plugins/bundle-manifest'),
+
+    // ── SEO enhance (Article JSON-LD, sitemap lastmod) ───────────────────────
+    require.resolve('./plugins/seo-enhance'),
 
     // ── Search ───────────────────────────────────────────────────────────────
     !HAS_ALGOLIA && [
@@ -275,13 +349,28 @@ const config = {
         {
           name: 'keywords',
           content:
-            'IOE, CTEVT, MSNCS, BCT, Tribhuvan University, Nepal engineering notes, Pulchowk, syllabus, past papers',
+            'IOE, IOE Pulchowk, CTEVT, MSNCS, M.Sc. Networks and Cybersecurity, BCT, BCE, BEX, BEL, BME, BSc CSIT, Tribhuvan University, TU, Nepal engineering notes, Pulchowk Campus, syllabus, past papers, lecture notes, chapter notes, MSNCS cyber security, ENCTNS502, cryptography notes Nepal',
         },
         { name: 'author', content: 'RaaZ Khanal' },
         { name: 'theme-color', content: '#0F766E' },
+        // Tell Google + Bing to index everything, follow links, and feel free
+        // to use large image previews in rich results (default would be a
+        // small thumbnail). max-snippet:-1 lets the snippet be as long as
+        // makes sense for the query.
+        {
+          name: 'robots',
+          content: 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1',
+        },
+        { name: 'googlebot', content: 'index, follow, max-image-preview:large, max-snippet:-1' },
+        // Geographic targeting hint for region-specific result blending.
+        { name: 'geo.region', content: 'NP' },
+        { name: 'geo.placename', content: 'Kathmandu' },
         { property: 'og:type', content: 'website' },
         { property: 'og:site_name', content: 'EduHub' },
+        { property: 'og:locale', content: 'en_US' },
         { name: 'twitter:card', content: 'summary_large_image' },
+        { name: 'twitter:site', content: '@raazkhnl' },
+        { name: 'twitter:creator', content: '@raazkhnl' },
       ],
       colorMode: {
         defaultMode: 'light',

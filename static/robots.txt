@@ -1,5 +1,32 @@
+# EduHub — crawler directives
+# Site:    https://eduhub.khanalrajesh.com.np
+# Sitemap: https://eduhub.khanalrajesh.com.np/sitemap.xml
+#
+# Everything under /docs (which is mounted at "/" because the docs route base
+# is the root) is intentionally crawlable. We only block the search results
+# page (per-query, no fresh content) and the Bundle Builder's static
+# manifest, since neither offers anything indexable.
+
 User-agent: *
 Allow: /
 Disallow: /search
+Disallow: /search?
+Disallow: /_bundle/
+
+# Google + Bing get the same shape — explicit blocks here document intent and
+# pre-empt either crawler from following a hash- or query-stripped variant.
+User-agent: Googlebot
+Allow: /
+Disallow: /search
+Disallow: /_bundle/
+
+User-agent: Googlebot-Image
+Allow: /img/
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+Disallow: /search
+Disallow: /_bundle/
 
 Sitemap: https://eduhub.khanalrajesh.com.np/sitemap.xml
