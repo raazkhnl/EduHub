@@ -160,12 +160,15 @@
  * accent, glass surfaces with hairline rules)
  * ──────────────────────────────────────────────────────────────────────────── */
 [data-theme='dark'] {
-  /* Surfaces — deep ink with subtle blue cast */
-  --ah-paper: #050507; /* page bg */
-  --ah-paper-elev: #0b0d12; /* cards, navbar (slightly lifted) */
-  --ah-paper-sunken: #0a0b0f; /* code blocks */
-  --ah-rule: rgba(255, 255, 255, 0.07);
-  --ah-rule-strong: rgba(255, 255, 255, 0.14);
+  /* Surfaces — uniform deep ink. Cards/navbar/footer all share the same
+     #050507 base; demarcation is done with hairline borders, not by shifting
+     the surface colour. This keeps every section of the page visually
+     continuous (no "lighter card on darker page" effect). */
+  --ah-paper: #050507; /* page bg, cards, navbar — all the same */
+  --ah-paper-elev: #050507; /* identical to paper — kept as a token for clarity */
+  --ah-paper-sunken: #0a0b0e; /* code blocks only — barely-there lift */
+  --ah-rule: rgba(255, 255, 255, 0.08);
+  --ah-rule-strong: rgba(255, 255, 255, 0.16);
 
   /* Ink */
   --ah-ink: #f1f5f9; /* slate-100 */
@@ -226,7 +229,10 @@
   --ifm-color-primary-lighter: #a7f3d0;
   --ifm-color-primary-lightest: #d1fae5;
 
-  --ifm-navbar-background-color: rgba(5, 5, 7, 0.78);
+  --ifm-navbar-background-color: rgba(5, 5, 7, 0.85);
+  --ifm-background-color: var(--ah-paper);
+  --ifm-background-surface-color: var(--ah-paper);
+  --ifm-footer-background-color: var(--ah-paper);
   --ifm-code-background: var(--ah-paper-sunken);
   --ifm-pre-background: #07090c;
   --docusaurus-highlighted-code-line-bg: rgba(54, 249, 179, 0.14);
