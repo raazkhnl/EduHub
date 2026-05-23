@@ -251,18 +251,16 @@ body {
   font-feature-settings: 'kern', 'liga', 'calt';
   -webkit-font-smoothing: antialiased;
 }
-
-/* Dark-mode subtle accent — a single mint halo at the top of the page only,
-   gives the near-black canvas a quiet brand cue without affecting layout.
-   Confined to the hero area (height-capped) so it can't bleed below the fold
-   or interact with any fixed/positioned element. */
+/* Dark mode = pure deep ink. No gradient overlays — those were lifting the
+   apparent pixel value into a perceived grey. The canvas is exactly
+   var(--ah-paper) end to end. */
 [data-theme='dark'] body {
-  background:
-    radial-gradient(900px 320px at 18% -160px, rgba(54, 249, 179, 0.08) 0%, transparent 65%),
-    radial-gradient(700px 260px at 92% -120px, rgba(255, 61, 139, 0.05) 0%, transparent 65%),
-    var(--ah-paper);
-  background-attachment: fixed, fixed, scroll;
-  background-repeat: no-repeat, no-repeat, no-repeat;
+  background: var(--ah-paper);
+}
+html[data-theme='dark'],
+[data-theme='dark'] #__docusaurus,
+[data-theme='dark'] .main-wrapper {
+  background: var(--ah-paper);
 }
 
 /* Selection */
@@ -697,15 +695,7 @@ div[class*='announcementBar'] {
   font-size: 13.5px;
 }
 [data-theme='dark'] div[class*='announcementBar'] {
-  background:
-    linear-gradient(
-      90deg,
-      rgba(54, 249, 179, 0.06) 0%,
-      transparent 35%,
-      transparent 65%,
-      rgba(255, 61, 139, 0.06) 100%
-    ),
-    var(--ah-paper-elev);
+  background: var(--ah-paper) !important;
   color: var(--ah-ink-soft) !important;
   border-bottom: 1px solid var(--ah-rule);
 }

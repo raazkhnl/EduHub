@@ -148,6 +148,19 @@ const config = {
   // Preconnect to font hosts so the TLS+TCP handshake happens in parallel
   // with HTML parsing.
   headTags: [
+    // Browser shim for Node's `process` global. Mermaid (chunk 8731) pulls in
+    // a path-resolve helper that calls `process.cwd()` unconditionally; the
+    // browser has no `process`, so the chunk throws "process is not defined"
+    // the moment it loads. Webpack 5 dropped automatic Node-polyfills and
+    // Docusaurus doesn't re-enable them, so we define the minimum that
+    // path-resolve / mermaid actually call. Kept inline + small so it runs
+    // before any chunk is fetched.
+    {
+      tagName: 'script',
+      attributes: {},
+      innerHTML:
+        "window.process=window.process||{env:{NODE_ENV:'production'},cwd:function(){return'/'},platform:'browser'};",
+    },
     { tagName: 'link', attributes: { rel: 'preconnect', href: 'https://fonts.googleapis.com' } },
     {
       tagName: 'link',

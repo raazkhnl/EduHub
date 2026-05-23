@@ -7,10 +7,10 @@
     var(--ah-paper);
 }
 :global([data-theme='dark']) .hero {
-  background:
-    radial-gradient(900px 360px at 18% -10%, rgba(54, 249, 179, 0.1) 0%, transparent 60%),
-    radial-gradient(700px 280px at 92% 110%, rgba(255, 61, 139, 0.08) 0%, transparent 60%),
-    transparent;
+  /* Pure deep-ink hero in dark mode — matches the rest of the page. The
+     gradient washes were over-lifting the area and reading as grey. */
+  background: var(--ah-paper);
+  border-bottom: 1px solid var(--ah-rule);
 }
 .eyebrow {
   font-family: var(--ah-font-mono);
