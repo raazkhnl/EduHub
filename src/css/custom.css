@@ -418,6 +418,38 @@ pre {
   backdrop-filter: saturate(140%) blur(10px);
   -webkit-backdrop-filter: saturate(140%) blur(10px);
 }
+
+/* Mobile drawer height fix.
+ *
+ * Symptom: on phone-width viewports, tapping the hamburger opened a drawer
+ * that was only ~60px tall (the navbar's own height) instead of filling
+ * the screen.
+ *
+ * Root cause: Docusaurus's mobile drawer (.navbar-sidebar) is a *child* of
+ * .navbar with `position: fixed; top: 0; bottom: 0`. Per CSS spec, an
+ * ancestor that uses `transform`, `filter`, `backdrop-filter`, `perspective`,
+ * `contain: paint`, or `will-change: transform` becomes the containing
+ * block for fixed-position descendants — replacing the viewport. The
+ * navbar's `backdrop-filter: blur(...)` above does exactly that, so the
+ * drawer's top/bottom resolved against the 60px navbar box instead of the
+ * viewport.
+ *
+ * Fix: drop the backdrop-filter on mobile widths. The drawer + its dark
+ * backdrop cover the entire screen when open, so the translucent-paper
+ * effect on the navbar isn't visible there anyway. As belt-and-braces, we
+ * also clear any transform/filter while the drawer is open so a future
+ * effect added to the navbar doesn't re-introduce the same bug. */
+@media (max-width: 996px) {
+  .navbar {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+  .navbar:has(.navbar-sidebar--show) {
+    transform: none !important;
+    filter: none !important;
+    transition: none !important;
+  }
+}
 .navbar__title {
   font-family: var(--ah-font-serif);
   font-weight: 600;

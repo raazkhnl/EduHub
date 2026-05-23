@@ -71,7 +71,10 @@ module.exports = function seoEnhancePlugin(context, opts = {}) {
         // Avoid double-injection on rebuilds.
         if (html.includes('data-seo-enhance="1"')) return;
 
-        const title = extractMeta(html, 'og:title') || extractTitle(html);
+        // Strip the trailing " | EduHub" the <title> tag carries so the
+        // JSON-LD headline reads cleanly in Google's rich-result preview.
+        const rawTitle = extractMeta(html, 'og:title') || extractTitle(html);
+        const title = rawTitle ? rawTitle.replace(/\s*\|\s*EduHub\s*$/, '') : null;
         let description = extractMeta(html, 'description') || extractMeta(html, 'og:description');
         if (!title) return;
 
